@@ -47,7 +47,7 @@ namespace Ascension
             // TODO: Add your update logic here
 
             // The time since Update was called last.
-            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 3;
+            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 7;
 
             var kstate = Keyboard.GetState();
 
@@ -71,6 +71,9 @@ namespace Ascension
                 ballPosition.X += updatedBallSpeed;
             }
 
+            //
+            this.StayInBorder();
+            //
             base.Update(gameTime);
         }
 
@@ -80,6 +83,8 @@ namespace Ascension
 
 
             _spriteBatch.Begin();
+            //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
+
             _spriteBatch.Draw(
                 ballTexture,
                 ballPosition,
@@ -94,6 +99,27 @@ namespace Ascension
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void StayInBorder()
+        {
+            if (ballPosition.X > _graphics.PreferredBackBufferWidth - ballTexture.Width / 2)
+            {
+                ballPosition.X = _graphics.PreferredBackBufferWidth - ballTexture.Width / 2;
+            }
+            else if (ballPosition.X < ballTexture.Width / 2)
+            {
+                ballPosition.X = ballTexture.Width / 2;
+            }
+
+            if (ballPosition.Y > _graphics.PreferredBackBufferHeight - ballTexture.Height / 2)
+            {
+                ballPosition.Y = _graphics.PreferredBackBufferHeight - ballTexture.Height / 2;
+            }
+            else if (ballPosition.Y < ballTexture.Height / 2)
+            {
+                ballPosition.Y = ballTexture.Height / 2;
+            }
         }
     }
 }
