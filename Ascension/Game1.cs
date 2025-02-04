@@ -49,28 +49,8 @@ namespace Ascension
             // The time since Update was called last.
             float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 3;
 
-            var kstate = Keyboard.GetState();
-
-            if (kstate.IsKeyDown(Keys.Up))
-            {
-                ballPosition.Y -= updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.Down))
-            {
-                ballPosition.Y += updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.Left))
-            {
-                ballPosition.X -= updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.Right))
-            {
-                ballPosition.X += updatedBallSpeed;
-            }
-
+           
+            this.BallMovement(updatedBallSpeed);
             //
             this.StayInBorder();
             //
@@ -99,6 +79,40 @@ namespace Ascension
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        private void BallMovement(float updatedBallSpeed)
+        {
+            var kstate = Keyboard.GetState();
+
+            if (kstate.IsKeyDown(Keys.W))
+            {
+                ballPosition.Y -= updatedBallSpeed;
+            }
+
+            if (kstate.IsKeyDown(Keys.S))
+            {
+                ballPosition.Y += updatedBallSpeed;
+            }
+
+            if (kstate.IsKeyDown(Keys.A))
+            {
+                ballPosition.X -= updatedBallSpeed;
+            }
+
+            if (kstate.IsKeyDown(Keys.D))
+            {
+                ballPosition.X += updatedBallSpeed;
+            }
+
+            if (kstate.IsKeyDown(Keys.LeftShift))
+            {
+                ballSpeed = 200f;
+            }
+            else
+            {
+                ballSpeed = 100f;
+            }
         }
 
         private void StayInBorder()
