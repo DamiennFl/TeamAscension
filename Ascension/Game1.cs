@@ -12,7 +12,7 @@ namespace Ascension
         Vector2 ballPosition;
 
         Rectangle borderRect = new Rectangle(40, 40, 460, 720);
-        int borderWidth = 5;
+        int borderWidth = 4;
         Color borderColor = Color.Black;
 
         float ballSpeed;
@@ -138,25 +138,28 @@ namespace Ascension
 
         private void StayInBorder()
         {
-            int xPadding = _graphics.PreferredBackBufferWidth / 25;
-            int yPadding = _graphics.PreferredBackBufferHeight / 20;
+            int radius = ballTexture.Width / 8;
 
-            if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
+            // Left border
+            if (ballPosition.X - radius < borderRect.X)
             {
-                ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
+                ballPosition.X = borderRect.X + radius;
             }
-            else if (ballPosition.X < (ballTexture.Width / 2 + xPadding))
+            // Right border
+            else if (ballPosition.X + radius > borderRect.X + borderRect.Width - (2 *borderWidth))
             {
-                ballPosition.X = (ballTexture.Width / 2) + xPadding;
+                ballPosition.X = borderRect.X + borderRect.Width - (2 * borderWidth) - radius;
             }
 
-            if (ballPosition.Y > _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding)
+            // Top border
+            if (ballPosition.Y - radius < borderRect.Y)
             {
-                ballPosition.Y = _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding;
+                ballPosition.Y = borderRect.Y + radius;
             }
-            else if (ballPosition.Y < (ballTexture.Height / 2 + yPadding))
+            // Bottom border
+            else if (ballPosition.Y + radius > borderRect.Y + borderRect.Height - (2 * borderWidth))
             {
-                ballPosition.Y = (ballTexture.Height / 2 + yPadding);
+                ballPosition.Y = borderRect.Y + borderRect.Height - (2 * borderWidth) - radius;
             }
         }
     }
