@@ -10,7 +10,13 @@ namespace Ascension
     {
         Texture2D ballTexture;
         Vector2 ballPosition;
+
+        Rectangle borderRect = new Rectangle(50, 50, 200, 150); // x, y, width, height
+        int borderWidth = 5;
+        Color borderColor = Color.Black;
+
         float ballSpeed;
+        Texture2D borderTexture;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -29,6 +35,8 @@ namespace Ascension
             // TODO: Add your initialization logic here
             ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 4, _graphics.PreferredBackBufferHeight / 2);
             ballSpeed = 100f;
+            borderTexture = new Texture2D(GraphicsDevice, 100, 100);
+      
 
             base.Initialize();
         }
@@ -38,6 +46,11 @@ namespace Ascension
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             ballTexture = Content.Load<Texture2D>("ball");
+            borderTexture = new Texture2D(GraphicsDevice, 1, 1);
+            borderTexture.SetData(new[] { Color.White });
+            //borderTexture = new Texture2D(GraphicsDevice, 1, 1);
+            //borderTexture.SetData(new[] { Color.Black });
+            //_spriteBatch.Draw(borderTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.Black);
 
             // TODO: use this.Content to load your game content here
         }
@@ -51,7 +64,7 @@ namespace Ascension
             // TODO: Add your update logic here
 
             // The time since Update was called last.
-            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 3;
+            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 
            
             this.BallMovement(updatedBallSpeed);
@@ -63,10 +76,22 @@ namespace Ascension
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.White);
+            
+          
 
 
             _spriteBatch.Begin();
+            //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
+            // Draw top border
+            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderRect.Width, borderWidth), borderColor);
+            // Draw bottom border
+            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y + borderRect.Height - borderWidth, borderRect.Width, borderWidth), borderColor);
+            // Draw left border
+            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderWidth, borderRect.Height), borderColor);
+            // Draw right border
+            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X + borderRect.Width - borderWidth, borderRect.Y, borderWidth, borderRect.Height), borderColor);
+
 
             _spriteBatch.Draw(
                 ballTexture,
@@ -75,11 +100,13 @@ namespace Ascension
                 Color.White,
                 0f,
                 new Vector2(ballTexture.Width / 2, ballTexture.Height / 2),
-                new Vector2((float)0.25, (float)0.25),
+                1,
                 SpriteEffects.None,
                 0f
-            );
+            ); 
+            // TODO: Add your drawing code here
 
+            
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -111,7 +138,7 @@ namespace Ascension
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                ballSpeed = 200f;
+                ballSpeed = 150f;
             }
             else
             {
@@ -122,7 +149,8 @@ namespace Ascension
         private void StayInBorder()
         {
             int xPadding = _graphics.PreferredBackBufferWidth / 30;
-            int yPadding = _graphics.PreferredBackBufferHeight / 30;
+            int yPadding = _graphics.PreferredBackBufferHeight / 20;
+
             if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
             {
                 ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
