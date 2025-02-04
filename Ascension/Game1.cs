@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Ascension
 {
@@ -16,6 +18,8 @@ namespace Ascension
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 800;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -59,11 +63,10 @@ namespace Ascension
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Blue);
 
 
             _spriteBatch.Begin();
-            //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
 
             _spriteBatch.Draw(
                 ballTexture,
@@ -72,11 +75,12 @@ namespace Ascension
                 Color.White,
                 0f,
                 new Vector2(ballTexture.Width / 2, ballTexture.Height / 2),
-                Vector2.One,
+                new Vector2((float)0.25, (float)0.25),
                 SpriteEffects.None,
                 0f
-            ); _spriteBatch.End();
-            // TODO: Add your drawing code here
+            );
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
@@ -118,7 +122,7 @@ namespace Ascension
         private void StayInBorder()
         {
             int xPadding = _graphics.PreferredBackBufferWidth / 30;
-            int yPadding = _graphics.PreferredBackBufferHeight / 20;
+            int yPadding = _graphics.PreferredBackBufferHeight / 30;
             if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
             {
                 ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
