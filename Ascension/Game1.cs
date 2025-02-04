@@ -23,7 +23,7 @@ namespace Ascension
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 4, _graphics.PreferredBackBufferHeight / 2);
             ballSpeed = 100f;
 
             base.Initialize();
@@ -47,7 +47,7 @@ namespace Ascension
             // TODO: Add your update logic here
 
             // The time since Update was called last.
-            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 7;
+            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 3;
 
             var kstate = Keyboard.GetState();
 
@@ -103,22 +103,24 @@ namespace Ascension
 
         private void StayInBorder()
         {
-            if (ballPosition.X > _graphics.PreferredBackBufferWidth - ballTexture.Width / 2)
+            int xPadding = _graphics.PreferredBackBufferWidth / 30;
+            int yPadding = _graphics.PreferredBackBufferHeight / 20;
+            if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
             {
-                ballPosition.X = _graphics.PreferredBackBufferWidth - ballTexture.Width / 2;
+                ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
             }
-            else if (ballPosition.X < ballTexture.Width / 2)
+            else if (ballPosition.X < (ballTexture.Width / 2) + xPadding)
             {
-                ballPosition.X = ballTexture.Width / 2;
+                ballPosition.X = (ballTexture.Width / 2) + xPadding;
             }
 
-            if (ballPosition.Y > _graphics.PreferredBackBufferHeight - ballTexture.Height / 2)
+            if (ballPosition.Y > _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding)
             {
-                ballPosition.Y = _graphics.PreferredBackBufferHeight - ballTexture.Height / 2;
+                ballPosition.Y = _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding;
             }
-            else if (ballPosition.Y < ballTexture.Height / 2)
+            else if (ballPosition.Y < (ballTexture.Height / 2 + yPadding))
             {
-                ballPosition.Y = ballTexture.Height / 2;
+                ballPosition.Y = (ballTexture.Height / 2 + yPadding);
             }
         }
     }
