@@ -11,7 +11,7 @@ namespace Ascension
         Texture2D ballTexture;
         Vector2 ballPosition;
 
-        Rectangle borderRect = new Rectangle(50, 50, 200, 150); // x, y, width, height
+        Rectangle borderRect = new Rectangle(40, 40, 460, 720);
         int borderWidth = 5;
         Color borderColor = Color.Black;
 
@@ -24,7 +24,7 @@ namespace Ascension
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferWidth = 1000;
             _graphics.PreferredBackBufferHeight = 800;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -48,11 +48,6 @@ namespace Ascension
             ballTexture = Content.Load<Texture2D>("ball");
             borderTexture = new Texture2D(GraphicsDevice, 1, 1);
             borderTexture.SetData(new[] { Color.White });
-            //borderTexture = new Texture2D(GraphicsDevice, 1, 1);
-            //borderTexture.SetData(new[] { Color.Black });
-            //_spriteBatch.Draw(borderTexture, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.Black);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,14 +77,9 @@ namespace Ascension
 
 
             _spriteBatch.Begin();
-            //_spriteBatch.Draw(ballTexture, ballPosition, Color.White);
-            // Draw top border
             _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderRect.Width, borderWidth), borderColor);
-            // Draw bottom border
             _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y + borderRect.Height - borderWidth, borderRect.Width, borderWidth), borderColor);
-            // Draw left border
             _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderWidth, borderRect.Height), borderColor);
-            // Draw right border
             _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X + borderRect.Width - borderWidth, borderRect.Y, borderWidth, borderRect.Height), borderColor);
 
 
@@ -99,11 +89,11 @@ namespace Ascension
                 null,
                 Color.White,
                 0f,
-                new Vector2(ballTexture.Width / 2, ballTexture.Height / 2),
-                1,
+                new Vector2(ballTexture.Width / 4, ballTexture.Height / 4),
+                new Vector2((float)0.25, (float)0.25),
                 SpriteEffects.None,
                 0f
-            ); 
+            );
             // TODO: Add your drawing code here
 
             
@@ -148,14 +138,14 @@ namespace Ascension
 
         private void StayInBorder()
         {
-            int xPadding = _graphics.PreferredBackBufferWidth / 30;
+            int xPadding = _graphics.PreferredBackBufferWidth / 25;
             int yPadding = _graphics.PreferredBackBufferHeight / 20;
 
             if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
             {
                 ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
             }
-            else if (ballPosition.X < (ballTexture.Width / 2) + xPadding)
+            else if (ballPosition.X < (ballTexture.Width / 2 + xPadding))
             {
                 ballPosition.X = (ballTexture.Width / 2) + xPadding;
             }
@@ -171,3 +161,4 @@ namespace Ascension
         }
     }
 }
+ 
