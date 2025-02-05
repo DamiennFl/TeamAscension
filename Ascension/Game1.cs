@@ -19,54 +19,19 @@ namespace Ascension
     /// </summary>
     public class Game1 : Game
     {
-        /// <summary>
-        /// The graphics device manager.
-        /// </summary>
-        private Texture2D ballTexture;
+        Texture2D ballTexture;
+        Vector2 ballPosition;
 
-        /// <summary>
-        /// The ball position.
-        /// </summary>
-        private Vector2 ballPosition;
+        Rectangle borderRect = new Rectangle(40, 40, 460, 720);
+        int borderWidth = 4;
+        Color borderColor = Color.Black;
 
-        /// <summary>
-        /// The border rectangle.
-        /// </summary>
-        private Rectangle borderRect = new Rectangle(40, 40, 460, 720);
+        float ballSpeed;
+        Texture2D borderTexture;
 
-        /// <summary>
-        /// The border width.
-        /// </summary>
-        private int borderWidth = 5;
+        private GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
 
-        /// <summary>
-        /// The border color.
-        /// </summary>
-        private Color borderColor = Color.Black;
-
-        /// <summary>
-        /// The ball speed.
-        /// </summary>
-        private float ballSpeed;
-
-        /// <summary>
-        /// The border texture.
-        /// </summary>
-        private Texture2D borderTexture;
-
-        /// <summary>
-        /// The graphics device manager.
-        /// </summary>
-        private GraphicsDeviceManager graphics;
-
-        /// <summary>
-        /// The sprite batch.
-        /// </summary>
-        private SpriteBatch spriteBatch;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Game1"/> class.
-        /// </summary>
         public Game1()
         {
             this.graphics = new GraphicsDeviceManager(this);
@@ -198,25 +163,28 @@ namespace Ascension
         /// </summary>
         private void StayInBorder()
         {
-            int xPadding = this.graphics.PreferredBackBufferWidth / 25;
-            int yPadding = this.graphics.PreferredBackBufferHeight / 20;
+            int radius = ballTexture.Width / 8;
 
-            if (this.ballPosition.X > (this.graphics.PreferredBackBufferWidth / 2) - (this.ballTexture.Width / 2))
+            // Left border
+            if (ballPosition.X - radius < borderRect.X)
             {
-                this.ballPosition.X = (this.graphics.PreferredBackBufferWidth / 2) - (this.ballTexture.Width / 2);
+                ballPosition.X = borderRect.X + radius;
             }
-            else if (this.ballPosition.X < ((this.ballTexture.Width / 2) + xPadding))
+            // Right border
+            else if (ballPosition.X + radius > borderRect.X + borderRect.Width - (2 *borderWidth))
             {
-                this.ballPosition.X = (this.ballTexture.Width / 2) + xPadding;
+                ballPosition.X = borderRect.X + borderRect.Width - (2 * borderWidth) - radius;
             }
 
-            if (this.ballPosition.Y > this.graphics.PreferredBackBufferHeight - (this.ballTexture.Height / 2) - yPadding)
+            // Top border
+            if (ballPosition.Y - radius < borderRect.Y)
             {
-                this.ballPosition.Y = this.graphics.PreferredBackBufferHeight - (this.ballTexture.Height / 2) - yPadding;
+                ballPosition.Y = borderRect.Y + radius;
             }
-            else if (this.ballPosition.Y < ((this.ballTexture.Height / 2) + yPadding))
+            // Bottom border
+            else if (ballPosition.Y + radius > borderRect.Y + borderRect.Height - (2 * borderWidth))
             {
-                this.ballPosition.Y = (this.ballTexture.Height / 2) + yPadding;
+                ballPosition.Y = borderRect.Y + borderRect.Height - (2 * borderWidth) - radius;
             }
         }
     }
