@@ -1,0 +1,12 @@
+﻿<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <BooleanProperty Name="RulesEnabledByDefault">True</BooleanProperty>
+  </GlobalSettings>
+  <Analyzers>
+    <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
+      <Rules>
+        <Rule Name="SA0001" Enabled="False" />
+      </Rules>
+    </Analyzer>
+  </Analyzers>
+</StyleCopSettings>

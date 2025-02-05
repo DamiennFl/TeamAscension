@@ -1,164 +1,223 @@
-﻿using Microsoft.Xna.Framework;
+﻿// <copyright file="Game1.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace Ascension
 {
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA0001:XmlCommentAnalysisDisabled", Justification = "Documentation not required.")]
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1516:ElementsMustBeSeparatedByBlankLine", Justification = "Formatting not required.")]
+
+    /// <summary>
+    /// Game1 class.
+    /// </summary>
     public class Game1 : Game
     {
-        Texture2D ballTexture;
-        Vector2 ballPosition;
+        /// <summary>
+        /// The graphics device manager.
+        /// </summary>
+        private Texture2D ballTexture;
 
-        Rectangle borderRect = new Rectangle(40, 40, 460, 720);
-        int borderWidth = 5;
-        Color borderColor = Color.Black;
+        /// <summary>
+        /// The ball position.
+        /// </summary>
+        private Vector2 ballPosition;
 
-        float ballSpeed;
-        Texture2D borderTexture;
+        /// <summary>
+        /// The border rectangle.
+        /// </summary>
+        private Rectangle borderRect = new Rectangle(40, 40, 460, 720);
 
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        /// <summary>
+        /// The border width.
+        /// </summary>
+        private int borderWidth = 5;
 
+        /// <summary>
+        /// The border color.
+        /// </summary>
+        private Color borderColor = Color.Black;
+
+        /// <summary>
+        /// The ball speed.
+        /// </summary>
+        private float ballSpeed;
+
+        /// <summary>
+        /// The border texture.
+        /// </summary>
+        private Texture2D borderTexture;
+
+        /// <summary>
+        /// The graphics device manager.
+        /// </summary>
+        private GraphicsDeviceManager graphics;
+
+        /// <summary>
+        /// The sprite batch.
+        /// </summary>
+        private SpriteBatch spriteBatch;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game1"/> class.
+        /// </summary>
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1000;
-            _graphics.PreferredBackBufferHeight = 800;
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            this.graphics = new GraphicsDeviceManager(this);
+            this.graphics.PreferredBackBufferWidth = 1000;
+            this.graphics.PreferredBackBufferHeight = 800;
+            this.Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
         }
 
+        /// <summary>
+        /// Initializes the game.
+        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 4, _graphics.PreferredBackBufferHeight / 2);
-            ballSpeed = 100f;
-            borderTexture = new Texture2D(GraphicsDevice, 100, 100);
-      
+            this.ballPosition = new Vector2(this.graphics.PreferredBackBufferWidth / 4, this.graphics.PreferredBackBufferHeight / 2);
+            this.ballSpeed = 100f;
+            this.borderTexture = new Texture2D(this.GraphicsDevice, 100, 100);
 
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads the content.
+        /// </summary>
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            ballTexture = Content.Load<Texture2D>("ball");
-            borderTexture = new Texture2D(GraphicsDevice, 1, 1);
-            borderTexture.SetData(new[] { Color.White });
+            this.ballTexture = this.Content.Load<Texture2D>("ball");
+            this.borderTexture = new Texture2D(this.GraphicsDevice, 1, 1);
+            this.borderTexture.SetData(new[] { Color.White });
         }
 
+        /// <summary>
+        /// Updates the game.
+        /// </summary>
+        /// <param name="gameTime">Time of update.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                                  Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                this.Exit();
+            }
 
             // TODO: Add your update logic here
 
             // The time since Update was called last.
-            float updatedBallSpeed = ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            float updatedBallSpeed = this.ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 
-           
             this.BallMovement(updatedBallSpeed);
-            //
             this.StayInBorder();
-            //
+
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Draws the game.
+        /// </summary>
+        /// <param name="gameTime">Time of game.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
-            
-          
+            this.GraphicsDevice.Clear(Color.White);
 
+            this.spriteBatch.Begin();
+            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderRect.Width, this.borderWidth), this.borderColor);
+            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width, this.borderWidth), this.borderColor);
+            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
+            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
 
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderRect.Width, borderWidth), borderColor);
-            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y + borderRect.Height - borderWidth, borderRect.Width, borderWidth), borderColor);
-            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X, borderRect.Y, borderWidth, borderRect.Height), borderColor);
-            _spriteBatch.Draw(borderTexture, new Rectangle(borderRect.X + borderRect.Width - borderWidth, borderRect.Y, borderWidth, borderRect.Height), borderColor);
-
-
-            _spriteBatch.Draw(
-                ballTexture,
-                ballPosition,
+            this.spriteBatch.Draw(
+                this.ballTexture,
+                this.ballPosition,
                 null,
                 Color.White,
                 0f,
-                new Vector2(ballTexture.Width / 4, ballTexture.Height / 4),
-                new Vector2((float)0.25, (float)0.25),
+                new Vector2(this.ballTexture.Width / 4, this.ballTexture.Height / 4),
+                new Vector2(0.25F, 0.25F),
                 SpriteEffects.None,
-                0f
-            );
-            // TODO: Add your drawing code here
+                0f);
 
-            
-            _spriteBatch.End();
+            // TODO: Add your drawing code here
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Moves the ball.
+        /// </summary>
+        /// <param name="updatedBallSpeed">Updated ball speed.</param>
         private void BallMovement(float updatedBallSpeed)
         {
             var kstate = Keyboard.GetState();
 
             if (kstate.IsKeyDown(Keys.W))
             {
-                ballPosition.Y -= updatedBallSpeed;
+                this.ballPosition.Y -= updatedBallSpeed;
             }
 
             if (kstate.IsKeyDown(Keys.S))
             {
-                ballPosition.Y += updatedBallSpeed;
+                this.ballPosition.Y += updatedBallSpeed;
             }
 
             if (kstate.IsKeyDown(Keys.A))
             {
-                ballPosition.X -= updatedBallSpeed;
+                this.ballPosition.X -= updatedBallSpeed;
             }
 
             if (kstate.IsKeyDown(Keys.D))
             {
-                ballPosition.X += updatedBallSpeed;
+                this.ballPosition.X += updatedBallSpeed;
             }
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                ballSpeed = 150f;
+                this.ballSpeed = 150f;
             }
             else
             {
-                ballSpeed = 100f;
+                this.ballSpeed = 100f;
             }
         }
 
+        /// <summary>
+        /// Keeps the ball in the border.
+        /// </summary>
         private void StayInBorder()
         {
-            int xPadding = _graphics.PreferredBackBufferWidth / 25;
-            int yPadding = _graphics.PreferredBackBufferHeight / 20;
+            int xPadding = this.graphics.PreferredBackBufferWidth / 25;
+            int yPadding = this.graphics.PreferredBackBufferHeight / 20;
 
-            if (ballPosition.X > (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2)
+            if (this.ballPosition.X > (this.graphics.PreferredBackBufferWidth / 2) - (this.ballTexture.Width / 2))
             {
-                ballPosition.X = (_graphics.PreferredBackBufferWidth / 2) - ballTexture.Width / 2;
+                this.ballPosition.X = (this.graphics.PreferredBackBufferWidth / 2) - (this.ballTexture.Width / 2);
             }
-            else if (ballPosition.X < (ballTexture.Width / 2 + xPadding))
+            else if (this.ballPosition.X < ((this.ballTexture.Width / 2) + xPadding))
             {
-                ballPosition.X = (ballTexture.Width / 2) + xPadding;
+                this.ballPosition.X = (this.ballTexture.Width / 2) + xPadding;
             }
 
-            if (ballPosition.Y > _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding)
+            if (this.ballPosition.Y > this.graphics.PreferredBackBufferHeight - (this.ballTexture.Height / 2) - yPadding)
             {
-                ballPosition.Y = _graphics.PreferredBackBufferHeight - ballTexture.Height / 2 - yPadding;
+                this.ballPosition.Y = this.graphics.PreferredBackBufferHeight - (this.ballTexture.Height / 2) - yPadding;
             }
-            else if (ballPosition.Y < (ballTexture.Height / 2 + yPadding))
+            else if (this.ballPosition.Y < ((this.ballTexture.Height / 2) + yPadding))
             {
-                ballPosition.Y = (ballTexture.Height / 2 + yPadding);
+                this.ballPosition.Y = (this.ballTexture.Height / 2) + yPadding;
             }
         }
     }
 }
- 
