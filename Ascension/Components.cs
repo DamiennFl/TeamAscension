@@ -2,18 +2,28 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension
 {
     /// <summary>
     /// The components.
     /// </summary>
-    internal class Components
+    internal abstract class Components
     {
+        /// <summary>
+        /// Draw Method, will be overwritten per component.
+        /// </summary>
+        /// <param name="gameTime">.</param>
+        /// <param name="spriteBatch">..</param>
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Update Method, will be overwritten per component.
+        /// </summary>
+        /// <param name="gameTime">.</param>
+        public abstract void Update(GameTime gameTime);
+
     }
 }
