@@ -131,11 +131,11 @@ namespace Ascension.Content.States
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                this.ballSpeed = 150f;
+                this.ballSpeed = 120f;
             }
             else
             {
-                this.ballSpeed = 100f;
+                this.ballSpeed = 60f;
             }
 
             // If Vector has values, normalize movement.
