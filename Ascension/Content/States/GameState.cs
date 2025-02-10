@@ -106,24 +106,27 @@ namespace Ascension.Content.States
         {
             var kstate = Keyboard.GetState();
 
+            // Vector to normalize diagonal movement
+            Vector2 dir = Vector2.Zero;
+
             if (kstate.IsKeyDown(Keys.W))
             {
-                this.ballPosition.Y -= updatedBallSpeed;
+                dir.Y -= 1;
             }
 
             if (kstate.IsKeyDown(Keys.S))
             {
-                this.ballPosition.Y += updatedBallSpeed;
+                dir.Y += 1;
             }
 
             if (kstate.IsKeyDown(Keys.A))
             {
-                this.ballPosition.X -= updatedBallSpeed;
+                dir.X -= 1;
             }
 
             if (kstate.IsKeyDown(Keys.D))
             {
-                this.ballPosition.X += updatedBallSpeed;
+                dir.X += 1;
             }
 
             if (kstate.IsKeyDown(Keys.LeftShift))
@@ -134,6 +137,15 @@ namespace Ascension.Content.States
             {
                 this.ballSpeed = 100f;
             }
+
+            // If Vector has values, normalize movement.
+            if (dir != Vector2.Zero)
+            {
+                dir.Normalize();
+            }
+
+            // Update position after normalizing
+            this.ballPosition += dir * updatedBallSpeed;
         }
 
         /// <summary>
