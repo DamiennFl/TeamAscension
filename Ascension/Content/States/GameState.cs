@@ -48,6 +48,11 @@ namespace Ascension.Content.States
         private float ballSpeed;
         private Texture2D borderTexture;
 
+        private List<Enemy> enemies = new List<Enemy>();
+        private BasicEnemyFactory enemyFactory;
+        private float enemySpawnTimer = 0f;
+        private float enemySpawnInterval = 3f; // Spawn every 3 seconds
+
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
@@ -56,6 +61,8 @@ namespace Ascension.Content.States
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.White });
             this.ballSpeed = 100f;
+
+            this.enemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -78,6 +85,12 @@ namespace Ascension.Content.States
                 SpriteEffects.None,
                 0f);
 
+            // Draw enemies
+            foreach (var enemy in this.enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
+
             spriteBatch.End();
         }
 
@@ -96,6 +109,20 @@ namespace Ascension.Content.States
 
             this.BallMovement(updatedBallSpeed);
             this.StayInBorder();
+
+            // Update enemies
+            foreach (var enemy in this.enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
+            // Spawn enemies
+            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.enemySpawnTimer > this.enemySpawnInterval)
+            {
+                this.SpawnEnemy();
+                this.enemySpawnTimer = 0;
+            }
         }
 
         /// <summary>
@@ -166,6 +193,22 @@ namespace Ascension.Content.States
             {
                 this.ballPosition.Y = this.borderRect.Y + this.borderRect.Height - (2 * this.borderWidth) - radius;
             }
+        }
+
+        private void SpawnEnemy()
+        {
+            // Calculate a random X position along the top border
+            Random random = new Random();
+            float randomX = random.Next(
+                this.borderRect.X + this.borderWidth,
+                this.borderRect.X + this.borderRect.Width - this.borderWidth);
+
+            Vector2 spawnPosition = new Vector2(
+                randomX,
+                this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+
+            Enemy enemy = this.enemyFactory.CreateEnemy(spawnPosition);
+            this.enemies.Add(enemy);
         }
     }
 }
