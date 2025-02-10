@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
+using Ascension.Content.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,19 +20,22 @@ namespace Ascension
     /// </summary>
     public class Game1 : Game
     {
-        Texture2D ballTexture;
-        Vector2 ballPosition;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
-        Rectangle borderRect = new Rectangle(40, 40, 460, 720);
-        int borderWidth = 4;
-        Color borderColor = Color.Black;
 
-        float ballSpeed;
-        Texture2D borderTexture;
+        private State currentState;
+        private State nextState;
 
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public void ChangeState(State state)
+        {
+            this.nextState = state;
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Game1"/> class.
+        /// Our Game constructor.
+        /// </summary>
         public Game1()
         {
             this.graphics = new GraphicsDeviceManager(this);
@@ -46,10 +50,7 @@ namespace Ascension
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            this.ballPosition = new Vector2(this.graphics.PreferredBackBufferWidth / 4, this.graphics.PreferredBackBufferHeight / 2);
-            this.ballSpeed = 100f;
-            this.borderTexture = new Texture2D(this.GraphicsDevice, 100, 100);
+            this.IsMouseVisible = true;
 
             base.Initialize();
         }
@@ -61,9 +62,7 @@ namespace Ascension
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            this.ballTexture = this.Content.Load<Texture2D>("ball");
-            this.borderTexture = new Texture2D(this.GraphicsDevice, 1, 1);
-            this.borderTexture.SetData(new[] { Color.White });
+            this.currentState = new MenuState(this, this.GraphicsDevice, this.Content);
         }
 
         /// <summary>
@@ -72,20 +71,14 @@ namespace Ascension
         /// <param name="gameTime">Time of update.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                                 Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (this.nextState != null)
             {
-                this.Exit();
+                this.currentState = this.nextState;
+                this.nextState = null;
             }
 
-            // TODO: Add your update logic here
-
-            // The time since Update was called last.
-            float updatedBallSpeed = this.ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
-
-            this.BallMovement(updatedBallSpeed);
-            this.StayInBorder();
-
+            this.currentState.Update(gameTime);
+            this.currentState.PostUpdate(gameTime);
             base.Update(gameTime);
         }
 
@@ -96,96 +89,8 @@ namespace Ascension
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.White);
-
-            this.spriteBatch.Begin();
-            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderRect.Width, this.borderWidth), this.borderColor);
-            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width, this.borderWidth), this.borderColor);
-            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
-            this.spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
-
-            this.spriteBatch.Draw(
-                this.ballTexture,
-                this.ballPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(this.ballTexture.Width / 4, this.ballTexture.Height / 4),
-                new Vector2(0.25F, 0.25F),
-                SpriteEffects.None,
-                0f);
-
-            // TODO: Add your drawing code here
-            this.spriteBatch.End();
-
+            this.currentState.Draw(gameTime, this.spriteBatch);
             base.Draw(gameTime);
-        }
-
-        /// <summary>
-        /// Moves the ball.
-        /// </summary>
-        /// <param name="updatedBallSpeed">Updated ball speed.</param>
-        private void BallMovement(float updatedBallSpeed)
-        {
-            var kstate = Keyboard.GetState();
-
-            if (kstate.IsKeyDown(Keys.W))
-            {
-                this.ballPosition.Y -= updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.S))
-            {
-                this.ballPosition.Y += updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.A))
-            {
-                this.ballPosition.X -= updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.D))
-            {
-                this.ballPosition.X += updatedBallSpeed;
-            }
-
-            if (kstate.IsKeyDown(Keys.LeftShift))
-            {
-                this.ballSpeed = 150f;
-            }
-            else
-            {
-                this.ballSpeed = 100f;
-            }
-        }
-
-        /// <summary>
-        /// Keeps the ball in the border.
-        /// </summary>
-        private void StayInBorder()
-        {
-            int radius = ballTexture.Width / 8;
-
-            // Left border
-            if (ballPosition.X - radius < borderRect.X)
-            {
-                ballPosition.X = borderRect.X + radius;
-            }
-            // Right border
-            else if (ballPosition.X + radius > borderRect.X + borderRect.Width - (2 *borderWidth))
-            {
-                ballPosition.X = borderRect.X + borderRect.Width - (2 * borderWidth) - radius;
-            }
-
-            // Top border
-            if (ballPosition.Y - radius < borderRect.Y)
-            {
-                ballPosition.Y = borderRect.Y + radius;
-            }
-            // Bottom border
-            else if (ballPosition.Y + radius > borderRect.Y + borderRect.Height - (2 * borderWidth))
-            {
-                ballPosition.Y = borderRect.Y + borderRect.Height - (2 * borderWidth) - radius;
-            }
         }
     }
 }
