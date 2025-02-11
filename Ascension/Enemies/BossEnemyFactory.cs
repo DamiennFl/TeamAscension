@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ascension.Enemies
 {
+    /*
     internal class BossEnemyFactory : EnemyFactory
     {
         // Constructor
@@ -13,5 +14,5 @@ namespace Ascension.Enemies
         // Create Mid Boss
 
         // Create Final Boss
-    }
+    }*/
 }

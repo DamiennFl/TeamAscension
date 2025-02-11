@@ -15,23 +15,43 @@ namespace Ascension.Enemies
     /// </summary>
     internal abstract class Enemy
     {
-        // Speed
-        // Position
-        // Sprite/Texture
+        /// <summary>
+        /// The texture for the Enemy.
+        /// </summary>
+        public Texture2D Texture;
 
-        public Texture2D texture;
-        
-        public float Speed { get; set; }
-
-        public Vector2 Position { get; set; }
-
-        public Enemy(float speed, Texture2D texture)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Enemy"/> class.
+        /// </summary>
+        /// <param name="speed">The speed of the Enemy.</param>
+        /// <param name="texture">The texture of the Enemy.</param>
+        public Enemy(int speed, Vector2 position, Texture2D texture)
         {
             this.Speed = speed;
-            this.texture = texture;
+            this.Texture = texture;
+            this.Position = position;
         }
 
+        /// <summary>
+        /// Gets or sets the Speed of the Enemy.
+        /// </summary>
+        public int Speed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the Enemy.
+        /// </summary>
+        public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// Update method for updating Enemies.
+        /// </summary>
+        /// <param name="gameTime">GameTime to keep in sync with game runtime.</param>
         public abstract void Update(GameTime gameTime);
+
+        /// <summary>
+        /// Draw method for drawing the sprite.
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch the sprite belongs to.</param>
         public abstract void Draw(SpriteBatch spriteBatch);
     }
 }
