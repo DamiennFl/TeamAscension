@@ -105,7 +105,7 @@ namespace Ascension.Content.States
         /// <param name="gameTime">.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
@@ -129,6 +129,18 @@ namespace Ascension.Content.States
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
 
+            // Update enemies
+            foreach (var enemy in this.enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
+            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.enemySpawnTimer > this.enemySpawnInterval)
+            {
+                this.SpawnEnemy();
+                this.enemySpawnTimer = 0;
+            }
         }
 
         /// <summary>
