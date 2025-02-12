@@ -19,11 +19,10 @@ namespace Ascension
 
         public float playerSpeed;
 
-        public Player(Texture2D texture, Vector2 position, float speed)
+        public Player(Texture2D texture, Vector2 position)
         {
             this.playerTexture = texture;
             this.playerPosition = position;
-            this.playerSpeed = speed;
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -66,11 +65,11 @@ namespace Ascension
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                this.playerSpeed = 120f;
+                this.playerSpeed = 12f;
             }
             else
             {
-                this.playerSpeed = 60f;
+                this.playerSpeed = 6f;
             }
 
             // If Vector has values, normalize movement.
