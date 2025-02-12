@@ -40,5 +40,10 @@ namespace Ascension.Enemies
         {
             // Draw stuff
         }
+
+        public override void Shoot()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

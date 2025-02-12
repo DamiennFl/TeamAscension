@@ -27,7 +27,7 @@ namespace Ascension
             this.Velocity = velocity;
             this.BulletPosition = bulletPosition;
             this.BulletTexture = bulletTexture;
-            this.IsActive = true; // activate as soon  as it is 
+            this.IsActive = true; // activate as soon  as it is
         }
 
         /// <summary>

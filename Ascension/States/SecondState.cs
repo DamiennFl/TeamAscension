@@ -19,12 +19,14 @@ namespace Ascension.States
 
         private int screenWidth;
 
+        private Texture2D backGround;
 
         public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer) : base(game, graphicsDevice, content)
         {
             //this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
+            this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
             this.components = new List<Components>();
             this.player = currentPlayer;
         }
@@ -33,9 +35,11 @@ namespace Ascension.States
         {
             spriteBatch.Begin();
 
-            this.graphicsDevice.Clear(Color.Thistle);
+            this.graphicsDevice.Clear(Color.Black);
 
             this.BorderDraw(spriteBatch);
+
+            this.DrawBackground(spriteBatch, this.backGround);
 
             this.player.Draw(spriteBatch);
 

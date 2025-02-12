@@ -43,6 +43,7 @@ namespace Ascension.Content.States
 
         private Texture2D backGround;
 
+        protected Rectangle rect;
 
         private float enemySpawnTimer = 0f;
         private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
@@ -54,7 +55,7 @@ namespace Ascension.Content.States
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
-            this.backGround = content.Load<Texture2D>("Backgrounds/AscensionTitle");
+            this.backGround = content.Load<Texture2D>("Backgrounds/Stage1");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
             this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
@@ -66,17 +67,13 @@ namespace Ascension.Content.States
         {
             spriteBatch.Begin();
 
-            this.graphicsDevice.Clear(Color.White);
+            this.graphicsDevice.Clear(Color.Black);
 
             this.BorderDraw(spriteBatch);
 
             // Adjust the background rectangle to fit nicely within the borderRect and borderWidth
-            int adjustedX = this.borderRect.X + this.borderWidth;
-            int adjustedY = this.borderRect.Y + this.borderWidth;
-            int adjustedWidth = this.borderRect.Width - (2 * this.borderWidth);
-            int adjustedHeight = this.borderRect.Height - (2 * this.borderWidth);
+            this.DrawBackground(spriteBatch, this.backGround);
 
-            spriteBatch.Draw(this.backGround, new Rectangle(adjustedX, adjustedY, adjustedWidth, adjustedHeight), Color.White);
             this.player.Draw(spriteBatch);
             foreach (var currEnemy in this.enemies)
             {
@@ -84,6 +81,20 @@ namespace Ascension.Content.States
             }
 
             spriteBatch.End();
+        }
+
+        /// <summary>
+        /// Draws the background for us.
+        /// </summary>
+        /// <param name="spriteBatch">Our spriteBatch.</param>
+        public void DrawBackground(SpriteBatch spriteBatch, Texture2D backGround)
+        {
+            int adjustedX = this.borderRect.X + this.borderWidth;
+            int adjustedY = this.borderRect.Y + this.borderWidth;
+            int adjustedWidth = this.borderRect.Width - (2 * this.borderWidth);
+            int adjustedHeight = this.borderRect.Height - (2 * this.borderWidth);
+            this.rect = new Rectangle(adjustedX, adjustedY, adjustedWidth, adjustedHeight);
+            spriteBatch.Draw(backGround, this.rect, Color.White);
         }
 
         /// <summary>

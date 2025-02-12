@@ -17,6 +17,11 @@ namespace Ascension.Enemies
     internal class BasicEnemyFactory : EnemyFactory
     {
         /// <summary>
+        /// Dictionary to hold enemy textures.
+        /// </summary>
+        private Dictionary<string, Texture2D> EnemyTextures;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BasicEnemyFactory"/> class.
         /// </summary>
         /// <param name="contentManager">The content manager for loading assets.</param>
@@ -24,7 +29,12 @@ namespace Ascension.Enemies
         public BasicEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice)
             : base(contentManager, graphicsDevice)
         {
-
+            // Here we are creating the EnemyTextures dictionary and loading the textures.
+            this.EnemyTextures = new Dictionary<string, Texture2D>
+            {
+                { "EnemyA", this.ContentManager.Load<Texture2D>("Enemies/SpriteA") },
+                { "EnemyB", this.ContentManager.Load<Texture2D>("Enemies/SpriteB") },
+            };
         }
 
         /// <summary>
@@ -34,15 +44,14 @@ namespace Ascension.Enemies
         /// <returns>A new basic enemy instance.</returns>
         public override Enemy CreateEnemy(Vector2 position, string enemyType)
         {
-            Texture2D basicTexture = this.ContentManager.Load<Texture2D>("ball");
             int speed = 40;
             switch (enemyType)
             {
                 case "EnemyA":
-                    return new EnemyA(speed, position, basicTexture);
+                    return new EnemyA(speed, position, this.EnemyTextures[enemyType], this.ContentManager);
 
                 case "EnemyB":
-                    return new EnemyB(speed, position, basicTexture);
+                    return new EnemyB(speed, position, this.EnemyTextures[enemyType], this.ContentManager);
 
                 default:
                     throw new ArgumentException("Invalid enemy type specified.");
