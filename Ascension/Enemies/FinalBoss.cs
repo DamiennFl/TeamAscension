@@ -18,11 +18,9 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="speed">The speed of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
-        public FinalBoss(int speed, Texture2D texture)
-        : base(speed, texture)
+        public FinalBoss(int speed, Vector2 position, Texture2D texture)
+        : base(speed, position, texture, "FinalBoss")
         {
-            this.Speed = speed;
-            this.Texture = texture;
         }
 
         /// <summary>

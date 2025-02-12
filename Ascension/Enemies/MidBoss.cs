@@ -18,11 +18,9 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="speed">The speed of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
-        public MidBoss(int speed, Texture2D texture)
-        : base(speed, texture)
+        public MidBoss(int speed, Vector2 position, Texture2D texture)
+        : base(speed, position, texture, "MidBoss")
         {
-            this.Speed = speed;
-            this.Texture = texture;
         }
 
         /// <summary>

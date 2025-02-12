@@ -2,6 +2,7 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,6 +49,8 @@ namespace Ascension.Content.States
         private float ballSpeed;
         private Texture2D borderTexture;
 
+        private List<Enemy> enemies = new List<Enemy>();
+
         public GameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
@@ -56,6 +59,9 @@ namespace Ascension.Content.States
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.White });
             this.ballSpeed = 100f;
+
+            BasicEnemyFactory enemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.enemies.Add(enemyFactory.CreateEnemy(new Vector2(40, 40), "EnemyA"));
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

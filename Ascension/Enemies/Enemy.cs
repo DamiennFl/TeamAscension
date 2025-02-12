@@ -20,16 +20,20 @@ namespace Ascension.Enemies
         /// </summary>
         public Texture2D Texture;
 
+        public string EnemyType { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
         /// </summary>
         /// <param name="speed">The speed of the Enemy.</param>
+        /// <param name="position">The position of the </param>
         /// <param name="texture">The texture of the Enemy.</param>
-        public Enemy(int speed, Vector2 position, Texture2D texture)
+        public Enemy(int speed, Vector2 position, Texture2D texture, string enemyType)
         {
             this.Speed = speed;
             this.Texture = texture;
             this.Position = position;
+            this.EnemyType = enemyType;
         }
 
         /// <summary>

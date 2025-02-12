@@ -18,11 +18,9 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="speed">The speed of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
-        public EnemyB(int speed, Texture2D texture)
-        : base(speed, texture)
+        public EnemyB(int speed, Vector2 position, Texture2D texture)
+        : base(speed, position, texture, "EnemyB")
         {
-            this.Speed = speed;
-            this.Texture = texture;
         }
 
         /// <summary>

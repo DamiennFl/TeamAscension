@@ -39,7 +39,8 @@ namespace Ascension.Enemies
         /// Creates an enemy at the specified position.
         /// </summary>
         /// <param name="position">The spawn position for the enemy.</param>
+        /// <param name="enemyType">The type of enemy to spawn.</param>
         /// <returns>A new enemy instance.</returns>
-        public abstract Enemy CreateEnemy(Vector2 position);
+        public abstract Enemy CreateEnemy(Vector2 position, string enemyType);
     }
 }
