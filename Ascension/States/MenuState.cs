@@ -91,7 +91,7 @@ namespace Ascension.Content.States
 
         private void PlayGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new GameState(this.game, this.graphicsDevice, this.content));
+            this.game.ChangeState(new FirstState(this.game, this.graphicsDevice, this.content));
         }
     }
 }

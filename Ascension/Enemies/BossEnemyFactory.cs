@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
 namespace Ascension.Enemies
 {
@@ -11,7 +11,7 @@ namespace Ascension.Enemies
     {
         // Constructor
 
-        // Create Mid Boss
+//        // Create Mid Boss
 
         // Create Final Boss
     }*/
