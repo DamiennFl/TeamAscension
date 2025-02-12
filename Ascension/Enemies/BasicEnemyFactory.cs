@@ -35,7 +35,7 @@ namespace Ascension.Enemies
         public override Enemy CreateEnemy(Vector2 position, string enemyType)
         {
             Texture2D basicTexture = this.ContentManager.Load<Texture2D>("ball");
-            int speed = 10;
+            int speed = 40;
             switch (enemyType)
             {
                 case "EnemyA":

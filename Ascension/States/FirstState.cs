@@ -55,7 +55,7 @@ namespace Ascension.Content.States
 
 
         private float enemySpawnTimer = 0f;
-        private float enemySpawnInterval = 3f; // Spawn every 3 seconds
+        private float enemySpawnInterval = 0.5f; // Spawn every 3 seconds
         private List<Enemy> enemies = new List<Enemy>();
         private BasicEnemyFactory basicEnemyFactory;
 
@@ -122,7 +122,7 @@ namespace Ascension.Content.States
 
         public override void PostUpdate(GameTime gameTime)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -256,16 +256,37 @@ namespace Ascension.Content.States
 
         private void SpawnEnemy()
         {
+            // Define the minimum distance between enemies
+            float minDistance = 60f; // Adjust this value as needed
+
             // Calculate a random X position along the top border
             Random random = new Random();
-            float randomX = random.Next(
-                this.borderRect.X + this.borderWidth,
-                this.borderRect.X + this.borderRect.Width - this.borderWidth);
+            Vector2 spawnPosition;
+            bool positionIsValid;
 
-            Vector2 spawnPosition = new Vector2(
-                randomX,
-                this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+            do
+            {
+                float randomX = random.Next(
+                    this.borderRect.X + this.borderWidth,
+                    this.borderRect.X + this.borderRect.Width - this.borderWidth);
 
+                spawnPosition = new Vector2(
+                    randomX,
+                    this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+
+                // Check if the new spawn position is too close to any existing enemy
+                positionIsValid = true;
+                foreach (var currEnemy in this.enemies)
+                {
+                    if (Vector2.Distance(spawnPosition, currEnemy.Position) < minDistance)
+                    {
+                        positionIsValid = false;
+                        break;
+                    }
+                }
+            } while (!positionIsValid);
+
+            // Create and add the new enemy
             Enemy enemy = this.basicEnemyFactory.CreateEnemy(spawnPosition, "EnemyA");
             this.enemies.Add(enemy);
         }
