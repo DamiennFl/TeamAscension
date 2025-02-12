@@ -53,7 +53,11 @@ namespace Ascension.Content.States
         protected Texture2D borderTexture;
         private Texture2D backGround;
 
+
+        private float enemySpawnTimer = 0f;
+        private float enemySpawnInterval = 3f; // Spawn every 3 seconds
         private List<Enemy> enemies = new List<Enemy>();
+        private BasicEnemyFactory basicEnemyFactory;
 
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
@@ -65,8 +69,7 @@ namespace Ascension.Content.States
             this.borderTexture.SetData(new[] { Color.AliceBlue });
             this.ballSpeed = 100f;
 
-            BasicEnemyFactory enemyFactory = new BasicEnemyFactory(content, graphicsDevice);
-            this.enemies.Add(enemyFactory.CreateEnemy(new Vector2(40, 40), "EnemyA"));
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -95,6 +98,12 @@ namespace Ascension.Content.States
                 new Vector2(0.25F, 0.25F),
                 SpriteEffects.None,
                 0f);
+
+            // Draw enemies
+            foreach (var enemy in this.enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
         }
@@ -126,13 +135,26 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(3f))
+            if (this.IsBossTime(15f))
             {
                 this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.ballPosition));
             }
 
             this.BallMovement(updatedBallSpeed);
             this.StayInBorder();
+
+            // Update enemies
+            foreach (var enemy in this.enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
+            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.enemySpawnTimer > this.enemySpawnInterval)
+            {
+                this.SpawnEnemy();
+                this.enemySpawnTimer = 0;
+            }
         }
 
         /// <summary>
@@ -230,6 +252,22 @@ namespace Ascension.Content.States
             }
 
             return false;
+        }
+
+        private void SpawnEnemy()
+        {
+            // Calculate a random X position along the top border
+            Random random = new Random();
+            float randomX = random.Next(
+                this.borderRect.X + this.borderWidth,
+                this.borderRect.X + this.borderRect.Width - this.borderWidth);
+
+            Vector2 spawnPosition = new Vector2(
+                randomX,
+                this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+
+            Enemy enemy = this.basicEnemyFactory.CreateEnemy(spawnPosition, "EnemyA");
+            this.enemies.Add(enemy);
         }
     }
 }
