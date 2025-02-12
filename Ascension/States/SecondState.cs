@@ -19,13 +19,14 @@ namespace Ascension.States
 
         private int screenWidth;
 
-        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Vector2 currentBallPosition) : base(game, graphicsDevice, content)
+
+        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer) : base(game, graphicsDevice, content)
         {
             //this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
             this.components = new List<Components>();
-            this.ballPosition = currentBallPosition;
+            this.player = currentPlayer;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -36,27 +37,16 @@ namespace Ascension.States
 
             this.BorderDraw(spriteBatch);
 
-            spriteBatch.Draw(
-                this.ballTexture,
-                this.ballPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(this.ballTexture.Width / 4, this.ballTexture.Height / 4),
-                new Vector2(0.25F, 0.25F),
-                SpriteEffects.None,
-                0f);
+            this.player.Draw(spriteBatch);
 
             spriteBatch.End();
         }
 
-
-
         public override void Update(GameTime gameTime)
         {
-            float updatedBallSpeed = this.ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
-            this.BallMovement(updatedBallSpeed);
-            this.StayInBorder();
+            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            this.player.PlayerMovement(updatedPlayerSpeed);
+            this.player.StayInBorder(this.borderRect, this.borderWidth);
         }
 
     }
