@@ -78,6 +78,10 @@ namespace Ascension.Content.States
 
             spriteBatch.Draw(this.backGround, new Rectangle(adjustedX, adjustedY, adjustedWidth, adjustedHeight), Color.White);
             this.player.Draw(spriteBatch);
+            foreach (var currEnemy in this.enemies)
+            {
+                currEnemy.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
         }
@@ -128,19 +132,6 @@ namespace Ascension.Content.States
 
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
-
-            // Update enemies
-            foreach (var enemy in this.enemies)
-            {
-                enemy.Update(gameTime);
-            }
-
-            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.enemySpawnTimer > this.enemySpawnInterval)
-            {
-                this.SpawnEnemy();
-                this.enemySpawnTimer = 0;
-            }
         }
 
         /// <summary>
