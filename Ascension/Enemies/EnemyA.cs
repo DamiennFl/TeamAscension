@@ -25,7 +25,16 @@ namespace Ascension.Enemies
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.Texture, this.Position, Color.White);
+            spriteBatch.Draw(
+                this.Texture,
+                this.Position,
+                null,
+                Color.White,
+                0f,
+                new Vector2(this.Texture.Width * 0.4f, this.Texture.Height * 0.4f),
+                new Vector2(0.4F, 0.4F),
+                SpriteEffects.None,
+                0f);
         }
 
         public override void Update(GameTime gameTime)

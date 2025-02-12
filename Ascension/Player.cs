@@ -66,11 +66,11 @@ namespace Ascension
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                this.playerSpeed = 120f;
+                this.playerSpeed = 12f;
             }
             else
             {
-                this.playerSpeed = 60f;
+                this.playerSpeed = 6f;
             }
 
             // If Vector has values, normalize movement.
