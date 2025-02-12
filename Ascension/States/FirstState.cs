@@ -45,7 +45,7 @@ namespace Ascension.Content.States
 
 
         private float enemySpawnTimer = 0f;
-        private float enemySpawnInterval = 0.5f; // Spawn every 3 seconds
+        private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
         protected Player player;
 
         private List<Enemy> enemies = new List<Enemy>();
@@ -57,7 +57,7 @@ namespace Ascension.Content.States
             this.backGround = content.Load<Texture2D>("Backgrounds/AscensionTitle");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
-            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2), 100f);
+            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2), 6f);
 
             this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
