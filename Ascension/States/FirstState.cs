@@ -43,9 +43,13 @@ namespace Ascension.Content.States
 
         private Texture2D backGround;
 
+
+        private float enemySpawnTimer = 0f;
+        private float enemySpawnInterval = 0.5f; // Spawn every 3 seconds
         protected Player player;
 
         private List<Enemy> enemies = new List<Enemy>();
+        private BasicEnemyFactory basicEnemyFactory;
 
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
@@ -55,8 +59,7 @@ namespace Ascension.Content.States
             this.borderTexture.SetData(new[] { Color.AliceBlue });
             this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2), 100f);
 
-            BasicEnemyFactory enemyFactory = new BasicEnemyFactory(content, graphicsDevice);
-            this.enemies.Add(enemyFactory.CreateEnemy(new Vector2(40, 40), "EnemyA"));
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -93,7 +96,7 @@ namespace Ascension.Content.States
 
         public override void PostUpdate(GameTime gameTime)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(3f))
+            if (this.IsBossTime(15f))
             {
                 this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
             }
@@ -129,6 +132,43 @@ namespace Ascension.Content.States
             }
 
             return false;
+        }
+
+        private void SpawnEnemy()
+        {
+            // Define the minimum distance between enemies
+            float minDistance = 60f; // Adjust this value as needed
+
+            // Calculate a random X position along the top border
+            Random random = new Random();
+            Vector2 spawnPosition;
+            bool positionIsValid;
+
+            do
+            {
+                float randomX = random.Next(
+                    this.borderRect.X + this.borderWidth,
+                    this.borderRect.X + this.borderRect.Width - this.borderWidth);
+
+                spawnPosition = new Vector2(
+                    randomX,
+                    this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+
+                // Check if the new spawn position is too close to any existing enemy
+                positionIsValid = true;
+                foreach (var currEnemy in this.enemies)
+                {
+                    if (Vector2.Distance(spawnPosition, currEnemy.Position) < minDistance)
+                    {
+                        positionIsValid = false;
+                        break;
+                    }
+                }
+            } while (!positionIsValid);
+
+            // Create and add the new enemy
+            Enemy enemy = this.basicEnemyFactory.CreateEnemy(spawnPosition, "EnemyA");
+            this.enemies.Add(enemy);
         }
     }
 }
