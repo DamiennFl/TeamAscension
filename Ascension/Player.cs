@@ -19,11 +19,10 @@ namespace Ascension
 
         public float playerSpeed;
 
-        public Player(Texture2D texture, Vector2 position, float speed)
+        public Player(Texture2D texture, Vector2 position)
         {
             this.playerTexture = texture;
             this.playerPosition = position;
-            this.playerSpeed = speed;
         }
 
         public void Draw(SpriteBatch spriteBatch)

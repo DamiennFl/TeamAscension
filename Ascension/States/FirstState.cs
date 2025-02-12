@@ -57,7 +57,7 @@ namespace Ascension.Content.States
             this.backGround = content.Load<Texture2D>("Backgrounds/AscensionTitle");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
-            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2), 6f);
+            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
 
             this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
@@ -112,6 +112,18 @@ namespace Ascension.Content.States
             if (this.IsBossTime(15f))
             {
                 this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
+            }
+
+            foreach (var currEnemy in this.enemies)
+            {
+                currEnemy.Update(gameTime);
+            }
+
+            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.enemySpawnTimer > this.enemySpawnInterval)
+            {
+                this.SpawnEnemy();
+                this.enemySpawnTimer = 0;
             }
 
             this.player.PlayerMovement(updatedPlayerSpeed);
@@ -176,7 +188,8 @@ namespace Ascension.Content.States
                         break;
                     }
                 }
-            } while (!positionIsValid);
+            }
+            while (!positionIsValid);
 
             // Create and add the new enemy
             Enemy enemy = this.basicEnemyFactory.CreateEnemy(spawnPosition, "EnemyA");
