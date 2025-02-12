@@ -23,16 +23,6 @@ namespace Ascension.Content.States
     public class FirstState : State
     {
         /// <summary>
-        /// Texture for the ball.
-        /// </summary>
-        protected Texture2D ballTexture;
-
-        /// <summary>
-        /// Position of the ball.
-        /// </summary>
-        protected Vector2 ballPosition;
-
-        /// <summary>
         /// Border rectangle.
         /// </summary>
         protected Rectangle borderRect = new Rectangle(40, 40, 460, 720);
@@ -49,24 +39,27 @@ namespace Ascension.Content.States
 
         private float midBossTime = 0f;
 
-        protected float ballSpeed;
         protected Texture2D borderTexture;
+
         private Texture2D backGround;
 
+
+        private float enemySpawnTimer = 0f;
+        private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
+        protected Player player;
+
         private List<Enemy> enemies = new List<Enemy>();
+        private BasicEnemyFactory basicEnemyFactory;
 
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
-            this.ballTexture = content.Load<Texture2D>("ball");
-            this.ballPosition = new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2);
             this.backGround = content.Load<Texture2D>("Backgrounds/AscensionTitle");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
-            this.ballSpeed = 100f;
+            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
 
-            BasicEnemyFactory enemyFactory = new BasicEnemyFactory(content, graphicsDevice);
-            this.enemies.Add(enemyFactory.CreateEnemy(new Vector2(40, 40), "EnemyA"));
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -84,17 +77,11 @@ namespace Ascension.Content.States
             int adjustedHeight = this.borderRect.Height - (2 * this.borderWidth);
 
             spriteBatch.Draw(this.backGround, new Rectangle(adjustedX, adjustedY, adjustedWidth, adjustedHeight), Color.White);
-
-            spriteBatch.Draw(
-                this.ballTexture,
-                this.ballPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(this.ballTexture.Width / 4, this.ballTexture.Height / 4),
-                new Vector2(0.25F, 0.25F),
-                SpriteEffects.None,
-                0f);
+            this.player.Draw(spriteBatch);
+            foreach (var currEnemy in this.enemies)
+            {
+                currEnemy.Draw(spriteBatch);
+            }
 
             spriteBatch.End();
         }
@@ -113,7 +100,7 @@ namespace Ascension.Content.States
 
         public override void PostUpdate(GameTime gameTime)
         {
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -122,99 +109,29 @@ namespace Ascension.Content.States
         /// <param name="gameTime">.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedBallSpeed = this.ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(3f))
+            if (this.IsBossTime(15f))
             {
-                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.ballPosition));
+                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
             }
 
-            this.BallMovement(updatedBallSpeed);
-            this.StayInBorder();
-        }
-
-        /// <summary>
-        /// Moves the ball.
-        /// </summary>
-        /// <param name="updatedBallSpeed">Updated ball speed.</param>
-        protected void BallMovement(float updatedBallSpeed)
-        {
-            var kstate = Keyboard.GetState();
-
-            // Vector to normalize diagonal movement
-            Vector2 dir = Vector2.Zero;
-
-            if (kstate.IsKeyDown(Keys.W))
+            foreach (var currEnemy in this.enemies)
             {
-                dir.Y -= 1;
+                currEnemy.Update(gameTime);
             }
 
-            if (kstate.IsKeyDown(Keys.S))
+            this.enemySpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.enemySpawnTimer > this.enemySpawnInterval)
             {
-                dir.Y += 1;
+                this.SpawnEnemy();
+                this.enemySpawnTimer = 0;
             }
 
-            if (kstate.IsKeyDown(Keys.A))
-            {
-                dir.X -= 1;
-            }
-
-            if (kstate.IsKeyDown(Keys.D))
-            {
-                dir.X += 1;
-            }
-
-            if (kstate.IsKeyDown(Keys.LeftShift))
-            {
-                this.ballSpeed = 120f;
-            }
-            else
-            {
-                this.ballSpeed = 60f;
-            }
-
-            // If Vector has values, normalize movement.
-            if (dir != Vector2.Zero)
-            {
-                dir.Normalize();
-            }
-
-            // Update position after normalizing
-            this.ballPosition += dir * updatedBallSpeed;
-        }
-
-        /// <summary>
-        /// Keeps the ball in the border.
-        /// </summary>
-        protected void StayInBorder()
-        {
-            int radius = this.ballTexture.Width / 8;
-
-            // Left border
-            if (this.ballPosition.X - radius < this.borderRect.X)
-            {
-                this.ballPosition.X = this.borderRect.X + radius;
-            }
-
-            // Right border
-            else if (this.ballPosition.X + radius > this.borderRect.X + this.borderRect.Width - (2 * this.borderWidth))
-            {
-                this.ballPosition.X = this.borderRect.X + this.borderRect.Width - (2 * this.borderWidth) - radius;
-            }
-
-            // Top border
-            if (this.ballPosition.Y - radius < this.borderRect.Y)
-            {
-                this.ballPosition.Y = this.borderRect.Y + radius;
-            }
-
-            // Bottom border
-            else if (this.ballPosition.Y + radius > this.borderRect.Y + this.borderRect.Height - (2 * this.borderWidth))
-            {
-                this.ballPosition.Y = this.borderRect.Y + this.borderRect.Height - (2 * this.borderWidth) - radius;
-            }
+            this.player.PlayerMovement(updatedPlayerSpeed);
+            this.player.StayInBorder(this.borderRect, this.borderWidth);
         }
 
         /// <summary>
@@ -230,6 +147,44 @@ namespace Ascension.Content.States
             }
 
             return false;
+        }
+
+        private void SpawnEnemy()
+        {
+            // Define the minimum distance between enemies
+            float minDistance = 60f; // Adjust this value as needed
+
+            // Calculate a random X position along the top border
+            Random random = new Random();
+            Vector2 spawnPosition;
+            bool positionIsValid;
+
+            do
+            {
+                float randomX = random.Next(
+                    this.borderRect.X + this.borderWidth,
+                    this.borderRect.X + this.borderRect.Width - this.borderWidth);
+
+                spawnPosition = new Vector2(
+                    randomX,
+                    this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+
+                // Check if the new spawn position is too close to any existing enemy
+                positionIsValid = true;
+                foreach (var currEnemy in this.enemies)
+                {
+                    if (Vector2.Distance(spawnPosition, currEnemy.Position) < minDistance)
+                    {
+                        positionIsValid = false;
+                        break;
+                    }
+                }
+            }
+            while (!positionIsValid);
+
+            // Create and add the new enemy
+            Enemy enemy = this.basicEnemyFactory.CreateEnemy(spawnPosition, "EnemyA");
+            this.enemies.Add(enemy);
         }
     }
 }
