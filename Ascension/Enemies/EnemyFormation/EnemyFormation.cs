@@ -18,6 +18,6 @@ namespace Ascension.Enemies.EnemyFormation
 
         public abstract void Update(GameTime gameTime);
 
-
+        // TODO: Remove dead enemies
     }
 }
