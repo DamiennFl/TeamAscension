@@ -1,12 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Ascension.Enemies.EnemyMovement;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ascension.Enemies
 {
@@ -18,9 +15,12 @@ namespace Ascension.Enemies
         /// <summary>
         /// The texture for the Enemy.
         /// </summary>
-        public Texture2D Texture;
+        protected Texture2D texture;
 
-        public string EnemyType { get; set; }
+        /// <summary>
+        /// List of movement patterns for this Enemy.
+        /// </summary>
+        protected List<IMovementPattern> movementPatterns = new List<IMovementPattern>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
@@ -28,13 +28,19 @@ namespace Ascension.Enemies
         /// <param name="speed">The speed of the Enemy.</param>
         /// <param name="position">The position of the </param>
         /// <param name="texture">The texture of the Enemy.</param>
+        /// <param name="enemyType">The Enemy type.</param>
         public Enemy(int speed, Vector2 position, Texture2D texture, string enemyType)
         {
             this.Speed = speed;
-            this.Texture = texture;
+            this.texture = texture;
             this.Position = position;
             this.EnemyType = enemyType;
         }
+
+        /// <summary>
+        /// Gets or sets the type of Enemy.
+        /// </summary>
+        public string EnemyType { get; set; }
 
         /// <summary>
         /// Gets or sets the Speed of the Enemy.
@@ -62,5 +68,14 @@ namespace Ascension.Enemies
         /// Shoot method for shooting bullets.
         /// </summary>
         public abstract void Shoot();
+
+        /// <summary>
+        /// Add a movement pattern to the enemy.
+        /// </summary>
+        /// <param name="pattern">The IMovementPattern to add.</param>
+        public void AddMovementPattern(IMovementPattern pattern)
+        {
+            this.movementPatterns.Add(pattern);
+        }
     }
 }

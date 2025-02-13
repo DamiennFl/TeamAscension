@@ -30,12 +30,11 @@ namespace Ascension.Enemies
         /// </summary>
         private ContentManager contentManager;
 
-        private List<IMovementPattern> movementPatterns = new List<IMovementPattern>();
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
         /// </summary>
         /// <param name="speed">The speed of EnemyA.</param>
+        /// <param name="position">The position of EnemyA.</param>
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         public EnemyA(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
@@ -52,12 +51,12 @@ namespace Ascension.Enemies
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-                this.Texture,
+                this.texture,
                 this.Position,
                 null,
                 Color.White,
                 0f,
-                new Vector2(this.Texture.Width * 0.4f, this.Texture.Height * 0.4f),
+                new Vector2(this.texture.Width * 0.4f, this.texture.Height * 0.4f),
                 new Vector2(0.4F, 0.4F),
                 SpriteEffects.None,
                 0f);
@@ -66,7 +65,7 @@ namespace Ascension.Enemies
         /// <summary>
         /// Update method for updating EnemyA.
         /// </summary>
-        /// <param name="gameTime">Current gametime.</param>
+        /// <param name="gameTime">GameTime object to sync with game run-time.</param>
         public override void Update(GameTime gameTime)
         {
             // Basic movement: move down

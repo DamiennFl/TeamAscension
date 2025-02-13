@@ -13,7 +13,7 @@ namespace Ascension.Enemies.EnemyMovement
         /// <summary>
         /// Updates the Enemy movement based on the pattern.
         /// </summary>
-        /// <param name="gameTime">Gametime to sync with game run-time.</param>
+        /// <param name="gameTime">GameTime to sync with game run-time.</param>
         /// <param name="enemy">Enemy to update.</param>
         void Update(GameTime gameTime, Enemy enemy)
         {
