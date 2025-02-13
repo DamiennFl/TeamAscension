@@ -9,7 +9,7 @@ namespace Ascension.Enemies.EnemyFormation
     /// <summary>
     /// LinearFormation spawns enemies in a linear formation.
     /// </summary>
-    internal class LinearFormation : EnemyFormation
+    internal class LinearFormation
     {
         // TODO: Write linear formation
     }

@@ -1,8 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ascension.Enemies.EnemyFormation
 {
@@ -11,6 +8,16 @@ namespace Ascension.Enemies.EnemyFormation
     /// </summary>
     internal abstract class EnemyFormation
     {
-        // TODO: Write formation abstract class
+        public Vector2 FormationStartPosition { get; set; }
+        public List<Enemy> enemies = new List<Enemy>();
+
+        protected EnemyFormation(Vector2 startPosition)
+        {
+            this.FormationStartPosition = startPosition;
+        }
+
+        public abstract void Update(GameTime gameTime);
+
+
     }
 }

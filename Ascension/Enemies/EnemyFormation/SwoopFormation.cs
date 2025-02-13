@@ -9,7 +9,7 @@ namespace Ascension.Enemies.EnemyFormation
     /// <summary>
     /// SwoopFormation spawns enemies in a swoop formation.
     /// </summary>
-    internal class SwoopFormation : EnemyFormation
+    internal class SwoopFormation
     {
         // TODO: Write swoop formation
     }

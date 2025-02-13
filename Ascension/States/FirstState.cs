@@ -74,7 +74,10 @@ namespace Ascension.Content.States
             // Adjust the background rectangle to fit nicely within the borderRect and borderWidth
             this.DrawBackground(spriteBatch, this.backGround);
 
+            // Player drawn here
             this.player.Draw(spriteBatch);
+
+            // Enemies drawn here
             foreach (var currEnemy in this.enemies)
             {
                 currEnemy.Draw(spriteBatch);

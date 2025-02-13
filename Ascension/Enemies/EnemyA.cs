@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,6 +29,8 @@ namespace Ascension.Enemies
         /// The content manager for loading assets.
         /// </summary>
         private ContentManager contentManager;
+
+        private List<IMovementPattern> movementPatterns = new List<IMovementPattern>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
@@ -67,7 +70,11 @@ namespace Ascension.Enemies
         public override void Update(GameTime gameTime)
         {
             // Basic movement: move down
-            this.Position = new Vector2(this.Position.X, this.Position.Y + (this.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
+            foreach (var movement in this.movementPatterns)
+            {
+                movement.Update(gameTime, this);
+            }
+
             for (int i = 0; i < this.bullets.Count; i++)
             {
                 this.bullets[i].BulletUpdate(gameTime);

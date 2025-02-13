@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Xna.Framework;
 
 namespace Ascension.Enemies.EnemyMovement
 {
@@ -11,6 +7,17 @@ namespace Ascension.Enemies.EnemyMovement
     /// </summary>
     internal class LinearMovementPattern : IMovementPattern
     {
-        // TODO: Write movement pattern
+        public Vector2 Velocity { get; set; }
+
+        public LinearMovementPattern(GameTime gameTime, Vector2 velocity)
+        {
+            // Update player movement based on velocity.
+            this.Velocity = velocity;
+        }
+
+        public void Update(GameTime gameTime, Enemy enemy)
+        {
+            enemy.Position += this.Velocity;
+        }
     }
 }
