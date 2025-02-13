@@ -70,6 +70,8 @@ namespace Ascension.Enemies
         public override void Update(GameTime gameTime)
         {
             // Basic movement: move down
+            this.Position = new Vector2(this.Position.X, this.Position.Y + (this.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
+
             foreach (var movement in this.movementPatterns)
             {
                 movement.Update(gameTime, this);

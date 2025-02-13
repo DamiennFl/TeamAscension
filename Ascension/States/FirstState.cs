@@ -83,6 +83,8 @@ namespace Ascension.Content.States
                 currEnemy.Draw(spriteBatch);
             }
 
+            this.BorderBuffer(spriteBatch);
+
             spriteBatch.End();
         }
 
@@ -106,10 +108,36 @@ namespace Ascension.Content.States
         /// <param name="spriteBatch">our sprite.</param>
         public void BorderDraw(SpriteBatch spriteBatch)
         {
+            // Top part of rectangle
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderRect.Width, this.borderWidth), this.borderColor);
+
+            // Bottom part of rectangle
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width, this.borderWidth), this.borderColor);
+
+            // Left part of rectangle
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
+
+            // Right part of rectangle
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
+        }
+
+        /// <summary>
+        /// Draw a buffer for enemies. to spawn in.
+        /// </summary>
+        /// <param name="spriteBatch">our sprite.</param>
+        public void BorderBuffer(SpriteBatch spriteBatch)
+        {
+            // Top part of rectangle
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y - 30, this.borderRect.Width, this.borderWidth + 30), this.borderColor);
+
+            // Bottom part of rectangle
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width + 60, this.borderWidth + 30), this.borderColor);
+
+            // Left part of rectangle
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y - 30, this.borderWidth + 30, this.borderRect.Height + 30), this.borderColor);
+
+            // Right part of rectagnle
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y - 30, this.borderWidth + 30, this.borderRect.Height + 30), this.borderColor);
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -181,7 +209,7 @@ namespace Ascension.Content.States
 
                 spawnPosition = new Vector2(
                     randomX,
-                    this.borderRect.Y + this.borderWidth); // Spawn at the top of the border
+                    (this.borderRect.Y - 23) + this.borderWidth); // Spawn at the top of the border
 
                 // Check if the new spawn position is too close to any existing enemy
                 positionIsValid = true;
