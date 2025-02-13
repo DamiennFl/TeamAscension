@@ -15,13 +15,14 @@ namespace Ascension.Enemies.EnemyFormation
         // TODO: Write linear formation
         private float spawnDelay;
         private float timeSinceLastSpawn;
+        private string enemyType;
         private int numEnemies;
         private int enemiesSpawned;
         private Vector2 enemyVelocity;
         private float enemySpacing;
         private EnemyFactory enemyFactory;
 
-        public LinearFormation(Vector2 formationPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory) : base(formationPosition)
+        public LinearFormation(Vector2 formationPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory, string enemyType) : base(formationPosition)
         {
             this.numEnemies = numEnemies;
             this.spawnDelay = spawnDelay;
@@ -30,6 +31,7 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemyVelocity = enemyVelocity;
             this.enemySpacing = enemySpacing;
             this.enemyFactory = factory;
+            this.enemyType = enemyType;
         }
 
         public override void Update(GameTime gameTime)
@@ -40,7 +42,7 @@ namespace Ascension.Enemies.EnemyFormation
             {
                 // Calculate position for the new enemy.
                 Vector2 enemyPosition = this.FormationStartPosition + new Vector2(this.enemiesSpawned * this.enemySpacing, 0);
-                Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, "EnemyA");
+                Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
                 // newEnemy.AddMovementComponent(new LinearMovement(_enemyVelocity));
                 this.enemies.Add(newEnemy);
                 this.enemiesSpawned++;
