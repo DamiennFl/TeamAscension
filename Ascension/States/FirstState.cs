@@ -64,7 +64,7 @@ namespace Ascension.Content.States
             // Initialize a LinearFormation
             Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
             Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
-            int numEnemies = 5;
+            int numEnemies = 7;
             float spawnDelay = 0.5f;
             Vector2 enemyVelocity = new Vector2(0, 100); // Example velocity
             float enemySpacing = 50f;
@@ -165,10 +165,10 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            //if (this.IsBossTime(15f))
-            //{
-            //    this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
-            //}
+            if (this.IsBossTime(15f))
+            {
+                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
+            }
 
             foreach (var formation in this.enemyFormations)
             {

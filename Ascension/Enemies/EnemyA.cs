@@ -1,16 +1,34 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="EnemyA.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System;
+using System.Collections.Generic;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Ascension.Enemies
 {
+    /// <summary>
+    /// Creates instances of EnemyA, a type of Enemy.
+    /// </summary>
     internal class EnemyA : Enemy
     {
+        /// <summary>
+        /// The texture for the bullet.
+        /// </summary>
         private Texture2D bulletTexture;
+
+        /// <summary>
+        /// The bullets for the enemy.
+        /// </summary>
         private List<Bullet> bullets;
+
+        /// <summary>
+        /// The content manager for loading assets.
+        /// </summary>
         private ContentManager contentManager;
 
         /// <summary>
@@ -45,6 +63,10 @@ namespace Ascension.Enemies
             this.shootInterval = this.GetRandomShootInterval();
         }
 
+        /// <summary>
+        /// Draws the enemy.
+        /// </summary>
+        /// <param name="spriteBatch">The sprite.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
@@ -89,10 +111,14 @@ namespace Ascension.Enemies
             }
         }
 
+        /// <summary>
+        /// Shoots a bullet.
+        /// </summary>
         public override void Shoot()
         {
+            float randX = (float)( this.random.NextDouble() - 0.5); // Random number between -0.5 and 0.5
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
-            Vector2 bulletVelocity = new Vector2(0, 2);
+            Vector2 bulletVelocity = new Vector2(randX, 2);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
             this.bullets.Add(bullet);
         }
@@ -103,7 +129,7 @@ namespace Ascension.Enemies
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return (float)this.random.NextDouble() * 2f + 1f; // Random interval between 1 and 3 seconds
+            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
         }
 
     }
