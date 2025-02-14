@@ -18,14 +18,11 @@ namespace Ascension.Enemies.EnemyFormation
         private EnemyFactory enemyFactory;
         private float deleteTime;
 
-        public LinearFormation(Vector2 startPosition, Vector2? endPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory, string enemyType)
+        public LinearFormation(Vector2 startPosition, Vector2 endPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory, string enemyType)
           : base(startPosition)
         {
             this.FormationStartPosition = startPosition;
-            if (endPosition.HasValue)
-            {
-                this.endPosition = endPosition.Value;
-            }
+            this.endPosition = endPosition;
             this.numEnemies = numEnemies;
             this.spawnDelay = spawnDelay;
             this.timeSinceLastSpawn = 0;
@@ -44,14 +41,20 @@ namespace Ascension.Enemies.EnemyFormation
 
             if (this.enemiesSpawned < this.numEnemies && this.timeSinceLastSpawn >= this.spawnDelay)
             {
-                float xPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
-                Vector2 enemyPosition = new Vector2(xPosition, this.FormationStartPosition.Y);
-                Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
-                Vector2 targetPosition = new Vector2(xPosition, this.FormationStartPosition.Y);
+                // Calculate enemy start and target pos
+                float enemyXPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
+                float targetXPosition = this.endPosition.X + (this.enemiesSpawned * this.enemySpacing);
 
-                newEnemy.AddMovementPattern(new MoveToPositionPattern(new Vector2(xPosition, 100), this.enemyVelocity));
+                // Calculate position for enemies to travel to
+                Vector2 enemyPosition = new Vector2(enemyXPosition, this.FormationStartPosition.Y);
+                Vector2 targetPosition = new Vector2(targetXPosition, this.endPosition.Y);
+                Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
+
+                // Add movement patterns
+                newEnemy.AddMovementPattern(new LinearMovementPattern(targetPosition, this.enemyVelocity));
                 newEnemy.AddMovementPattern(new WaitPattern(3f)); // Wait for 3 seconds
-                newEnemy.AddMovementPattern(new MoveToPositionPattern(targetPosition, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new LinearMovementPattern(enemyPosition, this.enemyVelocity));
+
 
                 this.enemies.Add(newEnemy);
                 this.enemiesSpawned++;

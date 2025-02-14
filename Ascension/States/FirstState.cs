@@ -99,12 +99,23 @@ namespace Ascension.Content.States
             Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
             int numEnemies = 7;
             float spawnDelay = 0.5f;
-            Vector2 enemyVelocity = new Vector2(0, 100); // Example velocity
+            Vector2 enemyVelocity = new Vector2(0, 100);
             float enemySpacing = 50f;
             string enemyType = "EnemyA";
 
             LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
             this.enemyFormations.Add(linearFormation);
+
+            // Initialize a SwoopFormation
+            Vector2 swoopFormationStartPosition = new Vector2(200, 0); // Start position off-screen
+            int swoopNumEnemies = 5;
+            float swoopSpawnDelay = 0.5f;
+            Vector2 swoopEnemyVelocity = new Vector2(0, 100);
+            float swoopEnemySpacing = 50f;
+            string swoopEnemyType = "EnemyA";
+
+            SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
+            this.enemyFormations.Add(swoopFormation);
         }
 
         /// <summary>

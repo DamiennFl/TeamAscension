@@ -4,19 +4,38 @@ namespace Ascension.Enemies.EnemyMovement
 {
     internal class LinearMovementPattern : IMovementPattern
     {
-        public LinearMovementPattern(Vector2 velocity)
+        private Vector2 targetPosition;
+        private Vector2 velocity;
+        private bool isComplete;
+
+        public LinearMovementPattern(Vector2 targetPosition, Vector2 velocity)
         {
-            this.Velocity = velocity;
+            this.targetPosition = targetPosition;
+            this.velocity = velocity;
             this.isComplete = false;
         }
 
-        public Vector2 Velocity { get; set; }
-        private bool isComplete;
-
         public void Update(GameTime gameTime, Enemy enemy)
         {
-            enemy.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            // Assuming linear movement never completes on its own
+            if (this.isComplete)
+            {
+                return;
+            }
+
+            Vector2 direction = this.targetPosition - enemy.Position;
+            float distance = direction.Length();
+            float step = this.velocity.Length() * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (distance > step)
+            {
+                direction.Normalize();
+                enemy.Position += direction * step;
+            }
+            else
+            {
+                enemy.Position = this.targetPosition;
+                this.isComplete = true;
+            }
         }
 
         public bool IsComplete()
