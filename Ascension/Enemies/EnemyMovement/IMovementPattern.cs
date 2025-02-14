@@ -18,5 +18,7 @@ namespace Ascension.Enemies.EnemyMovement
         void Update(GameTime gameTime, Enemy enemy)
         {
         }
+
+        bool IsComplete();
     }
 }
