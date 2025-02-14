@@ -75,7 +75,7 @@ namespace Ascension
         {
             this.BulletPosition += this.Velocity; // Move bullet by velocity.
 
-            if (this.BulletPosition.X < 40 || this.BulletPosition.X < 460 || this.BulletPosition.Y < 40 || this.BulletPosition.Y < 720) // If bullet is outside of border (40, 40, 460, 720) then deactivate it. 
+            if (this.BulletPosition.X < 40 || this.BulletPosition.X > 480 || this.BulletPosition.Y < 40 || this.BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
                 this.IsActive = false;
             }
