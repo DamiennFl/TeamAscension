@@ -47,10 +47,11 @@ namespace Ascension.Enemies.EnemyFormation
                 float xPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
                 Vector2 enemyPosition = new Vector2(xPosition, this.FormationStartPosition.Y);
                 Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
+                Vector2 targetPosition = new Vector2(xPosition, this.FormationStartPosition.Y);
 
                 newEnemy.AddMovementPattern(new MoveToPositionPattern(new Vector2(xPosition, 100), this.enemyVelocity));
                 newEnemy.AddMovementPattern(new WaitPattern(3f)); // Wait for 3 seconds
-                newEnemy.AddMovementPattern(new MoveToPositionPattern(this.FormationStartPosition, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new MoveToPositionPattern(targetPosition, this.enemyVelocity));
 
                 this.enemies.Add(newEnemy);
                 this.enemiesSpawned++;

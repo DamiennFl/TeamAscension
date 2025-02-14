@@ -23,10 +23,13 @@ namespace Ascension.Enemies.EnemyMovement
             }
 
             Vector2 direction = this.targetPosition - enemy.Position;
-            if (direction.Length() > this.velocity.Length() * (float)gameTime.ElapsedGameTime.TotalSeconds)
+            float distance = direction.Length();
+            float step = this.velocity.Length() * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (distance > step)
             {
                 direction.Normalize();
-                enemy.Position += direction * this.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                enemy.Position += direction * step;
             }
             else
             {

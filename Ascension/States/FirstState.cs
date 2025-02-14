@@ -131,7 +131,7 @@ namespace Ascension.Content.States
                 formation.Draw(spriteBatch);
             }
 
-            //this.BorderBuffer(spriteBatch);
+            this.BorderBuffer(spriteBatch);
 
             spriteBatch.End();
         }
