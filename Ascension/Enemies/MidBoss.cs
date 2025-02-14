@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Enemies
@@ -17,15 +18,48 @@ namespace Ascension.Enemies
     /// </summary>
     internal class MidBoss : Enemy
     {
+
+
+        /// <summary>
+        /// The bullets for the enemy.
+        /// </summary>
+        private List<Bullet> bullets;
+
+        /// <summary>
+        /// The content manager for loading assets.
+        /// </summary>
+        private ContentManager contentManager;
+
+        /// <summary>
+        /// Random number generator.
+        /// </summary>
+        private Random random;
+
+        /// <summary>
+        /// When the enemy will shoot.
+        /// </summary>
+        private float shootTimer;
+
+        /// <summary>
+        /// Interval between shots.
+        /// </summary>
+        private float shootInterval;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MidBoss"/> class.
         /// </summary>
         /// <param name="speed">The speed of MidBoss.</param>
         /// <param name="position">The position of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
-        public MidBoss(int speed, Vector2 position, Texture2D texture)
+        /// <param name="contentManager">"The content manager for loading assets.</param>
+        public MidBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
         : base(speed, position, texture, "MidBoss")
         {
+            this.bullets = new List<Bullet>();
+            this.contentManager = contentManager;
+            this.random = new Random();
+            this.shootTimer = 0f;
+            this.shootInterval = this.GetRandomShootInterval();
         }
 
         /// <summary>
@@ -34,7 +68,27 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            // Update stuff
+            this.UpdateMovementPatterns(gameTime);
+
+            for (int i = 0; i < this.bullets.Count; i++)
+            {
+                this.bullets[i].BulletUpdate(gameTime);
+                if (!this.bullets[i].IsActive)
+                {
+                    this.bullets.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            // Timer for shooting
+            this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (this.shootTimer >= this.shootInterval)
+            {
+                this.Shoot();
+                this.shootTimer = 0f;
+                this.shootInterval = this.GetRandomShootInterval();
+            }
         }
 
         /// <summary>
@@ -43,7 +97,21 @@ namespace Ascension.Enemies
         /// <param name="spriteBatch">The spriteBatch the sprite belongs to.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Draw stuff
+            spriteBatch.Draw(
+               this.texture,
+               this.Position,
+               null,
+               Color.White,
+               0f,
+               new Vector2(this.texture.Width * 0.4f, this.texture.Height * 0.4f),
+               new Vector2(0.4F, 0.4F),
+               SpriteEffects.None,
+               0f);
+
+            foreach (var bullet in this.bullets)
+            {
+                bullet.BulletDraw(spriteBatch);
+            }
         }
 
         /// <summary>
@@ -52,7 +120,33 @@ namespace Ascension.Enemies
         /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
         public override void Shoot()
         {
-            throw new NotImplementedException();
+            this.StarShooting();
+        }
+
+
+        /// <summary>
+        /// Shoots a bullet Shaped Like a star.
+        /// </summary>
+        public void StarShooting()
+        {
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
+            float angle = -0.5F;
+            for (int i = 0; i < 5; i++)
+            {
+                Vector2 bulletVelocity = new Vector2(angle, 0.2f);
+                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+                this.bullets.Add(bullet);
+                angle += 0.2F;
+            }
+        }
+
+        /// <summary>
+        /// Gets a random shoot interval.
+        /// </summary>
+        /// <returns>the random time generated for our next shot.</returns>
+        private float GetRandomShootInterval()
+        {
+            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
         }
     }
 }

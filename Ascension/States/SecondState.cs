@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ascension.Content.Controls;
 using Ascension.Content.States;
+using Ascension.Enemies;
 using Ascension.Enemies.EnemyFormation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -46,6 +47,12 @@ namespace Ascension.States
         /// </summary>
         private List<EnemyFormation> enemyFormations;
 
+        private BasicEnemyFactory basicEnemyFactory;
+
+        private BossEnemyFactory bossEnemyFactory;
+
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SecondState"/> class.
         /// </summary>
@@ -64,6 +71,21 @@ namespace Ascension.States
             this.components = new List<Components>();
             this.player = currentPlayer;
             this.enemyFormations = currentEnemyFormation;
+            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // <-- Added initialization
+
+            // Initialize a LinearFormation
+            Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
+            Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
+            int numEnemies = 1;
+            float spawnDelay = 0.5f;
+            Vector2 enemyVelocity = new Vector2(0, 100);
+            float enemySpacing = 50f;
+            string enemyType = "MidBoss";
+
+            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.bossEnemyFactory, enemyType);
+            this.enemyFormations.Add(linearFormation);
+
+
         }
 
         /// <summary>
@@ -89,6 +111,7 @@ namespace Ascension.States
             this.player.Draw(spriteBatch);
 
             this.BorderDraw(spriteBatch);
+            this.BorderBuffer(spriteBatch);
 
             spriteBatch.End();
         }

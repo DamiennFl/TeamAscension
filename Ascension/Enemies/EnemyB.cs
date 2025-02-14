@@ -85,6 +85,25 @@ namespace Ascension.Enemies
         /// </summary>
         public override void Shoot()
         {
+            this.StarShooting();
+        }
+
+        /// <summary>
+        /// Will shoot bullets in a regular pattern.
+        /// </summary>
+        public void RegularShooting()
+        {
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
+            Vector2 bulletVelocity = new Vector2(0, 1.2f);
+            Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+            this.bullets.Add(bullet);
+        }
+
+        /// <summary>
+        /// Shoots Bullets in a star pattern.
+        /// </summary>
+        public void StarShooting()
+        {
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             float angle = -0.5F;
             for (int i = 0; i < 5; i++)

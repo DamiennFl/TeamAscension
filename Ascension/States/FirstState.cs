@@ -219,10 +219,10 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            //if (this.IsBossTime(15f))
-            //{
-            //    this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
-            //}
+            if (this.IsBossTime(20f))
+            {
+                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
+            }
 
             foreach (var formation in this.enemyFormations)
             {
