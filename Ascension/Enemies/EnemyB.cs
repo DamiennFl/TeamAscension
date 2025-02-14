@@ -85,11 +85,15 @@ namespace Ascension.Enemies
         /// </summary>
         public override void Shoot()
         {
-            float randX = (float)(this.random.NextDouble() - 0.5); // Random number between -0.5 and 0.5
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("ball");
-            Vector2 bulletVelocity = new Vector2(randX, 3);
-            Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-            this.bullets.Add(bullet);
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
+            float angle = -0.5F;
+            for (int i = 0; i < 5; i++)
+            {
+                Vector2 bulletVelocity = new Vector2(angle, 2);
+                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+                this.bullets.Add(bullet);
+                angle += 0.2F;
+            }
         }
     }
 }
