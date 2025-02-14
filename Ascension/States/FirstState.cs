@@ -1,4 +1,7 @@
-﻿using System;
+﻿// <copyright file="FirstState.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
 using Ascension.Enemies;
 using Ascension.Enemies.EnemyFormation;
@@ -6,21 +9,20 @@ using Ascension.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ascension.Content.States
 {
-
     /// <summary>
     /// The game state.
     /// </summary>
     public class FirstState : State
     {
+        /// <summary>
+        /// Player object.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        protected Player player;
+
         /// <summary>
         /// Border rectangle.
         /// </summary>
@@ -32,25 +34,56 @@ namespace Ascension.Content.States
         protected int borderWidth = 4;
 
         /// <summary>
-        /// Border color.
+        /// Border texture.
         /// </summary>
-        protected Color borderColor = Color.Black;
-
-        private float midBossTime = 0f;
-
         protected Texture2D borderTexture;
 
+        /// <summary>
+        /// Border color.
+        /// </summary>
+        private Color borderColor = Color.Black;
+
+        /// <summary>
+        /// Time for midboss.
+        /// </summary>
+        private float midBossTime = 0f;
+
+        /// <summary>
+        /// Background texture.
+        /// </summary>
         private Texture2D backGround;
 
-        protected Rectangle rect;
+        /// <summary>
+        /// Rectangle for the background.
+        /// </summary>
+        private Rectangle rect;
 
+        /// <summary>
+        /// Timer for spawning enemies.
+        /// </summary>
         private float enemySpawnTimer = 0f;
-        private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
-        protected Player player;
 
+        /// <summary>
+        /// Interval for spawning enemies.
+        /// </summary>
+        private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
+
+        /// <summary>
+        /// List of enemy formations.
+        /// </summary>
         private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
+
+        /// <summary>
+        /// Basic enemy factory.
+        /// </summary>
         private BasicEnemyFactory basicEnemyFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FirstState"/> class.
+        /// </summary>
+        /// <param name="game">The game itself.</param>
+        /// <param name="graphicsDevice">Graphics device for the first state.</param>
+        /// <param name="content">Content manager for the first state.</param>
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
@@ -74,6 +107,11 @@ namespace Ascension.Content.States
             this.enemyFormations.Add(linearFormation);
         }
 
+        /// <summary>
+        /// Draw method for drawing the game state.
+        /// </summary>
+        /// <param name="gameTime">Time of the game.</param>
+        /// <param name="spriteBatch">Sprites used.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
@@ -102,6 +140,7 @@ namespace Ascension.Content.States
         /// Draws the background for us.
         /// </summary>
         /// <param name="spriteBatch">Our spriteBatch.</param>
+        /// <param name="backGround">Background of first state.</param>
         public void DrawBackground(SpriteBatch spriteBatch, Texture2D backGround)
         {
             int adjustedX = this.borderRect.X + this.borderWidth;
@@ -150,6 +189,10 @@ namespace Ascension.Content.States
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y - 30, this.borderWidth + 300, this.borderRect.Height + 30), this.borderColor);
         }
 
+        /// <summary>
+        /// Post update method.
+        /// </summary>
+        /// <param name="gameTime">Time of the game.</param>
         public override void PostUpdate(GameTime gameTime)
         {
             // throw new NotImplementedException();
@@ -161,7 +204,7 @@ namespace Ascension.Content.States
         /// <param name="gameTime">.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float updatedPlayerSpeed = this.player.PlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
@@ -179,6 +222,11 @@ namespace Ascension.Content.States
             this.player.StayInBorder(this.borderRect, this.borderWidth);
         }
 
+        /// <summary>
+        /// Check if it is time for the boss.
+        /// </summary>
+        /// <param name="bossTime">Time the boss should spawn.</param>
+        /// <returns>True if time for boss to spawn, false if not.</returns>
         private bool IsBossTime(float bossTime)
         {
             return this.midBossTime >= bossTime;

@@ -16,6 +16,7 @@ namespace Ascension.Content.States
         /// <summary>
         /// Field to load in our content.
         /// </summary>
+#pragma warning disable SA1401 // Fields should be private
         protected ContentManager content;
 
         /// <summary>
@@ -29,19 +30,6 @@ namespace Ascension.Content.States
         protected Game1 game;
 
         /// <summary>
-        /// Helps us Draw our State.
-        /// </summary>
-        /// <param name="gameTime">.</param>
-        /// <param name="spriteBatch">..</param>
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// For Removing components.
-        /// </summary>
-        /// <param name="gameTime">.</param>
-        public abstract void PostUpdate(GameTime gameTime);
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="State"/> class.
         /// </summary>
         /// <param name="game">game.</param>
@@ -53,6 +41,19 @@ namespace Ascension.Content.States
             this.graphicsDevice = graphicsDevice;
             this.content = content;
         }
+
+        /// <summary>
+        /// Helps us Draw our State.
+        /// </summary>
+        /// <param name="gameTime">.</param>
+        /// <param name="spriteBatch">..</param>
+        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// For Removing components.
+        /// </summary>
+        /// <param name="gameTime">.</param>
+        public abstract void PostUpdate(GameTime gameTime);
 
         /// <summary>
         /// Our Update call.

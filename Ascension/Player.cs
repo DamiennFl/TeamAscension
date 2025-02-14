@@ -1,33 +1,67 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+﻿// <copyright file="Player.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
+    /// <summary>
+    /// Player class.
+    /// </summary>
     public class Player
     {
-        public int Health { get; set; }
+        /// <summary>
+        /// Gets or sets the player's speed.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        public float PlayerSpeed;
+#pragma warning restore SA1401 // Fields should be private
 
-        private Texture2D playerTexture;
+        /// <summary>
+        /// Gets or sets the player's score.
+        /// </summary>
+#pragma warning disable SA1401 // Fields should be private
+        protected readonly Texture2D playerTexture;
 
+        /// <summary>
+        /// Gets or sets the player's position.
+        /// </summary>
         protected Vector2 playerPosition;
 
-        public float playerSpeed;
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Player"/> class.
+        /// </summary>
+        /// <param name="texture">Texture of player.</param>
+        /// <param name="position">Position of player.</param>
         public Player(Texture2D texture, Vector2 position)
         {
             this.playerTexture = texture;
             this.playerPosition = position;
         }
 
+        /// <summary>
+        /// Gets or sets the player's health.
+        /// </summary>
+        public int Health { get; set; }
+
+        /// <summary>
+        /// Draw method for drawing the player.
+        /// </summary>
+        /// <param name="spriteBatch">Sprites.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(this.playerTexture, this.playerPosition, null,
+            spriteBatch.Draw(
+                this.playerTexture,
+                this.playerPosition,
+                null,
                 Color.White,
                 0f,
                 new Vector2(this.playerTexture.Width / 4, this.playerTexture.Height / 4),
@@ -69,11 +103,11 @@ namespace Ascension
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                this.playerSpeed = 7f;
+                this.PlayerSpeed = 7f;
             }
             else
             {
-                this.playerSpeed = 3.75f;
+                this.PlayerSpeed = 3.75f;
             }
 
             // If Vector has values, normalize movement.
@@ -83,7 +117,7 @@ namespace Ascension
             }
 
             // Update position after normalizing
-            this.playerPosition += dir * this.playerSpeed;
+            this.playerPosition += dir * this.PlayerSpeed;
         }
 
         /// <summary>

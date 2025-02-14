@@ -12,25 +12,30 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA0001:XmlCommentAnalysisDisabled", Justification = "Documentation not required.")]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1516:ElementsMustBeSeparatedByBlankLine", Justification = "Formatting not required.")]
-
     /// <summary>
-    /// Game1 class.
+    /// The main game class.
     /// </summary>
     public class Game1 : Game
     {
+        /// <summary>
+        /// The graphics device manager.
+        /// </summary>
         private GraphicsDeviceManager graphics;
+
+        /// <summary>
+        /// The sprite batch.
+        /// </summary>
         private SpriteBatch spriteBatch;
 
-
+        /// <summary>
+        /// The current state.
+        /// </summary>
         private State currentState;
-        private State nextState;
 
-        public void ChangeState(State state)
-        {
-            this.nextState = state;
-        }
+        /// <summary>
+        /// The next state.
+        /// </summary>
+        private State nextState;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game1"/> class.
@@ -43,6 +48,15 @@ namespace Ascension
             this.graphics.PreferredBackBufferHeight = 800;
             this.Content.RootDirectory = "Content";
             this.IsMouseVisible = true;
+        }
+
+        /// <summary>
+        /// Switches the state.
+        /// </summary>
+        /// <param name="nextState">The next state.</param>
+        public void ChangeState(State nextState)
+        {
+            this.nextState = nextState;
         }
 
         /// <summary>
