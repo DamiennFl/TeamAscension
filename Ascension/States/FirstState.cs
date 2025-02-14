@@ -128,16 +128,16 @@ namespace Ascension.Content.States
         public void BorderBuffer(SpriteBatch spriteBatch)
         {
             // Top part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y - 30, this.borderRect.Width, this.borderWidth + 30), this.borderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 40, this.borderRect.Y - 40, this.borderRect.Width + 90, this.borderWidth + 40), this.borderColor);
 
             // Bottom part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width + 60, this.borderWidth + 30), this.borderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width + 30, this.borderWidth + 40), this.borderColor);
 
             // Left part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y - 30, this.borderWidth + 30, this.borderRect.Height + 30), this.borderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 60, this.borderRect.Y - 30, this.borderWidth + 60, this.borderRect.Height + 60), this.borderColor);
 
             // Right part of rectagnle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y - 30, this.borderWidth + 30, this.borderRect.Height + 30), this.borderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y - 30, this.borderWidth + 300, this.borderRect.Height + 30), this.borderColor);
         }
 
         public override void PostUpdate(GameTime gameTime)
@@ -155,13 +155,14 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(15f))
-            {
-                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
-            }
+            //if (this.IsBossTime(15f))
+            //{
+            //    this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
+            //}
 
             foreach (var currEnemy in this.enemies)
             {
+                // Updates the current enemy
                 currEnemy.Update(gameTime);
             }
 

@@ -36,6 +36,10 @@ namespace Ascension
                 0f);
         }
 
+        /// <summary>
+        /// Player movement method.
+        /// </summary>
+        /// <param name="updatedPlayerSpeed">updating the player speed.</param>
         public void PlayerMovement(float updatedPlayerSpeed)
         {
             var kstate = Keyboard.GetState();
@@ -65,11 +69,11 @@ namespace Ascension
 
             if (kstate.IsKeyDown(Keys.LeftShift))
             {
-                this.playerSpeed = 12f;
+                this.playerSpeed = 7f;
             }
             else
             {
-                this.playerSpeed = 6f;
+                this.playerSpeed = 3.75f;
             }
 
             // If Vector has values, normalize movement.
@@ -82,6 +86,11 @@ namespace Ascension
             this.playerPosition += dir * this.playerSpeed;
         }
 
+        /// <summary>
+        /// This ensures that the player stays within the border.
+        /// </summary>
+        /// <param name="screenBounds">Playing Screen.</param>
+        /// <param name="borderWidth">Width of the border.</param>
         public void StayInBorder(Rectangle screenBounds, int borderWidth)
         {
             int radius = this.playerTexture.Width / 8;
