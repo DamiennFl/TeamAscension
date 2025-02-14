@@ -5,7 +5,7 @@ namespace Ascension.Enemies.EnemyMovement
     internal class WaitPattern : IMovementPattern
     {
         private float waitTime;
-        private float elapsedTime
+        private float elapsedTime;
 
         // is complete is set to false by default
         private bool isComplete;
