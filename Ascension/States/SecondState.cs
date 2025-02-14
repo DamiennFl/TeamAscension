@@ -41,9 +41,21 @@ namespace Ascension.States
         /// </summary>
         private Texture2D backGround;
 
+        /// <summary>
+        /// Enemy formations.
+        /// </summary>
         private List<EnemyFormation> enemyFormations;
 
-        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation) : base(game, graphicsDevice, content)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecondState"/> class.
+        /// </summary>
+        /// <param name="game">The game itself.</param>
+        /// <param name="graphicsDevice">Graphics device.</param>
+        /// <param name="content">Content manager.</param>
+        /// <param name="currentPlayer">Current player.</param>
+        /// <param name="currentEnemyFormation">Enemy formation.</param>
+        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation)
+            : base(game, graphicsDevice, content)
         {
             // this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
@@ -52,7 +64,6 @@ namespace Ascension.States
             this.components = new List<Components>();
             this.player = currentPlayer;
             this.enemyFormations = currentEnemyFormation;
-
         }
 
         /// <summary>
