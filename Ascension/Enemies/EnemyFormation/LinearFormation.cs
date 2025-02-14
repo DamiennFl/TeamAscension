@@ -30,7 +30,7 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemyVelocity = enemyVelocity;
             this.enemySpacing = enemySpacing;
             this.enemyFactory = factory;
-            this.enemyType = enemyType;
+            this.enemyType = enemyType;      
         }
 
         public override void Update(GameTime gameTime)
@@ -48,13 +48,18 @@ namespace Ascension.Enemies.EnemyFormation
                 // Calculate position for enemies to travel to
                 Vector2 enemyPosition = new Vector2(enemyXPosition, this.FormationStartPosition.Y);
                 Vector2 targetPosition = new Vector2(targetXPosition, this.endPosition.Y);
+                Vector2 bottomScreenPosition = new Vector2(enemyXPosition, 250);
                 Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
 
                 // Add movement patterns
-                newEnemy.AddMovementPattern(new LinearMovementPattern(targetPosition, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new LinearMovementPattern(targetPosition, this.enemyVelocity)); // Moves to X target position
                 newEnemy.AddMovementPattern(new WaitPattern(3f)); // Wait for 3 seconds
-                newEnemy.AddMovementPattern(new LinearMovementPattern(enemyPosition, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new LinearMovementPattern(enemyPosition, this.enemyVelocity)); // Moves back to start position
+                newEnemy.AddMovementPattern(new WaitPattern(1f)); // Wait for 9 seconds
 
+                newEnemy.AddMovementPattern(new LinearMovementPattern(bottomScreenPosition, this.enemyVelocity)); // Move down
+                newEnemy.AddMovementPattern(new WaitPattern(3f)); // Wait for 3 seconds
+                newEnemy.AddMovementPattern(new LinearMovementPattern(new Vector2(0, 100), this.enemyVelocity)); // Move back to start position
 
                 this.enemies.Add(newEnemy);
                 this.enemiesSpawned++;
