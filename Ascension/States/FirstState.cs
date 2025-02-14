@@ -146,7 +146,7 @@ namespace Ascension.Content.States
         }
 
         /// <summary>
-        /// Our update method.
+        /// Our update method!.
         /// </summary>
         /// <param name="gameTime">.</param>
         public override void Update(GameTime gameTime)
