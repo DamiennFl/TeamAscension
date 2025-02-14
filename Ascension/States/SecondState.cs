@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Enemies.EnemyFormation;
 
 namespace Ascension.States
 {
@@ -21,7 +22,9 @@ namespace Ascension.States
 
         private Texture2D backGround;
 
-        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer) : base(game, graphicsDevice, content)
+        private List<EnemyFormation> enemyFormations;
+
+        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation) : base(game, graphicsDevice, content)
         {
             //this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
@@ -29,6 +32,8 @@ namespace Ascension.States
             this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
             this.components = new List<Components>();
             this.player = currentPlayer;
+            this.enemyFormations = currentEnemyFormation;
+
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -41,7 +46,14 @@ namespace Ascension.States
 
             this.DrawBackground(spriteBatch, this.backGround);
 
+            foreach (var formation in this.enemyFormations)
+            {
+                formation.Draw(spriteBatch);
+            }
+
             this.player.Draw(spriteBatch);
+
+            this.BorderDraw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -49,6 +61,12 @@ namespace Ascension.States
         public override void Update(GameTime gameTime)
         {
             float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+
+            foreach (var formation in this.enemyFormations)
+            {
+                formation.Update(gameTime);
+            }
+
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
         }

@@ -49,6 +49,7 @@ namespace Ascension.Content.States
         protected Player player;
 
         private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
+
         private BasicEnemyFactory basicEnemyFactory;
 
         public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
@@ -93,7 +94,7 @@ namespace Ascension.Content.States
                 formation.Draw(spriteBatch);
             }
 
-            this.BorderBuffer(spriteBatch);
+            //this.BorderBuffer(spriteBatch);
 
             spriteBatch.End();
         }
@@ -167,7 +168,7 @@ namespace Ascension.Content.States
 
             if (this.IsBossTime(15f))
             {
-                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player));
+                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
             }
 
             foreach (var formation in this.enemyFormations)
