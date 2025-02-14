@@ -17,11 +17,6 @@ namespace Ascension.Enemies
     internal class EnemyA : Enemy
     {
         /// <summary>
-        /// The texture for the bullet.
-        /// </summary>
-        private Texture2D bulletTexture;
-
-        /// <summary>
         /// The bullets for the enemy.
         /// </summary>
         private List<Bullet> bullets;
@@ -86,6 +81,10 @@ namespace Ascension.Enemies
             }
         }
 
+        /// <summary>
+        /// Updates the enemy.
+        /// </summary>
+        /// <param name="gameTime">Current game time.</param>
         public override void Update(GameTime gameTime)
         {
             this.UpdateMovementPatterns(gameTime);
@@ -116,7 +115,7 @@ namespace Ascension.Enemies
         /// </summary>
         public override void Shoot()
         {
-            float randX = (float)( this.random.NextDouble() - 0.5); // Random number between -0.5 and 0.5
+            float randX = (float)(this.random.NextDouble() - 0.5); // Random number between -0.5 and 0.5
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             Vector2 bulletVelocity = new Vector2(randX, 2);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
@@ -131,6 +130,5 @@ namespace Ascension.Enemies
         {
             return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
         }
-
     }
 }

@@ -2,12 +2,12 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System;
+using System.Collections.Generic;
 using Ascension.Content.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 
 namespace Ascension.Content.States
 {
@@ -16,9 +16,24 @@ namespace Ascension.Content.States
     /// </summary>
     public class MenuState : State
     {
+        /// <summary>
+        /// The components.
+        /// </summary>
         private readonly List<Components> components;
+
+        /// <summary>
+        /// The background texture.
+        /// </summary>
         private Texture2D backGround;
+
+        /// <summary>
+        /// The screen height and width.
+        /// </summary>
         private int screenHeight;
+
+        /// <summary>
+        /// The screen width.
+        /// </summary>
         private int screenWidth;
 
         /// <summary>
@@ -79,8 +94,9 @@ namespace Ascension.Content.States
         }
 
         /// <summary>
-        /// Updates the menu state.
+        /// Update for the menu state.
         /// </summary>
+        /// <param name="gameTime">Time of game.</param>
         public override void Update(GameTime gameTime)
         {
             foreach (var component in this.components)
@@ -89,6 +105,11 @@ namespace Ascension.Content.States
             }
         }
 
+        /// <summary>
+        /// Play game button click event.
+        /// </summary>
+        /// <param name="sender">The play button.</param>
+        /// <param name="e">Clicked.</param>
         private void PlayGameButton_Click(object sender, EventArgs e)
         {
             this.game.ChangeState(new FirstState(this.game, this.graphicsDevice, this.content));

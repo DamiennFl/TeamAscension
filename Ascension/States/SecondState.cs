@@ -1,32 +1,50 @@
-﻿using Ascension.Content.Controls;
-using Ascension.Content.States;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿// <copyright file="SecondState.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ascension.Enemies.EnemyFormation;
+using Ascension.Content.Controls;
+using Ascension.Content.States;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.States
 {
+    /// <summary>
+    /// The second state.
+    /// </summary>
     internal class SecondState : FirstState
     {
+        /// <summary>
+        /// The list of components.
+        /// </summary>
         private readonly List<Components> components;
 
+        /// <summary>
+        /// Screen height.
+        /// </summary>
         private int screenHeight;
 
+        /// <summary>
+        /// Screen width.
+        /// </summary>
         private int screenWidth;
 
+        /// <summary>
+        /// The background texture.
+        /// </summary>
         private Texture2D backGround;
 
         private List<EnemyFormation> enemyFormations;
 
         public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation) : base(game, graphicsDevice, content)
         {
-            //this.backGround = content.Load<Texture2D>("MidBossBackground");
+            // this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
             this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
@@ -36,6 +54,11 @@ namespace Ascension.States
 
         }
 
+        /// <summary>
+        /// Draw method for second state.
+        /// </summary>
+        /// <param name="gameTime">Time of game.</param>
+        /// <param name="spriteBatch">Sprites.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
@@ -58,6 +81,10 @@ namespace Ascension.States
             spriteBatch.End();
         }
 
+        /// <summary>
+        /// Update method for second state.
+        /// </summary>
+        /// <param name="gameTime">Time of the game.</param>
         public override void Update(GameTime gameTime)
         {
             float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
@@ -70,6 +97,5 @@ namespace Ascension.States
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
         }
-
     }
 }
