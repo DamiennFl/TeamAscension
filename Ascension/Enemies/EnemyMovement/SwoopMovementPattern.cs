@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="SwoopMovementPattern.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+using Microsoft.Xna.Framework;
 
 namespace Ascension.Enemies.EnemyMovement
 {

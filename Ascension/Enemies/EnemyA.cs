@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -10,33 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Enemies
 {
-    /// <summary>
-    /// Creates instances of EnemyA, a type of Enemy.
-    /// </summary>
     internal class EnemyA : Enemy
     {
-        /// <summary>
-        /// The texture for the bullet.
-        /// </summary>
         private Texture2D bulletTexture;
-
-        /// <summary>
-        /// The bullets for the enemy.
-        /// </summary>
         private List<Bullet> bullets;
-
-        /// <summary>
-        /// The content manager for loading assets.
-        /// </summary>
         private ContentManager contentManager;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnemyA"/> class.
-        /// </summary>
-        /// <param name="speed">The speed of EnemyA.</param>
-        /// <param name="position">The position of EnemyA.</param>
-        /// <param name="texture">The texture of Enemy A.</param>
-        /// <param name="contentManager">The content manager for loading assets.</param>
         public EnemyA(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
         : base(speed, position, texture, "EnemyA")
         {
@@ -44,10 +19,6 @@ namespace Ascension.Enemies
             this.contentManager = contentManager;
         }
 
-        /// <summary>
-        /// Draw method for drawing the sprite.
-        /// </summary>
-        /// <param name="spriteBatch">Sprite batch.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
@@ -62,19 +33,9 @@ namespace Ascension.Enemies
                 0f);
         }
 
-        /// <summary>
-        /// Update method for updating EnemyA.
-        /// </summary>
-        /// <param name="gameTime">GameTime object to sync with game run-time.</param>
         public override void Update(GameTime gameTime)
         {
-            // Basic movement: move down
-            this.Position = new Vector2(this.Position.X, this.Position.Y + (this.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
-
-            foreach (var movement in this.movementPatterns)
-            {
-                movement.Update(gameTime, this);
-            }
+            this.UpdateMovementPatterns(gameTime);
 
             for (int i = 0; i < this.bullets.Count; i++)
             {
@@ -87,9 +48,6 @@ namespace Ascension.Enemies
             }
         }
 
-        /// <summary>
-        /// Shoot method for shooting bullets.
-        /// </summary>
         public override void Shoot()
         {
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("ball");

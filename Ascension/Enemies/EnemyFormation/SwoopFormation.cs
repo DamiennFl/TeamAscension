@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="SwoopFormation.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
 
 namespace Ascension.Enemies.EnemyFormation
 {

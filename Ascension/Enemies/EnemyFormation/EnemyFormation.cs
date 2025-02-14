@@ -1,5 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Enemies.EnemyFormation
 {
@@ -33,6 +34,8 @@ namespace Ascension.Enemies.EnemyFormation
         /// </summary>
         /// <param name="gameTime">GameTime object to syn with game run-time.</param>
         public abstract void Update(GameTime gameTime);
+
+        public abstract void Draw(SpriteBatch spriteBatch);
 
         // TODO: Remove dead enemies
     }
