@@ -58,11 +58,11 @@ namespace Ascension.Enemies.EnemyFormation
             }
 
             // This will eventually be used when a certain enemies health reaches zero, we will delete a certain enemy
-            if (this.deleteTime >= 5f)
-            {
-                this.enemies.Clear();
-                this.deleteTime = 0; // Reset deleteTime after clearing enemies
-            }
+            //if (this.deleteTime >= 5f)
+            //{
+            //    this.enemies.Clear();
+            //    this.deleteTime = 0; // Reset deleteTime after clearing enemies
+            //}
 
             foreach (var enemy in this.enemies)
             {

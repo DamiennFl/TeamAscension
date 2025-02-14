@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ascension.Content.Controls;
 using Ascension.Content.States;
+using Ascension.Enemies.EnemyFormation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -87,7 +88,7 @@ namespace Ascension.States
         /// <param name="gameTime">Time of the game.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            float updatedPlayerSpeed = this.player.PlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 
             foreach (var formation in this.enemyFormations)
             {
