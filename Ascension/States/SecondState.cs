@@ -40,15 +40,9 @@ namespace Ascension.States
         /// </summary>
         private Texture2D backGround;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SecondState"/> class.
-        /// </summary>
-        /// <param name="game">The game itself.</param>
-        /// <param name="graphicsDevice">Graphics device for second state.</param>
-        /// <param name="content">Content manager for second state.</param>
-        /// <param name="currentPlayer">Current player.</param>
-        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer)
-            : base(game, graphicsDevice, content)
+        private List<EnemyFormation> enemyFormations;
+
+        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation) : base(game, graphicsDevice, content)
         {
             // this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
@@ -56,6 +50,8 @@ namespace Ascension.States
             this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
             this.components = new List<Components>();
             this.player = currentPlayer;
+            this.enemyFormations = currentEnemyFormation;
+
         }
 
         /// <summary>
@@ -73,7 +69,14 @@ namespace Ascension.States
 
             this.DrawBackground(spriteBatch, this.backGround);
 
+            foreach (var formation in this.enemyFormations)
+            {
+                formation.Draw(spriteBatch);
+            }
+
             this.player.Draw(spriteBatch);
+
+            this.BorderDraw(spriteBatch);
 
             spriteBatch.End();
         }
@@ -84,7 +87,13 @@ namespace Ascension.States
         /// <param name="gameTime">Time of the game.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedPlayerSpeed = this.player.PlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+            float updatedPlayerSpeed = this.player.playerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
+
+            foreach (var formation in this.enemyFormations)
+            {
+                formation.Update(gameTime);
+            }
+
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
         }

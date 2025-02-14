@@ -16,6 +16,7 @@ namespace Ascension.Enemies.EnemyFormation
         private float enemySpacing;
         private Vector2 endPosition;
         private EnemyFactory enemyFactory;
+        private float deleteTime;
 
         public LinearFormation(Vector2 startPosition, Vector2? endPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory, string enemyType)
           : base(startPosition)
@@ -38,6 +39,8 @@ namespace Ascension.Enemies.EnemyFormation
         public override void Update(GameTime gameTime)
         {
             this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.deleteTime += elapsedTime; // Accumulate elapsed time
 
             if (this.enemiesSpawned < this.numEnemies && this.timeSinceLastSpawn >= this.spawnDelay)
             {
@@ -52,6 +55,13 @@ namespace Ascension.Enemies.EnemyFormation
                 this.enemies.Add(newEnemy);
                 this.enemiesSpawned++;
                 this.timeSinceLastSpawn = 0;
+            }
+
+            // This will eventually be used when a certain enemies health reaches zero, we will delete a certain enemy
+            if (this.deleteTime >= 5f)
+            {
+                this.enemies.Clear();
+                this.deleteTime = 0; // Reset deleteTime after clearing enemies
             }
 
             foreach (var enemy in this.enemies)
