@@ -16,6 +16,7 @@ namespace Ascension.Enemies.EnemyMovement
         private bool isComplete;
         private Vector2 center;
         private float startAngle;
+        private Vector2 startPosition;
 
         public SwoopMovementPattern(Vector2 startPosition, float turnRadius, float duration, bool swoopLeft)
         {
@@ -24,6 +25,7 @@ namespace Ascension.Enemies.EnemyMovement
             this.radius = turnRadius;
             this.swoopLeft = swoopLeft;
             this.isComplete = false;
+            this.startPosition = startPosition;
 
             // Adjust angular speed for clockwise or counterclockwise motion (180-degree turn over `duration`)
             this.angularSpeed = MathF.PI / (duration * 2);
