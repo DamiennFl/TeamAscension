@@ -32,6 +32,8 @@ namespace Ascension.States
         /// </summary>
         private int screenHeight;
 
+        private float finalBossTimer;
+
         /// <summary>
         /// Screen width.
         /// </summary>
@@ -153,6 +155,8 @@ namespace Ascension.States
         {
             float updatedPlayerSpeed = this.player.PlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds * 5;
 
+            this.finalBossTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             foreach (var formation in this.enemyFormations)
             {
                 formation.Update(gameTime);
@@ -160,6 +164,12 @@ namespace Ascension.States
 
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
+
+
+            if (this.finalBossTimer >= 30)
+            {
+                this.game.ChangeState(new ThirdState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
+            }
         }
     }
 }

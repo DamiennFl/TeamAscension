@@ -48,8 +48,8 @@ namespace Ascension.Enemies
                 case "MidBoss":
                     return new MidBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager);
 
-                //case "FinalBoss":
-                //    return new FinalBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager);
+                case "FinalBoss":
+                    return new FinalBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager);
 
                 default:
                     throw new ArgumentException("Invalid enemy type specified.");

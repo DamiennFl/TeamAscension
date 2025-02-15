@@ -74,10 +74,13 @@ namespace Ascension.Enemies.EnemyFormation
                         this.NormalEnemyFormation();
                         break;
                     case "MidBoss":
-                        this.BossFormation();
+                        this.MidBossFormation();
                         break;
                     case "EnemyB":
                         this.EnemyBFormation();
+                        break;
+                    case "FinalBoss":
+                        this.FinalBossFormation();
                         break;
                 }
             }
@@ -95,7 +98,43 @@ namespace Ascension.Enemies.EnemyFormation
             }
         }
 
-        private void BossFormation()
+        private void FinalBossFormation()
+        {
+
+            // Calculate enemy start position
+            float enemyXPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
+            Vector2 enemyPosition = new Vector2(enemyXPosition, this.FormationStartPosition.Y);
+            Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
+
+            // Define positions
+            Vector2 middleScreenPosition = new Vector2(400, 300); // Adjust as per your screen resolution
+            Vector2 offScreenPosition = new Vector2(enemyPosition.X, -100); // Adjust Y to move off-screen
+
+            // Add movement patterns
+            newEnemy.AddMovementPattern(new SwoopMovementPattern(this.FormationStartPosition, 100f, 15f, true)); // Swoop for 15 seconds
+            newEnemy.AddMovementPattern(new WaitPattern(5f)); // Sit at the middle of the screen for 15 seconds
+
+            // Add sporadic movement patterns
+            float totalRandomMovementTime = 15f;
+            float movementDuration = 2f; // Duration for each random movement segment
+            int numberOfMovements = (int)(totalRandomMovementTime / movementDuration);
+
+            for (int i = 0; i < numberOfMovements; i++)
+            {
+                Vector2 randomTarget = GetRandomPosition();
+                newEnemy.AddMovementPattern(new LinearMovementPattern(randomTarget, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new WaitPattern(0.5f)); // Optional wait between movements
+            }
+
+            // Add final movement pattern to move off the screen
+            newEnemy.AddMovementPattern(new LinearMovementPattern(offScreenPosition, this.enemyVelocity)); // Move off the screen
+
+            this.enemies.Add(newEnemy);
+            this.enemiesSpawned++;
+            this.timeSinceLastSpawn = 0;
+        }
+    
+    private void MidBossFormation()
         {
             // Calculate enemy start and target pos
             float enemyXPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
@@ -112,6 +151,8 @@ namespace Ascension.Enemies.EnemyFormation
             newEnemy.AddMovementPattern(new WaitPattern(1f)); // Wait for 9 seconds
             // ALL WHAT I ADDED CAN BE DELTED FOR THE DEMO OR WHATEVER
             newEnemy.AddMovementPattern(new LinearMovementPattern(bottomScreenPosition, this.enemyVelocity)); // Move down
+            newEnemy.AddMovementPattern(new WaitPattern(15f)); // Wait for 3 seconds
+            newEnemy.AddMovementPattern(new LinearMovementPattern(new Vector2(0, 100), this.enemyVelocity)); // Move back to start position
 
             this.enemies.Add(newEnemy);
             this.enemiesSpawned++;
