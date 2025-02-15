@@ -34,6 +34,16 @@ namespace Ascension.Enemies
         private List<Bullet> bullets;
 
         /// <summary>
+        /// When the enemy will shoot.
+        /// </summary>
+        private float shootTimer;
+
+        /// <summary>
+        /// Interval between shots.
+        /// </summary>
+        private float shootInterval;
+
+        /// <summary>
         /// The content manager for loading assets.
         /// </summary>
         private ContentManager contentManager;
@@ -50,6 +60,9 @@ namespace Ascension.Enemies
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
+            this.random = new Random();
+            this.shootTimer = 0f;
+            this.shootInterval = this.GetRandomShootInterval();
         }
 
         /// <summary>
@@ -58,8 +71,8 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            // Basic movement: move down
-            this.Position = new Vector2(this.Position.X, this.Position.Y + (this.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds));
+            this.UpdateMovementPatterns(gameTime);
+
             for (int i = 0; i < this.bullets.Count; i++)
             {
                 this.bullets[i].BulletUpdate(gameTime);
@@ -69,6 +82,16 @@ namespace Ascension.Enemies
                     i--;
                 }
             }
+
+            // Timer for shooting
+            this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (this.shootTimer >= this.shootInterval)
+            {
+                this.Shoot();
+                this.shootTimer = 0f;
+                this.shootInterval = this.GetRandomShootInterval();
+            }
         }
 
         /// <summary>
@@ -77,7 +100,21 @@ namespace Ascension.Enemies
         /// <param name="spriteBatch">The spriteBatch the sprite belongs to.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // Draw stuff
+            spriteBatch.Draw(
+                this.texture,
+                this.Position,
+                null,
+                Color.White,
+                0f,
+                new Vector2(this.texture.Width * 0.4f, this.texture.Height * 0.4f),
+                new Vector2(0.4F, 0.4F),
+                SpriteEffects.None,
+                0f);
+
+            foreach (var bullet in this.bullets)
+            {
+                bullet.BulletDraw(spriteBatch);
+            }
         }
 
         /// <summary>
@@ -93,7 +130,7 @@ namespace Ascension.Enemies
         /// </summary>
         public void RegularShooting()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
             this.bullets.Add(bullet);
@@ -104,7 +141,7 @@ namespace Ascension.Enemies
         /// </summary>
         public void StarShooting()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
             float angle = -0.5F;
             for (int i = 0; i < 5; i++)
             {
@@ -113,6 +150,15 @@ namespace Ascension.Enemies
                 this.bullets.Add(bullet);
                 angle += 0.2F;
             }
+        }
+
+        /// <summary>
+        /// Gets a random shoot interval.
+        /// </summary>
+        /// <returns>the random time generated for our next shot.</returns>
+        private float GetRandomShootInterval()
+        {
+            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
         }
     }
 }

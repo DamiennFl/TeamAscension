@@ -40,6 +40,8 @@ namespace Ascension.Enemies
         /// </summary>
         private float shootTimer;
 
+        private float CircularShootingTimer;
+
         /// <summary>
         /// Interval between shots.
         /// </summary>
@@ -60,6 +62,7 @@ namespace Ascension.Enemies
             this.random = new Random();
             this.shootTimer = 0f;
             this.shootInterval = this.GetRandomShootInterval();
+            this.CircularShootingTimer = 0f;
         }
 
         /// <summary>
@@ -82,6 +85,7 @@ namespace Ascension.Enemies
 
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.shootTimer >= this.shootInterval)
             {
@@ -120,7 +124,15 @@ namespace Ascension.Enemies
         /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
         public override void Shoot()
         {
-            this.StarShooting();
+            if (this.CircularShootingTimer >= 5f)
+            {
+                this.CircularShootingTimer = 0f;
+                this.CircularShooting();
+            }
+            else
+            {
+                this.StarShooting();
+            }
         }
 
 
@@ -129,16 +141,38 @@ namespace Ascension.Enemies
         /// </summary>
         public void StarShooting()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
             float angle = -0.5F;
             for (int i = 0; i < 5; i++)
             {
-                Vector2 bulletVelocity = new Vector2(angle, 0.2f);
+                Vector2 bulletVelocity = new Vector2(angle, 2f);
                 Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
                 this.bullets.Add(bullet);
                 angle += 0.2F;
             }
         }
+
+
+        /// <summary>
+        /// Shoots bullets in a circular pattern.
+        /// </summary>
+        public void CircularShooting()
+        {
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
+            int numberOfBullets = 12; // Total bullets in the circles
+            float bulletSpeed = 3f; // Adjust the speed as needed
+            float angleIncrement = MathF.PI * 2 / numberOfBullets;
+
+            for (int i = 0; i < numberOfBullets; i++)
+            {
+                float angle = i * angleIncrement;
+                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
+                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+                this.bullets.Add(bullet);
+            }
+        }
+
+
 
         /// <summary>
         /// Gets a random shoot interval.

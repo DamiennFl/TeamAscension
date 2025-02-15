@@ -64,28 +64,57 @@ namespace Ascension.States
         public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation)
             : base(game, graphicsDevice, content)
         {
-            // this.backGround = content.Load<Texture2D>("MidBossBackground");
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
             this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
             this.components = new List<Components>();
             this.player = currentPlayer;
             this.enemyFormations = currentEnemyFormation;
-            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // <-- Added initialization
 
-            // Initialize a LinearFormation
-            Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
-            Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
-            int numEnemies = 1;
-            float spawnDelay = 0.5f;
-            Vector2 enemyVelocity = new Vector2(0, 100);
-            float enemySpacing = 50f;
-            string enemyType = "MidBoss";
+            // Initialize factories
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
 
-            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.bossEnemyFactory, enemyType);
-            this.enemyFormations.Add(linearFormation);
+            // Initialize a MidBoss LinearFormation
+            Vector2 midBossStart = new Vector2(100, 0);
+            Vector2 midBossEnd = new Vector2(100, 100);
+            int midBossCount = 1;
+            float midBossSpawnDelay = 0.5f;
+            Vector2 midBossVelocity = new Vector2(0, 100);
+            float midBossSpacing = 50f;
+            string midBossType = "MidBoss";
 
+            LinearFormation midBossFormation = new LinearFormation(
+                midBossStart,
+                midBossEnd,
+                midBossCount,
+                midBossSpawnDelay,
+                midBossVelocity,
+                midBossSpacing,
+                this.bossEnemyFactory,
+                midBossType);
+            this.enemyFormations.Add(midBossFormation);
 
+            // Initialize an EnemyB LinearFormation
+            Vector2 enemyBStart = new Vector2(300, 0);
+            Vector2 enemyBEnd = new Vector2(300, 100);
+            int enemyBCount = 3;
+            float enemyBSpawnDelay = 1f;
+            Vector2 enemyBVelocity = new Vector2(0, 100);
+            float enemyBSpacing = 50f;
+            string enemyBType = "EnemyB";
+
+            LinearFormation enemyBFormation = new LinearFormation(
+                enemyBStart,
+                enemyBEnd,
+                enemyBCount,
+                enemyBSpawnDelay,
+                enemyBVelocity,
+                enemyBSpacing,
+                this.basicEnemyFactory, // Use appropriate factory
+                enemyBType);
+
+            this.enemyFormations.Add(enemyBFormation);
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace Ascension.Enemies.EnemyFormation
         private Vector2 endPosition;
         private EnemyFactory enemyFactory;
         private float deleteTime;
+        private System.Random random = new System.Random();
 
         public LinearFormation(Vector2 startPosition, Vector2 endPosition, int numEnemies, float spawnDelay, Vector2 enemyVelocity, float enemySpacing, EnemyFactory factory, string enemyType)
           : base(startPosition)
@@ -31,6 +32,7 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemySpacing = enemySpacing;
             this.enemyFactory = factory;
             this.enemyType = enemyType;      
+
         }
 
         public override void Update(GameTime gameTime)
@@ -73,6 +75,9 @@ namespace Ascension.Enemies.EnemyFormation
                         break;
                     case "MidBoss":
                         this.BossFormation();
+                        break;
+                    case "EnemyB":
+                        this.EnemyBFormation();
                         break;
                 }
             }
@@ -142,6 +147,53 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemies.Add(newEnemy);
             this.enemiesSpawned++;
             this.timeSinceLastSpawn = 0;
+        }
+
+        /// <summary>
+        /// Formations for ebemy B.
+        /// </summary>
+        private void EnemyBFormation()
+        {
+            // Calculate enemy start position
+            float enemyXPosition = this.FormationStartPosition.X + (this.enemiesSpawned * this.enemySpacing);
+            Vector2 enemyPosition = new Vector2(enemyXPosition, this.FormationStartPosition.Y);
+            Enemy newEnemy = this.enemyFactory.CreateEnemy(enemyPosition, this.enemyType);
+
+            // Assign random movement patterns for 10 seconds
+            float totalRandomMovementTime = 10f;
+            float movementDuration = 2f; // Duration for each random movement segment
+            int numberOfMovements = (int)(totalRandomMovementTime / movementDuration);
+
+            for (int i = 0; i < numberOfMovements; i++)
+            {
+                Vector2 randomTarget = GetRandomPosition();
+                newEnemy.AddMovementPattern(new LinearMovementPattern(randomTarget, this.enemyVelocity));
+                newEnemy.AddMovementPattern(new WaitPattern(0.5f)); // Optional wait between movements
+            }
+
+            // Add final movement pattern to move off the screen
+            Vector2 offScreenPosition = new Vector2(enemyPosition.X, -100); // Adjust Y to move off-screen
+            newEnemy.AddMovementPattern(new LinearMovementPattern(offScreenPosition, this.enemyVelocity));
+
+            this.enemies.Add(newEnemy);
+            this.enemiesSpawned++;
+            this.timeSinceLastSpawn = 0;
+        }
+
+        /// <summary>
+        /// Gets a random position on the screen.
+        /// </summary>
+        /// <returns>a vector.</returns>
+        private Vector2 GetRandomPosition()
+        {
+            // Define screen boundaries (adjust as per your game resolution)
+            float screenWidth = 800f;
+            float screenHeight = 600f;
+
+            float randomX = (float)this.random.NextDouble() * screenWidth;
+            float randomY = (float)this.random.NextDouble() * screenHeight;
+
+            return new Vector2(randomX, randomY);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
