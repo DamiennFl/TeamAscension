@@ -24,6 +24,5 @@ namespace Ascension
         /// </summary>
         /// <param name="gameTime">.</param>
         public abstract void Update(GameTime gameTime);
-
     }
 }
