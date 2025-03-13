@@ -8,6 +8,7 @@ using Ascension.Content.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Ascension.Content.States
 {
@@ -51,19 +52,35 @@ namespace Ascension.Content.States
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
 
+            // TODO: Find a better way to implement this button initialization
+
+            // Our Play Game button
             var playGameButton = new Button(buttonTexture, buttonFont)
             {
                 Pos = new Vector2(235, 400),
                 Text = "Play",
+                Size = new Vector2(200, 100),
+            };
+
+            // Bindings Button
+            var bindingsButton = new Button(buttonTexture, buttonFont)
+            {
+                Pos = new Vector2(235, 500),
+                Text = "Key Bindings",
+                Size = new Vector2(300, 100),
             };
 
             playGameButton.Click += this.PlayGameButton_Click;
+            bindingsButton.Click += this.BindingsButton_Click;
 
             this.components = new List<Components>()
             {
                 playGameButton,
+                bindingsButton,
             };
         }
+
+
 
         /// <summary>
         /// Draws the menu state.
@@ -105,6 +122,7 @@ namespace Ascension.Content.States
             }
         }
 
+
         /// <summary>
         /// Play game button click event.
         /// </summary>
@@ -113,6 +131,17 @@ namespace Ascension.Content.States
         private void PlayGameButton_Click(object sender, EventArgs e)
         {
             this.game.ChangeState(new FirstState(this.game, this.graphicsDevice, this.content));
+        }
+
+
+        /// <summary>
+        /// Bindings button click event.
+        /// </summary>
+        /// <param name="sender">The binding button. </param>
+        /// <param name="e">Clicked. </param>
+        private async void BindingsButton_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
