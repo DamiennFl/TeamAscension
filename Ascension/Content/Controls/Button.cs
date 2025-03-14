@@ -64,7 +64,7 @@ namespace Ascension.Content.Controls
         public Vector2 Pos { get; set; }
 
         /// <summary>
-        /// Gets or sets the rectangle representing the button's bounds.
+        /// Gets the rectangle representing the button's bounds.
         /// </summary>
         public Rectangle Rectangle
         {

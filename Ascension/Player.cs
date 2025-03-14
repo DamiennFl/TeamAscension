@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
+   
     /// <summary>
     /// Player class.
     /// </summary>
@@ -31,14 +32,12 @@ namespace Ascension
 #pragma warning disable SA1401 // Fields should be private
         protected readonly Texture2D playerTexture;
 
+    
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
         protected Vector2 playerPosition;
 
-        /// <summary>
-        /// Struct for player movement keys.
-        /// </summary>
         public struct PlayerMovementKeys
         {
             /// <summary>
@@ -67,6 +66,7 @@ namespace Ascension
             public static Keys Sprint = Keys.LeftShift;
         }
 
+       
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -77,6 +77,14 @@ namespace Ascension
         {
             this.playerTexture = texture;
             this.playerPosition = position;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Player"/> class.
+        /// Empty constructor init.
+        /// </summary>
+        public Player()
+        {
         }
 
         /// <summary>
@@ -109,7 +117,6 @@ namespace Ascension
         public void PlayerMovement(float updatedPlayerSpeed)
         {
             var kstate = Keyboard.GetState();
-
 
             // Vector to normalize diagonal movement
             Vector2 dir = Vector2.Zero;

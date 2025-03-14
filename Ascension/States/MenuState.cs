@@ -57,15 +57,15 @@ namespace Ascension.Content.States
             // Our Play Game button
             var playGameButton = new Button(buttonTexture, buttonFont)
             {
-                Pos = new Vector2(235, 400),
+                Pos = new Vector2(335, 400),
                 Text = "Play",
-                Size = new Vector2(200, 100),
+                Size = new Vector2(300, 100),
             };
 
             // Bindings Button
             var bindingsButton = new Button(buttonTexture, buttonFont)
             {
-                Pos = new Vector2(235, 500),
+                Pos = new Vector2(335, 500),
                 Text = "Key Bindings",
                 Size = new Vector2(300, 100),
             };
@@ -139,9 +139,9 @@ namespace Ascension.Content.States
         /// </summary>
         /// <param name="sender">The binding button. </param>
         /// <param name="e">Clicked. </param>
-        private async void BindingsButton_Click(object sender, EventArgs e)
+        private void BindingsButton_Click(object sender, EventArgs e)
         {
-            
+            this.game.ChangeState(new BindingsState(this.game, this.graphicsDevice, this.content));
         }
     }
 }
