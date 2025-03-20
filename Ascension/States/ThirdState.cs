@@ -2,7 +2,6 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-using Ascension.Enemies.EnemyFormation;
 using Ascension.Enemies;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -49,7 +48,7 @@ namespace Ascension.States
         /// </summary>
         private List<EnemyFormation> enemyFormations;
 
-        private BasicEnemyFactory basicEnemyFactory;
+        private ConcreteEnemyFactory basicEnemyFactory;
 
         private BossEnemyFactory bossEnemyFactory;
 
@@ -74,7 +73,7 @@ namespace Ascension.States
             this.enemyFormations = currentEnemyFormation;
 
             // Initialize factories
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.basicEnemyFactory = new ConcreteEnemyFactory(content, graphicsDevice);
             this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
 
             // Initialize a MidBoss LinearFormation

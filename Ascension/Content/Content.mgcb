@@ -121,7 +121,7 @@
 /processorParam:TextureFormat=Color
 /build:Controls/Button.png
 
-#begin Enemies/35.png
+#begin Enemies/FinalBoss.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -131,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Enemies/35.png;Enemies/FinalBoss.png
+/build:Enemies/FinalBoss.png
 
-#begin Enemies/92.png
+#begin Enemies/MidBoss.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -143,7 +143,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Enemies/92.png;Enemies/MidBoss.png
+/build:Enemies/MidBoss.png
 
 #begin Enemies/SpriteA.png
 /importer:TextureImporter

@@ -41,6 +41,9 @@ namespace Ascension.Enemies
         /// </summary>
         private float shootInterval;
 
+        // This would be a refernce
+        private EnemyFormation formation;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
         /// </summary>

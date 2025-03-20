@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Ascension.Enemies.EnemyFormation;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Enemies.EnemyFormation
+namespace Ascension.Enemies
 {
     internal class LinearFormation : EnemyFormation
     {
@@ -31,8 +30,7 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemyVelocity = enemyVelocity;
             this.enemySpacing = enemySpacing;
             this.enemyFactory = factory;
-            this.enemyType = enemyType;      
-
+            this.enemyType = enemyType;
         }
 
         public override void Update(GameTime gameTime)
