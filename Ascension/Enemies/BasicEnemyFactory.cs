@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,8 +31,8 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="graphicsDevice">The graphics device for rendering.</param>
-        public BasicEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice)
-            : base(contentManager, graphicsDevice)
+        public BasicEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
+            : base(contentManager, graphicsDevice, collisionManager)
         {
             // Here we are creating the EnemyTextures dictionary and loading the textures.
             this.enemyTextures = new Dictionary<string, Texture2D>
@@ -53,10 +54,10 @@ namespace Ascension.Enemies
             switch (enemyType)
             {
                 case "EnemyA":
-                    return new EnemyA(speed, position, this.enemyTextures[enemyType], this.ContentManager);
+                    return new EnemyA(speed, position, this.enemyTextures[enemyType], this.ContentManager, this.CollisionManager);
 
                 case "EnemyB":
-                    return new EnemyB(speed, position, this.enemyTextures[enemyType], this.ContentManager);
+                    return new EnemyB(speed, position, this.enemyTextures[enemyType], this.ContentManager, this.CollisionManager);
 
                 default:
                     throw new ArgumentException("Invalid enemy type specified.");

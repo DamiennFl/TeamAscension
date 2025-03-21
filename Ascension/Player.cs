@@ -11,13 +11,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Ascension.Collision;
+using System.Diagnostics;
 
 namespace Ascension
 {
     /// <summary>
     /// Player class.
     /// </summary>
-    public class Player
+    public class Player : ICollidable
     {
         /// <summary>
         /// Gets or sets the player's speed.
@@ -177,6 +179,42 @@ namespace Ascension
 
         }
 
+        /// <summary>
+        /// Gets the collision layer for the player.
+        /// </summary>
+        public string CollisionLayer => "Player";
 
+        /// <summary>
+        /// Gets the bounding rectangle for collision detection.
+        /// </summary>
+        /// <returns>A rectangle representing the player's collision bounds.</returns>
+        public Rectangle Bounds
+        {
+            get
+            {
+                int radius = this.playerTexture.Width / 8;
+                return new Rectangle(
+                    (int)this.playerPosition.X - radius,
+                    (int)this.playerPosition.Y - radius,
+                    radius * 2,
+                    radius * 2);
+            }
+        }
+
+        /// <summary>
+        /// Handles collision with another object.
+        /// </summary>
+        /// <param name="other">The object that collided with the player.</param>
+        public void OnCollision(ICollidable other)
+        {
+            if (other is Bullet bullet && !bullet.IsPlayerBullet)
+            {
+                // Take damage from enemy bullets
+                this.Health -= bullet.Damage;
+                Debug.WriteLine($"Player Health: {this.Health}");
+
+                // Can add effects here (sound, visual, etc.)
+            }
+        }
     }
 }
