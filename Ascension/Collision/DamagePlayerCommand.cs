@@ -40,7 +40,11 @@ public class DamagePlayerCommand : ICollisionCommand
     /// </summary>
     public void Execute()
     {
-        this.player.Health -= this.damage;
-        Debug.WriteLine($"Player Health: {this.player.Health}");
+        if (!this.player.IsInvincible)
+        {
+            this.player.Health -= this.damage;
+            Debug.WriteLine($"Player Health: {this.player.Health}");
+            this.player.ActivateInvincibility();
+        }
     }
 }

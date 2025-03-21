@@ -4,16 +4,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Ascension.Collision;
 using Ascension.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Ascension.Collision;
-using System.Diagnostics;
 
 namespace Ascension
 {
@@ -34,6 +35,8 @@ namespace Ascension
 
         private Texture2D bulletTexture;
 
+        private SpriteFont font;
+
         /// <summary>
         /// Gets or sets the player's score.
         /// </summary>
@@ -42,12 +45,20 @@ namespace Ascension
 
         private GraphicsDevice graphicsDevice;
 
+        private TimeSpan invincibleTimeRemaining = TimeSpan.Zero;
+
+        private readonly TimeSpan totalInvincibleTime = TimeSpan.FromSeconds(3);
+
+
 
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
         protected Vector2 playerPosition;
 
+        private float shootInterval = 0.5f;
+
+        private float shootTimer = 0f;
 
         public Vector2 PlayerSpawn
         {
@@ -69,6 +80,8 @@ namespace Ascension
 
         private PlayArea playArea;
 
+        public bool IsInvincible { get; set; } = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -79,6 +92,7 @@ namespace Ascension
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
             this.bulletTexture = contentManager.Load<Texture2D>("Bullets/BulletGreen");
+            this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.playArea = playArea;
 
             this.playerPosition = this.PlayerSpawn;
@@ -89,7 +103,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's health.
         /// </summary>
-        public int Health { get; set; }
+        public int Health { get; set; } = 3;
 
         /// <summary>
         /// Draw method for drawing the player.
@@ -108,6 +122,9 @@ namespace Ascension
                 SpriteEffects.None,
                 0f);
 
+            // Draw the player's health
+            spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
+
             foreach (var bullet in this.bullets)
             {
                 bullet.BulletDraw(spriteBatch);
@@ -116,10 +133,11 @@ namespace Ascension
 
         public void Update(GameTime gameTime)
         {
-
             this.PlayerMovement();
             this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
-            this.PlayerShoot();
+            this.PlayerShoot(gameTime);
+            this.InvincibleTimer(gameTime);
+
             foreach (var bullet in this.bullets)
             {
                 bullet.BulletUpdate(gameTime);
@@ -130,7 +148,7 @@ namespace Ascension
         /// Player movement method.
         /// </summary>
         /// <param name="updatedPlayerSpeed">updating the player speed.</param>
-        public void PlayerMovement()
+        private void PlayerMovement()
         {
             var kstate = Keyboard.GetState();
 
@@ -181,7 +199,7 @@ namespace Ascension
         /// </summary>
         /// <param name="screenBounds">Playing Screen.</param>
         /// <param name="borderWidth">Width of the border.</param>
-        public void StayInBorder(Rectangle screenBounds, int borderWidth)
+        private void StayInBorder(Rectangle screenBounds, int borderWidth)
         {
             int radius = this.playerTexture.Width / 8;
 
@@ -210,17 +228,65 @@ namespace Ascension
             }
         }
 
-        public void PlayerShoot()
+        /// <summary>
+        /// The player shoots bullets.
+        /// </summary>
+        private void PlayerShoot(GameTime gameTime)
         {
-            // Shoot bullet
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            // Timer for shooting
+            this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            // Checking if we can shoot a bullet
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && this.shootTimer >= this.shootInterval)
             {
                 Texture2D bulletTexture = this.bulletTexture;
                 this.BulletPosition = this.playerPosition;
                 this.bullet = new Bullet(PlayerDamage, -BulletVelocity, this.BulletPosition, bulletTexture);
                 this.bullets.Add(this.bullet);
+                this.shootTimer = 0f;
             }
+        }
 
+        /// <summary>
+        /// Timer for our invincibility.
+        /// </summary>
+        /// <param name="gameTime">time running.</param>
+        private void InvincibleTimer(GameTime gameTime)
+        {
+            // Are we invincible? if so decrement the time remaining.
+            if (this.IsInvincible)
+            {
+                this.invincibleTimeRemaining -= gameTime.ElapsedGameTime;
+                Debug.WriteLine($"Invincible time remaining: {this.invincibleTimeRemaining.TotalSeconds:F2} seconds");
+
+                // Are we no longer invincible? then set invincible to false.
+                if (this.invincibleTimeRemaining <= TimeSpan.Zero)
+                {
+                    this.IsInvincible = false;
+                    this.invincibleTimeRemaining = TimeSpan.Zero;
+                    Debug.WriteLine("Invincibility off.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// This will activate the Invincibility of the player for a set amount of time.
+        /// </summary>
+        public void ActivateInvincibility()
+        {
+            this.IsInvincible = true;
+            this.invincibleTimeRemaining = this.totalInvincibleTime;
+            this.playerPosition = this.PlayerSpawn;
+            Debug.WriteLine("Invincibility activated.");
+        }
+
+        /// <summary>
+        /// Loss condition for the player.
+        /// </summary>
+        /// <returns>if the player is dead.</returns>
+        public bool LossCondition()
+        {
+            return this.Health <= 0;
         }
 
         /// <summary>

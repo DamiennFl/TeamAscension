@@ -30,18 +30,6 @@ namespace Ascension.Content.States
         private float midBossTime = 0f;
 
         /// <summary>
-        /// Timer for spawning enemies.
-        /// </summary>
-        private float enemySpawnTimer = 0f;
-
-        private bool check = true;
-
-        /// <summary>
-        /// Interval for spawning enemies.
-        /// </summary>
-        private float enemySpawnInterval = 0.5f; // Spawn every 0.5 seconds
-
-        /// <summary>
         /// List of enemy formations.
         /// </summary>
         private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
@@ -50,8 +38,6 @@ namespace Ascension.Content.States
         /// Basic enemy factory.
         /// </summary>
         private BasicEnemyFactory basicEnemyFactory;
-
-        private BossEnemyFactory bossEnemyFactory;
 
         /// <summary>
         /// Defines a play area.
@@ -71,39 +57,9 @@ namespace Ascension.Content.States
         {
             this.playArea = new PlayArea(graphicsDevice, content);
             this.player = new Player(graphicsDevice, content, this.playArea);
-            this.player.Health = 3; // Initialize player health
 
-            // Initialize collision system
-            this.collisionManager = new CollisionManager();
-            this.collisionManager.AddCollisionLayer("Player", "EnemyBullet");
-            this.collisionManager.AddCollisionLayer("Enemy", "PlayerBullet");
-            this.collisionManager.Register(this.player);
-
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice, this.collisionManager);
-            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice, this.collisionManager); // Already initialized
-
-            // Initialize a LinearFormation
-            Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
-            Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
-            int numEnemies = 7;
-            float spawnDelay = 0.5f;
-            Vector2 enemyVelocity = new Vector2(0, 100);
-            float enemySpacing = 50f;
-            string enemyType = "EnemyA";
-
-            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
-            this.enemyFormations.Add(linearFormation);
-
-            // Initialize a SwoopFormation
-            Vector2 swoopFormationStartPosition = new Vector2(200, 0); // Start position off-screen
-            int swoopNumEnemies = 5;
-            float swoopSpawnDelay = 0.5f;
-            Vector2 swoopEnemyVelocity = new Vector2(0, 100);
-            float swoopEnemySpacing = 50f;
-            string swoopEnemyType = "EnemyA";
-
-            SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
-            this.enemyFormations.Add(swoopFormation);
+            this.InitCollisions();
+            this.InitWaves(graphicsDevice, content);
         }
 
         /// <summary>
@@ -152,49 +108,9 @@ namespace Ascension.Content.States
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(20f) && this.check)
+            if (this.IsBossTime(20f))
             {
-                this.check = false;
-                // Initialize a MidBoss LinearFormation
-                Vector2 midBossStart = new Vector2(100, 0);
-                Vector2 midBossEnd = new Vector2(100, 100);
-                int midBossCount = 1;
-                float midBossSpawnDelay = 0.5f;
-                Vector2 midBossVelocity = new Vector2(0, 100);
-                float midBossSpacing = 50f;
-                string midBossType = "MidBoss";
-
-                LinearFormation midBossFormation = new LinearFormation(
-                    midBossStart,
-                    midBossEnd,
-                    midBossCount,
-                    midBossSpawnDelay,
-                    midBossVelocity,
-                    midBossSpacing,
-                    this.bossEnemyFactory,
-                    midBossType);
-                this.enemyFormations.Add(midBossFormation);
-
-                // Initialize an EnemyB LinearFormation
-                Vector2 enemyBStart = new Vector2(300, 0);
-                Vector2 enemyBEnd = new Vector2(300, 100);
-                int enemyBCount = 3;
-                float enemyBSpawnDelay = 1f;
-                Vector2 enemyBVelocity = new Vector2(0, 100);
-                float enemyBSpacing = 50f;
-                string enemyBType = "EnemyB";
-
-                LinearFormation enemyBFormation = new LinearFormation(
-                    enemyBStart,
-                    enemyBEnd,
-                    enemyBCount,
-                    enemyBSpawnDelay,
-                    enemyBVelocity,
-                    enemyBSpacing,
-                    this.basicEnemyFactory, // Use appropriate factory
-                    enemyBType);
-
-                this.enemyFormations.Add(enemyBFormation);
+               this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.content));
             }
 
             foreach (var formation in this.enemyFormations)
@@ -205,6 +121,11 @@ namespace Ascension.Content.States
             this.player.Update(gameTime);
 
             this.collisionManager.Update();
+
+            if (this.player.LossCondition())
+            {
+                this.game.ChangeState(new GameOverState(this.game, this.graphicsDevice, this.content));
+            }
         }
 
         /// <summary>
@@ -215,6 +136,42 @@ namespace Ascension.Content.States
         private bool IsBossTime(float bossTime)
         {
             return this.midBossTime >= bossTime;
+        }
+
+        private void InitCollisions()
+        {
+            // Initialize collision system
+            this.collisionManager = new CollisionManager();
+            this.collisionManager.AddCollisionLayer("Player", "EnemyBullet");
+            this.collisionManager.AddCollisionLayer("Enemy", "PlayerBullet");
+            this.collisionManager.Register(this.player);
+        }
+
+        private void InitWaves(GraphicsDevice graphicsDevice, ContentManager content)
+        {
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice, this.collisionManager);
+            // Initialize a LinearFormation
+            Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
+            Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
+            int numEnemies = 7;
+            float spawnDelay = 0.5f;
+            Vector2 enemyVelocity = new Vector2(0, 100);
+            float enemySpacing = 50f;
+            string enemyType = "EnemyA";
+
+            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
+            this.enemyFormations.Add(linearFormation);
+
+            // Initialize a SwoopFormation
+            Vector2 swoopFormationStartPosition = new Vector2(200, 0); // Start position off-screen
+            int swoopNumEnemies = 5;
+            float swoopSpawnDelay = 0.5f;
+            Vector2 swoopEnemyVelocity = new Vector2(0, 100);
+            float swoopEnemySpacing = 50f;
+            string swoopEnemyType = "EnemyA";
+
+            SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
+            this.enemyFormations.Add(swoopFormation);
         }
     }
 }
