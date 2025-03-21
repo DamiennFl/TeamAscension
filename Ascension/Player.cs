@@ -12,13 +12,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Ascension.Collision;
+using System.Diagnostics;
 
 namespace Ascension
 {
     /// <summary>
     /// Player class.
     /// </summary>
-    public class Player
+    public class Player : ICollidable
     {
         /// <summary>
         /// Gets or sets the player's speed.
@@ -54,7 +56,6 @@ namespace Ascension
                 return new Vector2(this.graphicsDevice.Viewport.Width / 4, this.graphicsDevice.Viewport.Height - 150);
             }
         }
-
 
         public const int PlayerDamage = 10;
 
@@ -222,6 +223,26 @@ namespace Ascension
 
         }
 
+        /// <summary>
+        /// Gets the collision layer for the player.
+        /// </summary>
+        public string CollisionLayer => "Player";
 
+        /// <summary>
+        /// Gets the bounding rectangle for collision detection.
+        /// </summary>
+        /// <returns>A rectangle representing the player's collision bounds.</returns>
+        public Rectangle Bounds
+        {
+            get
+            {
+                int radius = this.playerTexture.Width / 8;
+                return new Rectangle(
+                    (int)this.playerPosition.X - radius,
+                    (int)this.playerPosition.Y - radius,
+                    radius * 2,
+                    radius * 2);
+            }
+        }
     }
 }

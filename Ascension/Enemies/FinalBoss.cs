@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -52,8 +53,8 @@ namespace Ascension.Enemies
         /// <param name="speed">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
-        public FinalBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(speed, position, texture, "FinalBoss")
+        public FinalBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
+        : base(speed, position, texture, "FinalBoss", collisionManager)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;

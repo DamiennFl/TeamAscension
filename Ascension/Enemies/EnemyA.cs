@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using Ascension.Collision;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -48,8 +49,8 @@ namespace Ascension.Enemies
         /// <param name="position">The position of EnemyA.</param>
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
-        public EnemyA(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(speed, position, texture, "EnemyA")
+        public EnemyA(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
+        : base(speed, position, texture, "EnemyA", collisionManager)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -94,6 +95,7 @@ namespace Ascension.Enemies
                 this.bullets[i].BulletUpdate(gameTime);
                 if (!this.bullets[i].IsActive)
                 {
+                    this.collisionManager.Unregister(this.bullets[i]);
                     this.bullets.RemoveAt(i);
                     i--;
                 }
@@ -127,7 +129,11 @@ namespace Ascension.Enemies
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+            bullet.IsPlayerBullet = false;
             this.bullets.Add(bullet);
+
+            // Register with collision system
+            this.collisionManager.Register(bullet);
         }
 
         /// <summary>

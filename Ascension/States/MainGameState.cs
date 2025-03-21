@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using Ascension.Collision;
 using Ascension.Enemies;
 using Ascension.Enemies.EnemyFormation;
 using Ascension.States;
@@ -22,7 +23,6 @@ namespace Ascension.Content.States
         /// </summary>
 #pragma warning disable SA1401 // Fields should be private
         protected Player player;
-
 
         /// <summary>
         /// Time for midboss.
@@ -58,6 +58,8 @@ namespace Ascension.Content.States
         /// </summary>
         private PlayArea playArea;
 
+        private CollisionManager collisionManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainGameState"/> class.
         /// </summary>
@@ -69,9 +71,16 @@ namespace Ascension.Content.States
         {
             this.playArea = new PlayArea(graphicsDevice, content);
             this.player = new Player(graphicsDevice, content, this.playArea);
+            this.player.Health = 3; // Initialize player health
 
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
-            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
+            // Initialize collision system
+            this.collisionManager = new CollisionManager();
+            this.collisionManager.AddCollisionLayer("Player", "EnemyBullet");
+            this.collisionManager.AddCollisionLayer("Enemy", "PlayerBullet");
+            this.collisionManager.Register(this.player);
+
+            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice, this.collisionManager);
+            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice, this.collisionManager); // Already initialized
 
             // Initialize a LinearFormation
             Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
@@ -194,6 +203,8 @@ namespace Ascension.Content.States
             }
 
             this.player.Update(gameTime);
+
+            this.collisionManager.Update();
         }
 
         /// <summary>

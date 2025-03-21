@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
 using Microsoft.Xna.Framework;
+using Ascension.Collision;
 
 namespace Ascension.Enemies
 {
@@ -23,8 +24,8 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="graphicsDevice">The graphics device for rendering.</param>
-        public BossEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice)
-            : base(contentManager, graphicsDevice)
+        public BossEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
+            : base(contentManager, graphicsDevice, collisionManager)
         {
             // Here we are creating the EnemyTextures dictionary and loading the textures.
             this.bossEnemyTextures = new Dictionary<string, Texture2D>
@@ -46,10 +47,10 @@ namespace Ascension.Enemies
             switch (bossType)
             {
                 case "MidBoss":
-                    return new MidBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager);
+                    return new MidBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager, this.CollisionManager);
 
                 case "FinalBoss":
-                    return new FinalBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager);
+                    return new FinalBoss(speed, position, this.bossEnemyTextures[bossType], this.ContentManager, this.CollisionManager);
 
                 default:
                     throw new ArgumentException("Invalid enemy type specified.");

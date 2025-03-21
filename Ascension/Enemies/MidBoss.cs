@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -54,8 +55,8 @@ namespace Ascension.Enemies
         /// <param name="position">The position of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
         /// <param name="contentManager">"The content manager for loading assets.</param>
-        public MidBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(speed, position, texture, "MidBoss")
+        public MidBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
+        : base(speed, position, texture, "MidBoss", collisionManager)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
