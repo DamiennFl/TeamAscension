@@ -112,7 +112,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked.</param>
         private void PlayGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new FirstState(this.game, this.graphicsDevice, this.content));
+            this.game.ChangeState(new MainGameState(this.game, this.graphicsDevice, this.content));
         }
     }
 }

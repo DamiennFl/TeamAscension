@@ -15,7 +15,7 @@ namespace Ascension.Content.States
     /// <summary>
     /// The game state.
     /// </summary>
-    public class FirstState : State
+    public class MainGameState : State
     {
         /// <summary>
         /// Player object.
@@ -23,25 +23,6 @@ namespace Ascension.Content.States
 #pragma warning disable SA1401 // Fields should be private
         protected Player player;
 
-        /// <summary>
-        /// Border rectangle.
-        /// </summary>
-        protected Rectangle borderRect = new Rectangle(40, 40, 460, 720);
-
-        /// <summary>
-        /// Our Border width.
-        /// </summary>
-        protected int borderWidth = 4;
-
-        /// <summary>
-        /// Border texture.
-        /// </summary>
-        protected Texture2D borderTexture;
-
-        /// <summary>
-        /// Border color.
-        /// </summary>
-        private Color borderColor = Color.Black;
 
         /// <summary>
         /// Time for midboss.
@@ -49,19 +30,11 @@ namespace Ascension.Content.States
         private float midBossTime = 0f;
 
         /// <summary>
-        /// Background texture.
-        /// </summary>
-        private Texture2D backGround;
-
-        /// <summary>
-        /// Rectangle for the background.
-        /// </summary>
-        private Rectangle rect;
-
-        /// <summary>
         /// Timer for spawning enemies.
         /// </summary>
         private float enemySpawnTimer = 0f;
+
+        private bool check = true;
 
         /// <summary>
         /// Interval for spawning enemies.
@@ -78,21 +51,27 @@ namespace Ascension.Content.States
         /// </summary>
         private BasicEnemyFactory basicEnemyFactory;
 
+        private BossEnemyFactory bossEnemyFactory;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FirstState"/> class.
+        /// Defines a play area.
+        /// </summary>
+        private PlayArea playArea;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainGameState"/> class.
         /// </summary>
         /// <param name="game">The game itself.</param>
         /// <param name="graphicsDevice">Graphics device for the first state.</param>
         /// <param name="content">Content manager for the first state.</param>
-        public FirstState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
+        public MainGameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
             : base(game, graphicsDevice, content)
         {
-            this.backGround = content.Load<Texture2D>("Backgrounds/Stage1");
-            this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
-            this.borderTexture.SetData(new[] { Color.AliceBlue });
+            this.playArea = new PlayArea(graphicsDevice, content);
             this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
 
             this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
 
             // Initialize a LinearFormation
             Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
@@ -129,10 +108,10 @@ namespace Ascension.Content.States
 
             this.graphicsDevice.Clear(Color.Black);
 
-            this.BorderDraw(spriteBatch);
+            this.playArea.DrawBackground(spriteBatch);
 
             // Adjust the background rectangle to fit nicely within the borderRect and borderWidth
-            this.DrawBackground(spriteBatch, this.backGround);
+            this.playArea.BorderDraw(spriteBatch);
 
             // Player drawn here
             this.player.Draw(spriteBatch);
@@ -142,62 +121,9 @@ namespace Ascension.Content.States
                 formation.Draw(spriteBatch);
             }
 
-            this.BorderBuffer(spriteBatch);
+            this.playArea.BorderBuffer(spriteBatch);
 
             spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Draws the background for us.
-        /// </summary>
-        /// <param name="spriteBatch">Our spriteBatch.</param>
-        /// <param name="backGround">Background of first state.</param>
-        public void DrawBackground(SpriteBatch spriteBatch, Texture2D backGround)
-        {
-            int adjustedX = this.borderRect.X + this.borderWidth;
-            int adjustedY = this.borderRect.Y + this.borderWidth;
-            int adjustedWidth = this.borderRect.Width - (2 * this.borderWidth);
-            int adjustedHeight = this.borderRect.Height - (2 * this.borderWidth);
-            this.rect = new Rectangle(adjustedX, adjustedY, adjustedWidth, adjustedHeight);
-            spriteBatch.Draw(backGround, this.rect, Color.White);
-        }
-
-        /// <summary>
-        /// Draws the border for us.
-        /// </summary>
-        /// <param name="spriteBatch">our sprite.</param>
-        public void BorderDraw(SpriteBatch spriteBatch)
-        {
-            // Top part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderRect.Width, this.borderWidth), this.borderColor);
-
-            // Bottom part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width, this.borderWidth), this.borderColor);
-
-            // Left part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
-
-            // Right part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y, this.borderWidth, this.borderRect.Height), this.borderColor);
-        }
-
-        /// <summary>
-        /// Draw a buffer for enemies. to spawn in.
-        /// </summary>
-        /// <param name="spriteBatch">our sprite.</param>
-        public void BorderBuffer(SpriteBatch spriteBatch)
-        {
-            // Top part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 40, this.borderRect.Y - 40, this.borderRect.Width + 90, this.borderWidth + 40), this.borderColor);
-
-            // Bottom part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 30, this.borderRect.Y + this.borderRect.Height - this.borderWidth, this.borderRect.Width + 30, this.borderWidth + 40), this.borderColor);
-
-            // Left part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X - 60, this.borderRect.Y - 30, this.borderWidth + 60, this.borderRect.Height + 60), this.borderColor);
-
-            // Right part of rectagnle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.borderRect.X + this.borderRect.Width - this.borderWidth, this.borderRect.Y - 30, this.borderWidth + 300, this.borderRect.Height + 30), this.borderColor);
         }
 
         /// <summary>
@@ -219,9 +145,49 @@ namespace Ascension.Content.States
 
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(20f))
+            if (this.IsBossTime(20f) && this.check)
             {
-                this.game.ChangeState(new SecondState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
+                this.check = false;
+                // Initialize a MidBoss LinearFormation
+                Vector2 midBossStart = new Vector2(100, 0);
+                Vector2 midBossEnd = new Vector2(100, 100);
+                int midBossCount = 1;
+                float midBossSpawnDelay = 0.5f;
+                Vector2 midBossVelocity = new Vector2(0, 100);
+                float midBossSpacing = 50f;
+                string midBossType = "MidBoss";
+
+                LinearFormation midBossFormation = new LinearFormation(
+                    midBossStart,
+                    midBossEnd,
+                    midBossCount,
+                    midBossSpawnDelay,
+                    midBossVelocity,
+                    midBossSpacing,
+                    this.bossEnemyFactory,
+                    midBossType);
+                this.enemyFormations.Add(midBossFormation);
+
+                // Initialize an EnemyB LinearFormation
+                Vector2 enemyBStart = new Vector2(300, 0);
+                Vector2 enemyBEnd = new Vector2(300, 100);
+                int enemyBCount = 3;
+                float enemyBSpawnDelay = 1f;
+                Vector2 enemyBVelocity = new Vector2(0, 100);
+                float enemyBSpacing = 50f;
+                string enemyBType = "EnemyB";
+
+                LinearFormation enemyBFormation = new LinearFormation(
+                    enemyBStart,
+                    enemyBEnd,
+                    enemyBCount,
+                    enemyBSpawnDelay,
+                    enemyBVelocity,
+                    enemyBSpacing,
+                    this.basicEnemyFactory, // Use appropriate factory
+                    enemyBType);
+
+                this.enemyFormations.Add(enemyBFormation);
             }
 
             foreach (var formation in this.enemyFormations)
@@ -230,7 +196,7 @@ namespace Ascension.Content.States
             }
 
             this.player.PlayerMovement(updatedPlayerSpeed);
-            this.player.StayInBorder(this.borderRect, this.borderWidth);
+            this.player.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
         }
 
         /// <summary>

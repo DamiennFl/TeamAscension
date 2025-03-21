@@ -31,7 +31,7 @@ namespace Ascension.Enemies.EnemyFormation
             this.enemyVelocity = enemyVelocity;
             this.enemySpacing = enemySpacing;
             this.enemyFactory = factory;
-            this.enemyType = enemyType;      
+            this.enemyType = enemyType;
 
         }
 
