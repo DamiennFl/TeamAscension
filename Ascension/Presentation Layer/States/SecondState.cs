@@ -50,7 +50,7 @@ namespace Ascension.States
 
         private ConcreteEnemyFactory basicEnemyFactory;
 
-        private BossEnemyFactory bossEnemyFactory;
+        // private BossEnemyFactory bossEnemyFactory;
 
 
 
@@ -74,7 +74,7 @@ namespace Ascension.States
 
             // Initialize factories
             this.basicEnemyFactory = new ConcreteEnemyFactory(content, graphicsDevice);
-            this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
+            // this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
 
             // Initialize a MidBoss LinearFormation
             Vector2 midBossStart = new Vector2(100, 0);

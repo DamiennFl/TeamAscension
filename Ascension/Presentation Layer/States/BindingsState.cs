@@ -150,13 +150,11 @@ namespace Ascension.Content.States
                 " the default bindings are shown on the right hand side.\n To set a custom binding you must hold the desired key," +
                 "\n then click the button and your new binding will be set !";
 
-
             string fowardBind = $"Current Binding: {Player.PlayerMovementKeys.Up}";
             string backBind = $"Current Binding: {Player.PlayerMovementKeys.Down}";
             string rightBind = $"Current Binding: {Player.PlayerMovementKeys.Right}";
             string leftBind = $"Current Binding: {Player.PlayerMovementKeys.Left}";
             string sprintBind = $"Current Binding: {Player.PlayerMovementKeys.Sprint}";
-
 
             spriteBatch.DrawString(this.font, instructions, new Vector2(255, 10), Color.White);
 
@@ -179,8 +177,6 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void EscapeButton_Click(object sender, EventArgs e)
         {
-            //KeyboardState x = Keyboard.GetState(); // Initialize the variable 'x'
-            //Player.PlayerMovementKeys.Up = x.GetPressedKeys()[0];
             this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
         }
 
@@ -191,7 +187,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void ForwardButton_Click(object sender, EventArgs e)
         {
-            KeyboardState key = Keyboard.GetState(); // Initialize the variable 'x'
+            KeyboardState key = Keyboard.GetState();
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Up = key.GetPressedKeys()[0];
@@ -205,7 +201,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void BackwardButton_Click(object sender, EventArgs e)
         {
-            KeyboardState key = Keyboard.GetState(); // Initialize the variable 'x'
+            KeyboardState key = Keyboard.GetState();
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Down = key.GetPressedKeys()[0];
@@ -219,7 +215,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void RightButton_Click(object sender, EventArgs e)
         {
-            KeyboardState key = Keyboard.GetState(); // Initialize the variable 'x'
+            KeyboardState key = Keyboard.GetState();
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Right = key.GetPressedKeys()[0];
@@ -233,7 +229,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void LeftButton_Click(object sender, EventArgs e)
         {
-            KeyboardState key = Keyboard.GetState(); // Initialize the variable 'x'
+            KeyboardState key = Keyboard.GetState();
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Left = key.GetPressedKeys()[0];
@@ -247,7 +243,7 @@ namespace Ascension.Content.States
         /// <param name="e">Clicked. </param>
         private void SprintButton_Click(object sender, EventArgs e)
         {
-            KeyboardState key = Keyboard.GetState(); // Initialize the variable 'x'
+            KeyboardState key = Keyboard.GetState();
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Sprint = key.GetPressedKeys()[0];
