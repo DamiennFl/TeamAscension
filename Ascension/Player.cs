@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Ascension.Collision;
 using System.Diagnostics;
+using Ascension.Bullets;
 
 namespace Ascension
 {

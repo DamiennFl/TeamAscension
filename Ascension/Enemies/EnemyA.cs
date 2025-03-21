@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using Ascension.Bullets;
 using Ascension.Collision;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
@@ -115,10 +116,11 @@ namespace Ascension.Enemies
         /// <summary>
         /// Shoots a bullet.
         /// </summary>
-        public override void Shoot()
+        public void Shoot()
         {
-            Random random = new Random();
-            this.RegularShoot();
+            Vector2 bulletVelocity = new Vector2(0, 1.2f);
+            bool isPlayerBullet = false;
+            base.Shoot(bulletVelocity, isPlayerBullet);
         }
 
         /// <summary>

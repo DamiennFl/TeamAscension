@@ -6,7 +6,7 @@ using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension
+namespace Ascension.Bullets
 {
     /// <summary>
     /// Bullet class.
@@ -23,11 +23,11 @@ namespace Ascension
         /// <param name="bulletTexture">Bullet texture.</param>
         public Bullet(int damage, Vector2 velocity, Vector2 bulletPosition, Texture2D bulletTexture)
         {
-            this.Damage = damage;
-            this.Velocity = velocity;
-            this.BulletPosition = bulletPosition;
-            this.BulletTexture = bulletTexture;
-            this.IsActive = true; // activate as soon  as it is
+            Damage = damage;
+            Velocity = velocity;
+            BulletPosition = bulletPosition;
+            BulletTexture = bulletTexture;
+            IsActive = true; // activate as soon  as it is
         }
 
         /// <summary>
@@ -63,17 +63,17 @@ namespace Ascension
         /// <summary>
         /// Gets the collision layer for the bullet.
         /// </summary>
-        public string CollisionLayer => this.IsPlayerBullet ? "PlayerBullet" : "EnemyBullet";
+        public string CollisionLayer => IsPlayerBullet ? "PlayerBullet" : "EnemyBullet";
 
         /// <summary>
         /// Gets the bounding rectangle for collision detection.
         /// </summary>
         /// <returns>A rectangle representing the bullet's collision bounds.</returns>
         public Rectangle Bounds => new Rectangle(
-                (int)this.BulletPosition.X,
-                (int)this.BulletPosition.Y,
-                this.BulletTexture.Width,
-                this.BulletTexture.Height);
+                (int)BulletPosition.X,
+                (int)BulletPosition.Y,
+                BulletTexture.Width,
+                BulletTexture.Height);
 
         /// <summary>
         /// Handles collision with another object.
@@ -82,7 +82,7 @@ namespace Ascension
         public void OnCollision(ICollidable other)
         {
             // Deactivate the bullet when it hits something
-            this.IsActive = false;
+            IsActive = false;
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace Ascension
         /// <param name="spriteBatch">Bullet sprite.</param>
         public void BulletDraw(SpriteBatch spriteBatch)
         {
-            if (this.IsActive)
+            if (IsActive)
             {
-                spriteBatch.Draw(this.BulletTexture, this.BulletPosition, Color.White);
+                spriteBatch.Draw(BulletTexture, BulletPosition, Color.White);
             }
         }
 
@@ -103,11 +103,11 @@ namespace Ascension
         /// <param name="gameTime">Time of game.</param>
         public void BulletUpdate(GameTime gameTime)
         {
-            this.BulletPosition += this.Velocity; // Move bullet by velocity.
+            BulletPosition += Velocity; // Move bullet by velocity.
 
-            if (this.BulletPosition.X < 40 || this.BulletPosition.X > 480 || this.BulletPosition.Y < 40 || this.BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
+            if (BulletPosition.X < 40 || BulletPosition.X > 480 || BulletPosition.Y < 40 || BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
-                this.IsActive = false;
+                IsActive = false;
             }
         }
     }

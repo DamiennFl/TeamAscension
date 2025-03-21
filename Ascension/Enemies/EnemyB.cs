@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Bullets;
 using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -121,7 +122,7 @@ namespace Ascension.Enemies
         /// <summary>
         /// Shoot method for shooting bullets.
         /// </summary>
-        public override void Shoot()
+        public void Shoot()
         {
             this.StarShooting();
         }
