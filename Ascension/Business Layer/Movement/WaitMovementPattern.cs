@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Ascension.Enemies.EnemyMovement
 {
-    internal class WaitPattern : IMovementPattern
+    internal class WaitMovementPattern : IMovementPattern
     {
         private bool isComplete;
 

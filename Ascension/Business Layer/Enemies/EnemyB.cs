@@ -55,8 +55,8 @@ namespace Ascension.Enemies
         /// <param name="position">The position of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
-        public EnemyB(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(speed, position, texture, "EnemyB")
+        public EnemyB(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
+        : base(velocity, position, texture)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;

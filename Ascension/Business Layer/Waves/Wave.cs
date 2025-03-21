@@ -10,8 +10,28 @@ namespace Ascension.Waves
     internal abstract class Wave
     {
         // Time for the Wave
-        public int Time { get; set; }
+        public float Duration { get; set; }
 
-        private List<EnemyFormation> waveFormations = new List<EnemyFormation>();
+        public string EnemyType { get; set; }
+
+        public int EnemyCount { get; set; }
+
+        public string EnemyMovementPattern { get; set; }
+
+        public float SpawnInterval { get; set; }
+
+        public Wave(float duration, , float? spawnInterval)
+        {
+            this.Duration = duration;
+            this.EnemyType = EnemyType;
+            if (spawnInterval != null)
+            {
+                this.SpawnInterval = (float)spawnInterval;
+            }
+            else
+            {
+                this.SpawnInterval = 0.2f;
+            }
+        }
     }
 }

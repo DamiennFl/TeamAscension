@@ -52,8 +52,8 @@ namespace Ascension.Enemies
         /// <param name="speed">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
-        public FinalBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(speed, position, texture, "FinalBoss")
+        public FinalBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
+        : base(velocity, position, texture)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;

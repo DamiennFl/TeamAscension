@@ -26,7 +26,7 @@ namespace Ascension
         {
             this.Damage = damage;
             this.Velocity = velocity;
-            this.BulletPosition = bulletPosition;
+            this.Position = bulletPosition;
             this.BulletTexture = bulletTexture;
             this.IsActive = true; // activate as soon  as it is
         }
@@ -49,7 +49,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the speed of the bullet.
         /// </summary>
-        public Vector2 BulletPosition { get; set; }
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the bullet is active.

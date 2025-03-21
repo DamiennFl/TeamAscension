@@ -40,9 +40,9 @@ namespace Ascension.Enemies
         protected ContentManager ContentManager => this.contentManager;
 
         // Abstract Factory Methods to create Enemies. FACTORY METHOD PATTERN
-        public abstract Enemy CreateEnemyA(Vector2 position, int speed);
-        public abstract Enemy CreateEnemyB(Vector2 position, int speed);
-        public abstract Enemy CreateMidBoss(Vector2 position, int speed);
-        public abstract Enemy CreateFinalBoss(Vector2 position, int speed);
+        public abstract Enemy CreateEnemyA(Vector2 position, Vector2 velocity);
+        public abstract Enemy CreateEnemyB(Vector2 position, Vector2 velocity);
+        public abstract Enemy CreateMidBoss(Vector2 position, Vector2 velocity);
+        public abstract Enemy CreateFinalBoss(Vector2 position, Vector2 velocity);
     }
 }

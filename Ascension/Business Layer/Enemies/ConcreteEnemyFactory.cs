@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -44,24 +45,24 @@ namespace Ascension.Enemies
         }
 
         // TODO: Add relevant enemies to a Formation object, instead of having a Factory in each Formation
-        public override Enemy CreateEnemyA(Vector2 position, int speed)
+        public override Enemy CreateEnemyA(Vector2 position, Vector2 velocity)
         {
-            return new EnemyA(speed, position, this.enemyTextures["SpriteA"], this.ContentManager);
+            return new EnemyA(velocity, position, this.enemyTextures["SpriteA"], this.ContentManager);
         }
 
-        public override Enemy CreateEnemyB(Vector2 position, int speed)
+        public override Enemy CreateEnemyB(Vector2 position, Vector2 velocity)
         {
-            return new EnemyB(speed, position, this.enemyTextures["SpriteB"], this.ContentManager);
+            return new EnemyB(velocity, position, this.enemyTextures["SpriteB"], this.ContentManager);
         }
 
-        public override Enemy CreateMidBoss(Vector2 position, int speed)
+        public override Enemy CreateMidBoss(Vector2 position, Vector2 velocity)
         {
-            return new MidBoss(speed, position, this.enemyTextures["MidBoss"], this.ContentManager);
+            return new MidBoss(velocity, position, this.enemyTextures["MidBoss"], this.ContentManager);
         }
 
-        public override Enemy CreateFinalBoss(Vector2 position, int speed)
+        public override Enemy CreateFinalBoss(Vector2 position, Vector2 velocity)
         {
-            return new MidBoss(speed, position, this.enemyTextures["FinalBoss"], this.ContentManager);
+            return new MidBoss(velocity, position, this.enemyTextures["FinalBoss"], this.ContentManager);
         }
     }
 }
