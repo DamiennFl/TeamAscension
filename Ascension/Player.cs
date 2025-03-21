@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,6 +30,8 @@ namespace Ascension
 
         private Texture2D playerTexture;
 
+        private Texture2D bulletTexture;
+
         /// <summary>
         /// Gets or sets the player's score.
         /// </summary>
@@ -43,6 +46,7 @@ namespace Ascension
         /// </summary>
         protected Vector2 playerPosition;
 
+
         public Vector2 PlayerSpawn
         {
             get
@@ -51,17 +55,34 @@ namespace Ascension
             }
         }
 
+
+        public const int PlayerDamage = 10;
+
+        public Vector2 BulletVelocity = new Vector2(0, 2f);
+
+        public Vector2 BulletPosition;
+
+        public Bullet bullet;
+
+        public List<Bullet> bullets = new List<Bullet>();
+
+        private PlayArea playArea;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="texture">Texture of player.</param>
         /// <param name="position">Position of player.</param>
-        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager)
+        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager, PlayArea playArea)
         {
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
+            this.bulletTexture = contentManager.Load<Texture2D>("Bullets/BulletGreen");
+            this.playArea = playArea;
 
             this.playerPosition = this.PlayerSpawn;
+            this.BulletPosition = this.playerPosition; // Spawning position of the bullet should be the where the player is at
+            this.bullet = new Bullet(PlayerDamage, BulletVelocity, this.BulletPosition, this.bulletTexture);
         }
 
         /// <summary>
@@ -85,13 +106,30 @@ namespace Ascension
                 new Vector2(0.25F, 0.25F),
                 SpriteEffects.None,
                 0f);
+
+            foreach (var bullet in this.bullets)
+            {
+                bullet.BulletDraw(spriteBatch);
+            }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+
+            this.PlayerMovement();
+            this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
+            this.PlayerShoot();
+            foreach (var bullet in this.bullets)
+            {
+                bullet.BulletUpdate(gameTime);
+            }
         }
 
         /// <summary>
         /// Player movement method.
         /// </summary>
         /// <param name="updatedPlayerSpeed">updating the player speed.</param>
-        public void PlayerMovement(float updatedPlayerSpeed)
+        public void PlayerMovement()
         {
             var kstate = Keyboard.GetState();
 
@@ -174,6 +212,13 @@ namespace Ascension
         public void PlayerShoot()
         {
             // Shoot bullet
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                Texture2D bulletTexture = this.bulletTexture;
+                this.BulletPosition = this.playerPosition;
+                this.bullet = new Bullet(PlayerDamage, -BulletVelocity, this.BulletPosition, bulletTexture);
+                this.bullets.Add(this.bullet);
+            }
 
         }
 

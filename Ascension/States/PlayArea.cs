@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Ascension.States
 {
-    internal class PlayArea
+    public class PlayArea
     {
         /// <summary>
         /// Gets the Border Rectangle.

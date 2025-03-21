@@ -68,7 +68,7 @@ namespace Ascension.Content.States
             : base(game, graphicsDevice, content)
         {
             this.playArea = new PlayArea(graphicsDevice, content);
-            this.player = new Player(graphicsDevice, content);
+            this.player = new Player(graphicsDevice, content, this.playArea);
 
             this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
             this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
@@ -141,8 +141,6 @@ namespace Ascension.Content.States
         /// <param name="gameTime">.</param>
         public override void Update(GameTime gameTime)
         {
-            float updatedPlayerSpeed = this.player.PlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
             if (this.IsBossTime(20f) && this.check)
@@ -195,8 +193,7 @@ namespace Ascension.Content.States
                 formation.Update(gameTime);
             }
 
-            this.player.PlayerMovement(updatedPlayerSpeed);
-            this.player.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
+            this.player.Update(gameTime);
         }
 
         /// <summary>
