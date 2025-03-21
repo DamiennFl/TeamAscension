@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -25,26 +26,42 @@ namespace Ascension
         public float PlayerSpeed;
 #pragma warning restore SA1401 // Fields should be private
 
+
+        private Texture2D playerTexture;
+
         /// <summary>
         /// Gets or sets the player's score.
         /// </summary>
 #pragma warning disable SA1401 // Fields should be private
-        protected readonly Texture2D playerTexture;
+
+
+        private GraphicsDevice graphicsDevice;
+
 
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
         protected Vector2 playerPosition;
 
+        public Vector2 PlayerSpawn
+        {
+            get
+            {
+                return new Vector2(this.graphicsDevice.Viewport.Width / 4, this.graphicsDevice.Viewport.Height - 150);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="texture">Texture of player.</param>
         /// <param name="position">Position of player.</param>
-        public Player(Texture2D texture, Vector2 position)
+        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            this.playerTexture = texture;
-            this.playerPosition = position;
+            this.graphicsDevice = graphicsDevice;
+            this.playerTexture = contentManager.Load<Texture2D>("ball");
+
+            this.playerPosition = this.PlayerSpawn;
         }
 
         /// <summary>
@@ -153,5 +170,13 @@ namespace Ascension
                 this.playerPosition.Y = screenBounds.Y + screenBounds.Height - (2 * borderWidth) - radius;
             }
         }
+
+        public void PlayerShoot()
+        {
+            // Shoot bullet
+
+        }
+
+
     }
 }

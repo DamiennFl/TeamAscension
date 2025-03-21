@@ -54,14 +54,6 @@ namespace Ascension.States
         }
 
 
-        public void DrawGameState(SpriteBatch spriteBatch)
-        {
-            this.DrawBackground(spriteBatch);
-            this.BorderDraw(spriteBatch);
-            this.BorderBuffer(spriteBatch);
-        }
-
-
         /// <summary>
         /// Draws the background for us.
         /// </summary>

@@ -68,7 +68,7 @@ namespace Ascension.Content.States
             : base(game, graphicsDevice, content)
         {
             this.playArea = new PlayArea(graphicsDevice, content);
-            this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
+            this.player = new Player(graphicsDevice, content);
 
             this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
             this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized

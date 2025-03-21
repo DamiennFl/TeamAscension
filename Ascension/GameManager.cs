@@ -47,15 +47,5 @@ namespace Ascension
         {
             // Initialize the game manager.
         }
-
-        private void InitializePlayer()
-        {
-            // Initialize the game manager.
-            this.player = new Player(
-                this.contentManager.Load<Texture2D>("ball"),
-                new Vector2(this.graphicsDevice.Viewport.Width / 4, this.graphicsDevice.Viewport.Height / 2));
-        }
-
-
     }
 }
