@@ -113,7 +113,7 @@ namespace Ascension.Content.States
             float swoopEnemySpacing = 50f;
             string swoopEnemyType = "EnemyA";
 
-            SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
+            SwoopFormationOLD swoopFormation = new SwoopFormationOLD(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
             this.enemyFormations.Add(swoopFormation);
         }
 
