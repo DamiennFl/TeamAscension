@@ -1,7 +1,10 @@
-using System;
+// <copyright file="CollisionManager.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
+using Ascension.Enemies;
 
 namespace Ascension.Collision
 {
@@ -10,8 +13,25 @@ namespace Ascension.Collision
     /// </summary>
     public class CollisionManager
     {
+        /// <summary>
+        /// A collection of objects that can collide with each other in the game world.
+        /// </summary>
+        /// <remarks>
+        /// This list maintains all entities that implement the ICollidable interface,
+        /// allowing the collision manager to track and process collision detection between objects.
+        /// </remarks>
         private readonly List<ICollidable> collidables = new List<ICollidable>();
+
+        /// <summary>
+        /// A dictionary that defines collision relationships between different types of game objects.
+        /// The key represents a collider type, and the value is a list of types it can collide with.
+        /// </summary>
         private readonly Dictionary<string, List<string>> collisionMatrix = new Dictionary<string, List<string>>();
+
+        /// <summary>
+        /// Queue that stores collision commands to be processed.
+        /// </summary>
+        private readonly Queue<ICollisionCommand> commandQueue = new Queue<ICollisionCommand>();
 
         /// <summary>
         /// Registers a collidable object with the collision system.
@@ -58,6 +78,7 @@ namespace Ascension.Collision
         /// </summary>
         public void Update()
         {
+            // Detect collisions
             for (int i = 0; i < this.collidables.Count; i++)
             {
                 for (int j = i + 1; j < this.collidables.Count; j++)
@@ -65,23 +86,58 @@ namespace Ascension.Collision
                     var a = this.collidables[i];
                     var b = this.collidables[j];
 
-                    // Skip if these layers shouldn't collide
-                    if (!this.ShouldCollide(a.CollisionLayer, b.CollisionLayer))
+                    // Skip if these layers shouldn't or don't collide
+                    if (!this.ShouldCollide(a.CollisionLayer, b.CollisionLayer) || !this.CheckCollision(a, b))
                     {
                         continue;
                     }
 
-                    if (this.CheckCollision(a, b))
-                    {
-                        Debug.WriteLine("COLLISION DETECTED!");
-
-                        a.OnCollision(b);
-                        b.OnCollision(a);
-                    }
+                    this.GenerateCommands(a, b);
+                    this.GenerateCommands(b, a);
                 }
+            }
+
+            // Execute queued commands
+            while (this.commandQueue.Count > 0)
+            {
+                this.commandQueue.Dequeue().Execute();
             }
         }
 
+        /// <summary>
+        /// Generates collision-related commands based on the interaction between two collidable objects.
+        /// </summary>
+        /// <param name="a">The first collidable object in the collision.</param>
+        /// <param name="b">The second collidable object in the collision.</param>
+        /// <remarks>
+        /// Current collision handling:
+        /// - Player hit by enemy bullet: Damages player and deactivates bullet
+        /// - Enemy hit by player bullet: Deactivates bullet.
+        /// </remarks>
+        private void GenerateCommands(ICollidable a, ICollidable b)
+        {
+            switch (a)
+            {
+                case Player player when b is Bullet bullet && !bullet.IsPlayerBullet:
+                    this.commandQueue.Enqueue(new DamagePlayerCommand(player, bullet.Damage));
+                    this.commandQueue.Enqueue(new DeactivateBulletCommand(bullet));
+                    break;
+
+                case Bullet bulletA when b is Enemy && bulletA.IsPlayerBullet:
+                    this.commandQueue.Enqueue(new DeactivateBulletCommand(bulletA));
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether two collision layers should interact with each other.
+        /// </summary>
+        /// <param name="layer1">The first collision layer to check.</param>
+        /// <param name="layer2">The second collision layer to check.</param>
+        /// <returns>
+        /// True if layer1 is configured to collide with layer2, false otherwise.
+        /// Returns false if layer1 is not found in the collision matrix.
+        /// </returns>
         private bool ShouldCollide(string layer1, string layer2)
         {
             if (this.collisionMatrix.ContainsKey(layer1))
@@ -92,6 +148,12 @@ namespace Ascension.Collision
             return false;
         }
 
+        /// <summary>
+        /// Checks if two collidable objects are intersecting.
+        /// </summary>
+        /// <param name="a">The first collidable object to check.</param>
+        /// <param name="b">The second collidable object to check.</param>
+        /// <returns>True if the objects' bounds intersect, false otherwise.</returns>
         private bool CheckCollision(ICollidable a, ICollidable b)
         {
             return a.Bounds.Intersects(b.Bounds);

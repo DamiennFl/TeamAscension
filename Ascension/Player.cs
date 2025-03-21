@@ -200,21 +200,5 @@ namespace Ascension
                     radius * 2);
             }
         }
-
-        /// <summary>
-        /// Handles collision with another object.
-        /// </summary>
-        /// <param name="other">The object that collided with the player.</param>
-        public void OnCollision(ICollidable other)
-        {
-            if (other is Bullet bullet && !bullet.IsPlayerBullet)
-            {
-                // Take damage from enemy bullets
-                this.Health -= bullet.Damage;
-                Debug.WriteLine($"Player Health: {this.Health}");
-
-                // Can add effects here (sound, visual, etc.)
-            }
-        }
     }
 }

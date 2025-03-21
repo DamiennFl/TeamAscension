@@ -20,11 +20,5 @@ namespace Ascension.Collision
         /// Gets the collision layer this object belongs to.
         /// </summary>
         string CollisionLayer { get; }
-
-        /// <summary>
-        /// Called when this object collides with another object.
-        /// </summary>
-        /// <param name="other">The other object involved in the collision.</param>
-        void OnCollision(ICollidable other);
     }
 }
