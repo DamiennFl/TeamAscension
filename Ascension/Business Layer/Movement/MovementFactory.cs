@@ -11,7 +11,7 @@ namespace Ascension.Business_Layer.Movement
     {
         public MovementFactory() { }
 
-        public IMovementPattern CreateMovementPattern(string type)
+        public IMovementPattern CreateMovementPattern(string type, float duration)
         {
             switch (type)
             {
@@ -19,10 +19,6 @@ namespace Ascension.Business_Layer.Movement
                     return new LinearMovementPattern();
                 case "Circular":
                     return new CircularMovementPattern();
-                case "ThereAndBack":
-                    return new ThereAndBackMovementPattern();
-                case "Wait":
-                    return new WaitMovementPattern();
                 case "ZigZag":
                     return new ZigZagMovementPattern();
                 default:

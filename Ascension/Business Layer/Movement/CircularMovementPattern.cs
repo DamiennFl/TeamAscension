@@ -16,6 +16,8 @@ namespace Ascension.Enemies.EnemyMovement
         private bool complete = false;
         private Vector2 linearDirection;
         private float linearSpeed = 10f; // Adjust the speed as needed
+        public float Duration { get; set; }
+
 
         public CircularMovementPattern()
         {

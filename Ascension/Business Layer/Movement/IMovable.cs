@@ -2,7 +2,7 @@
 
 namespace Ascension.Business_Layer.Movement
 {
-    internal interface IMovable
+    public interface IMovable
     {
         Vector2 Position { get; set; }
 

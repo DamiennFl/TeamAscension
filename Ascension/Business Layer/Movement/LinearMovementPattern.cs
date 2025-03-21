@@ -1,5 +1,6 @@
 ﻿using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
+using System.Runtime.CompilerServices;
 
 namespace Ascension.Enemies.EnemyMovement
 {
@@ -7,15 +8,13 @@ namespace Ascension.Enemies.EnemyMovement
     {
         private bool complete = false;
 
-        public void Move(GameTime gameTime, IMovable movable, float duration)
+        public void Move(GameTime gameTime, IMovable movable)
         {
             int timeMoved = 0;
             Vector2 velocity = movable.Velocity;
-            while (timeMoved < duration)
-            {
-                movable.Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                timeMoved += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-            }
+
+            movable.Position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeMoved += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             this.complete = true;
         }

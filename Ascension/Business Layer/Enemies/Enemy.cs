@@ -23,7 +23,7 @@ namespace Ascension.Enemies
         /// <summary>
         /// Queue of movement patterns.
         /// </summary>
-        protected IMovementPattern movementPattern;
+        public IMovementPattern MovementPattern { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
