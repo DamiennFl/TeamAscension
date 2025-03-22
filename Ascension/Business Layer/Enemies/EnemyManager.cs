@@ -73,13 +73,11 @@ namespace Ascension.Business_Layer.Enemies
 
                     timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                    MoveEnemyOffScreen(gameTime);
                 }
             }
         }
 
-        private void MoveEnemyOffScreen(GameTime gameTime)
+        private void MoveEnemyOffScreen(GameTime gameTime, Enemy enemy)
         {
             // Move enemy to closest border with some randomization
             // Check off-screen position, if they are then remove from the list
