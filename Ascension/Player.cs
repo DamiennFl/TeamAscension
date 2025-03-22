@@ -241,7 +241,7 @@ namespace Ascension
             {
                 Texture2D bulletTexture = this.bulletTexture;
                 this.BulletPosition = this.playerPosition;
-                this.bullet = new Bullet(PlayerDamage, -BulletVelocity, this.BulletPosition, bulletTexture);
+                this.bullet = new Bullet(PlayerDamage, -this.BulletVelocity, this.BulletPosition, bulletTexture);
                 this.bullets.Add(this.bullet);
                 this.shootTimer = 0f;
             }
