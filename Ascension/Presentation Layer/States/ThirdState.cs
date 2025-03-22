@@ -1,27 +1,26 @@
-﻿// <copyright file="SecondState.cs" company="Team Ascension">
+﻿// <copyright file="ThirdState.cs" company="Team Ascension">
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Enemies;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ascension.Content.Controls;
 using Ascension.Content.States;
-using Ascension.Enemies;
-using Ascension.Enemies.EnemyFormation;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.States
 {
     /// <summary>
-    /// The second state.
+    /// The third state.
     /// </summary>
-    internal class SecondState : FirstState
-    {
+    internal class ThirdState : FirstState
+    {       
+
         /// <summary>
         /// The list of components.
         /// </summary>
@@ -49,7 +48,7 @@ namespace Ascension.States
         /// </summary>
         private List<EnemyFormation> enemyFormations;
 
-        private BasicEnemyFactory basicEnemyFactory;
+        private ConcreteEnemyFactory basicEnemyFactory;
 
         private BossEnemyFactory bossEnemyFactory;
 
@@ -63,39 +62,40 @@ namespace Ascension.States
         /// <param name="content">Content manager.</param>
         /// <param name="currentPlayer">Current player.</param>
         /// <param name="currentEnemyFormation">Enemy formation.</param>
-        public SecondState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation)
+        public ThirdState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content, Player currentPlayer, List<EnemyFormation> currentEnemyFormation)
             : base(game, graphicsDevice, content)
         {
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
-            this.backGround = content.Load<Texture2D>("Backgrounds/Stage2");
+            this.backGround = content.Load<Texture2D>("Backgrounds/Stage3");
             this.components = new List<Components>();
             this.player = currentPlayer;
             this.enemyFormations = currentEnemyFormation;
 
             // Initialize factories
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.basicEnemyFactory = new ConcreteEnemyFactory(content, graphicsDevice);
             this.bossEnemyFactory = new BossEnemyFactory(content, graphicsDevice); // Already initialized
 
             // Initialize a MidBoss LinearFormation
-            Vector2 midBossStart = new Vector2(100, 0);
-            Vector2 midBossEnd = new Vector2(100, 100);
-            int midBossCount = 1;
-            float midBossSpawnDelay = 0.5f;
-            Vector2 midBossVelocity = new Vector2(0, 100);
-            float midBossSpacing = 50f;
-            string midBossType = "MidBoss";
+            Vector2 finalBossStart = new Vector2(100, 0);
+            Vector2 finalBossEnd = new Vector2(100, 100);
+            int finalBossCount = 1;
+            float finalBossSpawnDelay = 0.5f;
+            Vector2 finalBossVelocity = new Vector2(0, 300);
+            float finalBossSpacing = 50f;
+            string finalBossType = "FinalBoss";
 
-            LinearFormation midBossFormation = new LinearFormation(
-                midBossStart,
-                midBossEnd,
-                midBossCount,
-                midBossSpawnDelay,
-                midBossVelocity,
-                midBossSpacing,
+            LinearFormation finalBossFormation = new LinearFormation(
+                finalBossStart,
+                finalBossEnd,
+                finalBossCount,
+                finalBossSpawnDelay,
+                finalBossVelocity,
+                finalBossSpacing,
                 this.bossEnemyFactory,
-                midBossType);
-            this.enemyFormations.Add(midBossFormation);
+                finalBossType);
+
+            this.enemyFormations.Add(finalBossFormation);
 
             // Initialize an EnemyB LinearFormation
             Vector2 enemyBStart = new Vector2(300, 0);
@@ -116,7 +116,22 @@ namespace Ascension.States
                 this.basicEnemyFactory, // Use appropriate factory
                 enemyBType);
 
+
+
             this.enemyFormations.Add(enemyBFormation);
+
+
+            // Initialize a LinearFormation
+            Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
+            Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
+            int numEnemies = 7;
+            float spawnDelay = 0.5f;
+            Vector2 enemyVelocity = new Vector2(0, 100);
+            float enemySpacing = 50f;
+            string enemyType = "EnemyA";
+
+            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
+            this.enemyFormations.Add(linearFormation);
         }
 
         /// <summary>
@@ -165,11 +180,6 @@ namespace Ascension.States
             this.player.PlayerMovement(updatedPlayerSpeed);
             this.player.StayInBorder(this.borderRect, this.borderWidth);
 
-
-            if (this.finalBossTimer >= 30)
-            {
-                this.game.ChangeState(new ThirdState(this.game, this.graphicsDevice, this.content, this.player, this.enemyFormations));
-            }
         }
     }
 }

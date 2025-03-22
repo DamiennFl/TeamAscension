@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Enemies.EnemyFormation
+namespace Ascension.Enemies
 {
     /// <summary>
     /// EnemyFormation is a grouping of Enemies with the same Movement, in a formation.

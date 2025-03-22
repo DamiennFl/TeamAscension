@@ -39,12 +39,10 @@ namespace Ascension.Enemies
         /// </summary>
         protected ContentManager ContentManager => this.contentManager;
 
-        /// <summary>
-        /// Creates an enemy at the specified position.
-        /// </summary>
-        /// <param name="position">The spawn position for the enemy.</param>
-        /// <param name="enemyType">The type of enemy to spawn.</param>
-        /// <returns>A new enemy instance.</returns>
-        public abstract Enemy CreateEnemy(Vector2 position, string enemyType);
+        // Abstract Factory Methods to create Enemies. FACTORY METHOD PATTERN
+        public abstract Enemy CreateEnemyA(Vector2 position, int speed);
+        public abstract Enemy CreateEnemyB(Vector2 position, int speed);
+        public abstract Enemy CreateMidBoss(Vector2 position, int speed);
+        public abstract Enemy CreateFinalBoss(Vector2 position, int speed);
     }
 }

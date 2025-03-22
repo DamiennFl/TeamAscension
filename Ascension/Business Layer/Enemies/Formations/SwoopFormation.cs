@@ -3,7 +3,7 @@ using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Ascension.Enemies.EnemyFormation
+namespace Ascension.Enemies
 {
     internal class SwoopFormation : EnemyFormation
     {

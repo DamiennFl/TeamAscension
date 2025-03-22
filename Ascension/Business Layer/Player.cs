@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
+   
     /// <summary>
     /// Player class.
     /// </summary>
@@ -31,10 +32,41 @@ namespace Ascension
 #pragma warning disable SA1401 // Fields should be private
         protected readonly Texture2D playerTexture;
 
+    
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
         protected Vector2 playerPosition;
+
+        public struct PlayerMovementKeys
+        {
+            /// <summary>
+            /// Gets or sets the up key.
+            /// </summary>
+            public static Keys Up = Keys.W;
+
+            /// <summary>
+            /// Gets or sets the down key.
+            /// </summary>
+            public static Keys Down = Keys.S;
+
+            /// <summary>
+            /// Gets or sets the left key.
+            /// </summary>
+            public static Keys Left = Keys.A;
+
+            /// <summary>
+            /// Gets or sets the right key.
+            /// </summary>
+            public static Keys Right = Keys.D;
+
+            /// <summary>
+            /// Gets or sets the left key.
+            /// </summary>
+            public static Keys Sprint = Keys.LeftShift;
+        }
+
+       
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -45,6 +77,14 @@ namespace Ascension
         {
             this.playerTexture = texture;
             this.playerPosition = position;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Player"/> class.
+        /// Empty constructor init.
+        /// </summary>
+        public Player()
+        {
         }
 
         /// <summary>
@@ -81,27 +121,27 @@ namespace Ascension
             // Vector to normalize diagonal movement
             Vector2 dir = Vector2.Zero;
 
-            if (kstate.IsKeyDown(Keys.W))
+            if (kstate.IsKeyDown(PlayerMovementKeys.Up))
             {
                 dir.Y -= 1;
             }
 
-            if (kstate.IsKeyDown(Keys.S))
+            if (kstate.IsKeyDown(PlayerMovementKeys.Down))
             {
                 dir.Y += 1;
             }
 
-            if (kstate.IsKeyDown(Keys.A))
+            if (kstate.IsKeyDown(PlayerMovementKeys.Left))
             {
                 dir.X -= 1;
             }
 
-            if (kstate.IsKeyDown(Keys.D))
+            if (kstate.IsKeyDown(PlayerMovementKeys.Right))
             {
                 dir.X += 1;
             }
 
-            if (kstate.IsKeyDown(Keys.LeftShift))
+            if (kstate.IsKeyDown(PlayerMovementKeys.Sprint))
             {
                 this.PlayerSpeed = 7f;
             }

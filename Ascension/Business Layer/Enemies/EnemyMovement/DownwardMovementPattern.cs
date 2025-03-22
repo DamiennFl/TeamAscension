@@ -14,7 +14,6 @@ namespace Ascension.Enemies.EnemyMovement
             this.targetPosition = targetPosition;
             this.velocity = velocity;
             this.isComplete = false;
-            
         }
 
         public void Update(GameTime gameTime, Enemy enemy)

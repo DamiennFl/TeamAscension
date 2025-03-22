@@ -4,7 +4,6 @@
 
 using System.Collections.Generic;
 using Ascension.Enemies;
-using Ascension.Enemies.EnemyFormation;
 using Ascension.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -76,7 +75,7 @@ namespace Ascension.Content.States
         /// <summary>
         /// Basic enemy factory.
         /// </summary>
-        private BasicEnemyFactory basicEnemyFactory;
+        private ConcreteEnemyFactory basicEnemyFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FirstState"/> class.
@@ -92,7 +91,7 @@ namespace Ascension.Content.States
             this.borderTexture.SetData(new[] { Color.AliceBlue });
             this.player = new Player(content.Load<Texture2D>("ball"), new Vector2(graphicsDevice.Viewport.Width / 4, graphicsDevice.Viewport.Height / 2));
 
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice);
+            this.basicEnemyFactory = new ConcreteEnemyFactory(content, graphicsDevice);
 
             // Initialize a LinearFormation
             Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
