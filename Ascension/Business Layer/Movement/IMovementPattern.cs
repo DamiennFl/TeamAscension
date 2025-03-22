@@ -1,6 +1,7 @@
 ﻿// <copyright file="IMovementPattern.cs" company="Team Ascension">
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
+using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 
 namespace Ascension.Enemies.EnemyMovement
@@ -10,15 +11,8 @@ namespace Ascension.Enemies.EnemyMovement
     /// </summary>
     internal interface IMovementPattern
     {
-        /// <summary>
-        /// Updates the Enemy movement based on the pattern.
-        /// </summary>
-        /// <param name="gameTime">GameTime to sync with game run-time.</param>
-        /// <param name="enemy">Enemy to update.</param>
-        void Update(GameTime gameTime, Enemy enemy)
-        {
-        }
+        public void Move(GameTime gameTime, IMovable movable, float duration);
 
-        bool IsComplete();
+        public bool IsComplete();
     }
 }

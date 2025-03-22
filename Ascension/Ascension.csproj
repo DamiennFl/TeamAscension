@@ -37,6 +37,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Business Layer\Enemies\Formations\" />
     <Folder Include="Data Layer\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

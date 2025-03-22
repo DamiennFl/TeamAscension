@@ -2,6 +2,7 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,7 +12,7 @@ namespace Ascension
     /// <summary>
     /// Bullet class.
     /// </summary>
-    public class Bullet
+    public class Bullet : IMovable // Implement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bullet"/> class.

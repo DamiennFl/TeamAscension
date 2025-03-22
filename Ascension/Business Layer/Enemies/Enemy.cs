@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using Ascension.Business_Layer.Movement;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,12 +13,11 @@ namespace Ascension.Enemies
     /// <summary>
     /// Abstract class for enemies.
     /// </summary>
-    internal abstract class Enemy
+    internal abstract class Enemy : IMovable
     {
         /// <summary>
         /// The texture for the enemy.
         /// </summary>
-#pragma warning disable SA1401 // Fields should be private
         protected Texture2D texture;
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace Ascension.Enemies
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="enemyType">Type of enemy (A or B).</param>
-        public Enemy(int speed, Vector2 position, Texture2D texture, string enemyType)
+        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture, string enemyType)
         {
-            this.Speed = speed;
+            this.velocity = velocity;
             this.texture = texture;
             this.Position = position;
             this.EnemyType = enemyType;
@@ -48,7 +48,7 @@ namespace Ascension.Enemies
         /// <summary>
         /// Gets or sets the speed of the enemy.
         /// </summary>
-        public int Speed { get; set; }
+        public Vector2 Velocity { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the enemy.
@@ -98,12 +98,7 @@ namespace Ascension.Enemies
             if (this.movementPatterns.Count > 0)
             {
                 var currentPattern = this.movementPatterns.Peek();
-                currentPattern.Update(gameTime, this);
-
-                if (currentPattern.IsComplete())
-                {
-                    this.movementPatterns.Dequeue();
-                }
+                currentPattern.Move(gameTime, this);
             }
         }
     }
