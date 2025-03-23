@@ -5,7 +5,6 @@
 using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
@@ -55,6 +54,36 @@ namespace Ascension
         /// Gets or sets a value indicating whether the bullet is active.
         /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this bullet was fired by the player.
+        /// </summary>
+        public bool IsPlayerBullet { get; set; }
+
+        /// <summary>
+        /// Gets the collision layer for the bullet.
+        /// </summary>
+        public string CollisionLayer => this.IsPlayerBullet ? "PlayerBullet" : "EnemyBullet";
+
+        /// <summary>
+        /// Gets the bounding rectangle for collision detection.
+        /// </summary>
+        /// <returns>A rectangle representing the bullet's collision bounds.</returns>
+        public Rectangle Bounds => new Rectangle(
+                (int)this.BulletPosition.X,
+                (int)this.BulletPosition.Y,
+                this.BulletTexture.Width,
+                this.BulletTexture.Height);
+
+        /// <summary>
+        /// Handles collision with another object.
+        /// </summary>
+        /// <param name="other">The object that collided with the bullet.</param>
+        public void OnCollision(ICollidable other)
+        {
+            // Deactivate the bullet when it hits something
+            this.IsActive = false;
+        }
 
         /// <summary>
         /// Bullet draw.

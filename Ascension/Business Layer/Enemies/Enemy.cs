@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using Ascension.Business_Layer.Movement;
+using Ascension.Collision;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,6 +26,8 @@ namespace Ascension.Enemies
         /// </summary>
         protected Queue<IMovementPattern> movementPatterns = new Queue<IMovementPattern>();
 
+        protected CollisionManager collisionManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
         /// </summary>
@@ -34,10 +37,11 @@ namespace Ascension.Enemies
         /// <param name="enemyType">Type of enemy (A or B).</param>
         public Enemy(Vector2 velocity, Vector2 position, Texture2D texture, string enemyType)
         {
-            this.velocity = velocity;
+            this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
             this.EnemyType = enemyType;
+            this.collisionManager = collisionManager;
         }
 
         /// <summary>

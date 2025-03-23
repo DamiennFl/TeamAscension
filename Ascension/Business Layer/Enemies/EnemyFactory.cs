@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,8 +23,14 @@ namespace Ascension.Enemies
     /// </remarks>
     /// <param name="contentManager">The content manager for loading assets.</param>
     /// <param name="graphicsDevice">The graphics device for rendering.</param>
-    internal abstract class EnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice)
+    internal abstract class EnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
     {
+
+        /// <summary>
+        /// The collision manager for handling collisions.
+        /// </summary>
+        private readonly CollisionManager collisionManager = collisionManager;
+
         /// <summary>
         /// Content manager for loading game assets.
         /// </summary>
@@ -33,6 +40,11 @@ namespace Ascension.Enemies
         /// Graphics device for rendering.
         /// </summary>
         private readonly GraphicsDevice graphicsDevice = graphicsDevice;
+
+        /// <summary>
+        /// Gets the collision manager for handling collisions.
+        /// </summary>
+        protected CollisionManager CollisionManager => this.collisionManager;
 
         /// <summary>
         /// Gets the content manager for loading game assets.

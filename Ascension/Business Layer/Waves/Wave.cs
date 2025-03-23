@@ -13,5 +13,6 @@ namespace Ascension.Waves
         public int Time { get; set; }
 
         private List<EnemyFormation> waveFormations = new List<EnemyFormation>();
+
     }
 }
