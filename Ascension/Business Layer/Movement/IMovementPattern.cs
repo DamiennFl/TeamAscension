@@ -11,7 +11,5 @@ namespace Ascension
     public interface IMovementPattern
     {
         public void Move(GameTime gameTime, IMovable movable);
-
-        public bool IsComplete();
     }
 }

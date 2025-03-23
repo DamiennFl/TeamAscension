@@ -12,11 +12,9 @@ namespace Ascension
         private Vector2 center;
         private float radius;
         private float angle;
-        private bool complete = false;
         private Vector2 linearDirection;
         private float linearSpeed = 10f; // Adjust the speed as needed
         public float Duration { get; set; }
-
 
         public CircularMovementPattern()
         {
@@ -28,11 +26,6 @@ namespace Ascension
 
         public void Move(GameTime gameTime, IMovable movable)
         {
-            if (this.complete)
-            {
-                return;
-            }
-
             this.startPosition = movable.Position;
             this.radius = 90; // Default radius, can be adjusted as needed
             this.center = this.startPosition + new Vector2(0, this.radius);
@@ -60,12 +53,6 @@ namespace Ascension
 
             elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            this.complete = true;
-        }
-
-        public bool IsComplete()
-        {
-            return this.complete;
         }
     }
 }

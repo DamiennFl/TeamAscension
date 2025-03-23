@@ -110,7 +110,6 @@ namespace Ascension
             }
 
             this.enemyManager.Update(gameTime);
-            this.enemyManager.SpawnEnemy(waves[0]);
 
             this.player.Update(gameTime);
 
@@ -143,20 +142,32 @@ namespace Ascension
 
         private void InitWaves()
         {
-            float duration = 10;
+            float duration = 5;
             string enemyType = "EnemyA";
             int enemyCount = 5;
             float spawnInterval = 0.3f;
             int health = 10;
-            string movementPattern = "Linear";
+            string movementPattern = "ZigZag";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
             this.waves.Add(testWave);
+
+            float duration2 = 10;
+            string enemyType2 = "EnemyB";
+            int enemyCount2 = 10;
+            float spawnInterval2 = 0.3f;
+            int health2 = 10;
+            string movementPattern2 = "Linear";
+
+            Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2);
+            this.waves.Add(testWave2);
+
         }
 
         private void InitEnemyManager()
         {
             this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.waves);
+            // this.enemyManager.SpawnEnemy(waves[0]);
         }
     }
 }

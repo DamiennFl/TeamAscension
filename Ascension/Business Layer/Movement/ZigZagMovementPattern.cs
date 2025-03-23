@@ -5,14 +5,8 @@ namespace Ascension
 {
     public class ZigZagMovementPattern : IMovementPattern
     {
-        private bool complete;
-
         public void Move(GameTime gameTime, IMovable movable)
         {
-            if (this.complete)
-            {
-                return;
-            }
 
             Random random = new Random();
             float elapsedTime = 0f;
@@ -33,7 +27,6 @@ namespace Ascension
             Vector2 movement = direction * speed * deltaTime;
             movable.Position += movement;
 
-            this.complete = true;
         }
 
         private float GetRandomInterval(Random random)
@@ -45,11 +38,6 @@ namespace Ascension
         {
             float angle = (float)(random.NextDouble() * MathF.PI * 2);
             return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
-        }
-
-        public bool IsComplete()
-        {
-            return this.complete;
         }
     }
 }
