@@ -3,17 +3,16 @@
 // </copyright>
 
 using Ascension.Business_Layer.Movement;
+using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Ascension.Collision;
-using Ascension.Business_Layer.Movement;
 
-namespace Ascension
+namespace Ascension.Bullets
 {
     /// <summary>
     /// Bullet class.
     /// </summary>
-    public class Bullet : IMovable, ICollidable // Implement
+    public class Bullet : IMovable, ICollidable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bullet"/> class.
@@ -25,11 +24,11 @@ namespace Ascension
         /// <param name="bulletTexture">Bullet texture.</param>
         public Bullet(int damage, Vector2 velocity, Vector2 bulletPosition, Texture2D bulletTexture)
         {
-            this.Damage = damage;
-            this.Velocity = velocity;
-            this.Position = bulletPosition;
-            this.BulletTexture = bulletTexture;
-            this.IsActive = true; // activate as soon  as it is
+            Damage = damage;
+            Velocity = velocity;
+            BulletPosition = bulletPosition;
+            BulletTexture = bulletTexture;
+            IsActive = true; // activate as soon  as it is
         }
 
         /// <summary>
@@ -50,12 +49,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the speed of the bullet.
         /// </summary>
-        public Vector2 Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the speed of the bullet.
-        /// </summary>
-        //public Vector2 BulletPosition { get; set; }
+        public Vector2 BulletPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the bullet is active.
@@ -70,7 +64,7 @@ namespace Ascension
         /// <summary>
         /// Gets the collision layer for the bullet.
         /// </summary>
-        public string CollisionLayer => this.IsPlayerBullet ? "PlayerBullet" : "EnemyBullet";
+        public string CollisionLayer => IsPlayerBullet ? "PlayerBullet" : "EnemyBullet";
 
         /// <summary>
         /// Gets the bounding rectangle for collision detection.
@@ -82,7 +76,7 @@ namespace Ascension
                 this.BulletTexture.Width,
                 this.BulletTexture.Height);
 
-        
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Handles collision with another object.
@@ -102,7 +96,7 @@ namespace Ascension
         {
             if (this.IsActive)
             {
-                spriteBatch.Draw(this.BulletTexture, this.Position, Color.White);
+                spriteBatch.Draw(this.BulletTexture, this.BulletPosition, Color.White);
             }
         }
 
@@ -114,7 +108,7 @@ namespace Ascension
         {
             this.Position += this.Velocity; // Move bullet by velocity.
 
-            if (this.Position.X < 40 || this.Position.X > 480 || this.Position.Y < 40 || this.Position.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
+            if (this.Position.X < 40 || this.BulletPosition.X > 480 || this.BulletPosition.Y < 40 || this.BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
                 this.IsActive = false;
             }

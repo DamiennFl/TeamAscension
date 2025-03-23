@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Bullets;
 using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -90,7 +91,7 @@ namespace Ascension.Enemies
 
             if (this.shootTimer >= this.shootInterval)
             {
-                this.Shoot();
+                //this.Shoot();
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -123,18 +124,18 @@ namespace Ascension.Enemies
         /// Shoot method.
         /// </summary>
         /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
-        public override void Shoot()
-        {
-            if (this.CircularShootingTimer >= 5f)
-            {
-                this.CircularShootingTimer = 0f;
-                this.CircularShooting();
-            }
-            else
-            {
-                this.StarShooting();
-            }
-        }
+        //public override void Shoot()
+        //{
+        //    if (this.CircularShootingTimer >= 5f)
+        //    {
+        //        this.CircularShootingTimer = 0f;
+        //        this.CircularShooting();
+        //    }
+        //    else
+        //    {
+        //        this.StarShooting();
+        //    }
+        //}
 
 
         /// <summary>

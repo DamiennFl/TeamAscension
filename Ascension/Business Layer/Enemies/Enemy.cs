@@ -2,6 +2,7 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using Ascension.Business_Layer.Movement;
 using Ascension.Collision;
@@ -28,6 +29,11 @@ namespace Ascension.Enemies
         public IMovementPattern MovementPattern { get; set; }
 
         protected CollisionManager collisionManager;
+
+        /// <summary>
+        /// Event for when a bullet is fired
+        /// </summary>
+        public event Action<Vector2, Vector2, bool> BulletFired;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
@@ -67,9 +73,14 @@ namespace Ascension.Enemies
         public abstract void Draw(SpriteBatch spriteBatch);
 
         /// <summary>
-        /// Shoot method for the enemies.
+        /// Shoot method calls event.
         /// </summary>
-        public abstract void Shoot();
+        /// <param name="velo">bulet velocity.</param>
+        /// <param name="isPlayerBullet">if it is a user's bullet.</param>
+        public virtual void Shoot(Vector2 velo, bool isPlayerBullet)
+        {
+            this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet);
+        }
 
     }
 }

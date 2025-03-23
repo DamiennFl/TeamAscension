@@ -3,6 +3,7 @@
 // </copyright>
 
 using Ascension;
+using Ascension.Bullets;
 
 /// <summary>
 /// Command to deactivate a bullet entity in the game.
