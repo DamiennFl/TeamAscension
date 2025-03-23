@@ -65,5 +65,11 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="spriteBatch">Sprites.</param>
         public abstract void Draw(SpriteBatch spriteBatch);
+
+        /// <summary>
+        /// Shoot method for the enemies.
+        /// </summary>
+        public abstract void Shoot();
+
     }
 }

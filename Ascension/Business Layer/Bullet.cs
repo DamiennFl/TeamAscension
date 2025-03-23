@@ -13,7 +13,7 @@ namespace Ascension
     /// <summary>
     /// Bullet class.
     /// </summary>
-    public class Bullet : IMovable // Implement
+    public class Bullet : IMovable, ICollidable // Implement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bullet"/> class.
@@ -52,7 +52,10 @@ namespace Ascension
         /// </summary>
         public Vector2 Position { get; set; }
 
-
+        /// <summary>
+        /// Gets or sets the speed of the bullet.
+        /// </summary>
+        //public Vector2 BulletPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the bullet is active.
@@ -74,12 +77,12 @@ namespace Ascension
         /// </summary>
         /// <returns>A rectangle representing the bullet's collision bounds.</returns>
         public Rectangle Bounds => new Rectangle(
-                (int)this.BulletPosition.X,
-                (int)this.BulletPosition.Y,
+                (int)this.Position.X,
+                (int)this.Position.Y,
                 this.BulletTexture.Width,
                 this.BulletTexture.Height);
 
-        public Vector2 Position { get; set; }
+        
 
         /// <summary>
         /// Handles collision with another object.
@@ -99,7 +102,7 @@ namespace Ascension
         {
             if (this.IsActive)
             {
-                spriteBatch.Draw(this.BulletTexture, this.BulletPosition, Color.White);
+                spriteBatch.Draw(this.BulletTexture, this.Position, Color.White);
             }
         }
 
@@ -109,9 +112,9 @@ namespace Ascension
         /// <param name="gameTime">Time of game.</param>
         public void BulletUpdate(GameTime gameTime)
         {
-            this.BulletPosition += this.Velocity; // Move bullet by velocity.
+            this.Position += this.Velocity; // Move bullet by velocity.
 
-            if (this.BulletPosition.X < 40 || this.BulletPosition.X > 480 || this.BulletPosition.Y < 40 || this.BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
+            if (this.Position.X < 40 || this.Position.X > 480 || this.Position.Y < 40 || this.Position.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
                 this.IsActive = false;
             }
