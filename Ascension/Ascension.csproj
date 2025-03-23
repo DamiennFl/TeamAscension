@@ -11,6 +11,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Business Layer\Enemies\Formations\**" />
+    <EmbeddedResource Remove="Business Layer\Enemies\Formations\**" />
+    <None Remove="Business Layer\Enemies\Formations\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
     <None Remove="Settings.StyleCop" />
@@ -37,7 +42,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business Layer\Enemies\Formations\" />
     <Folder Include="Data Layer\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
