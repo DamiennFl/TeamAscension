@@ -1,8 +1,7 @@
-﻿using Ascension.Enemies.EnemyMovement;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Ascension.Business_Layer.Movement
+namespace Ascension
 {
     public class ZigZagMovementPattern : IMovementPattern
     {

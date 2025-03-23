@@ -4,14 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using Ascension.Business_Layer.Movement;
-using Ascension.Collision;
-using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
-using Ascension.Business_Layer;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Enemies
+namespace Ascension
 {
     /// <summary>
     /// Abstract class for enemies.

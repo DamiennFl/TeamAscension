@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Ascension.Business_Layer.Movement
+namespace Ascension
 {
     public interface IMovable
     {

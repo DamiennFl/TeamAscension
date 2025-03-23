@@ -1,15 +1,9 @@
-﻿using Ascension.Collision;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Ascension.Bullets
+namespace Ascension
 {
     /// <summary>
     /// Bullet manager class.
@@ -38,7 +32,7 @@ namespace Ascension.Bullets
         /// Register each enemy.
         /// </summary>
         /// <param name="enemy">Enemy.</param>
-        public void RegisterEnemy(Enemies.Enemy enemy)
+        public void RegisterEnemy(Enemy enemy)
         {
             enemy.BulletFired += this.OnBulletFired;
         }
@@ -49,7 +43,7 @@ namespace Ascension.Bullets
         /// <param name="pos">Position.</param>
         /// <param name="velo">Velocity.</param>
         /// <param name="isPlayerBullet">Bool if bullet is shot by the player.</param>
-        private void OnBulletFired(Microsoft.Xna.Framework.Vector2 pos, Microsoft.Xna.Framework.Vector2 velo, bool isPlayerBullet)
+        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet)
         {
             Texture2D bulletTexture = isPlayerBullet ? this.playerBulletTexture : this.enemyBulletTexture;
             Bullet bullet = new Bullet(1, velo, pos, bulletTexture);

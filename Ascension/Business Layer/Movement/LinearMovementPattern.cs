@@ -1,8 +1,6 @@
-﻿using Ascension.Business_Layer.Movement;
-using Microsoft.Xna.Framework;
-using System.Runtime.CompilerServices;
+﻿using Microsoft.Xna.Framework;
 
-namespace Ascension.Enemies.EnemyMovement
+namespace Ascension
 {
     public class LinearMovementPattern : IMovementPattern
     {

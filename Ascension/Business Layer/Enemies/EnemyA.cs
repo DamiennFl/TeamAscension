@@ -4,14 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-using Ascension.Bullets;
-using Ascension.Collision;
-using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Enemies
+namespace Ascension
 {
     /// <summary>
     /// Creates instances of EnemyA, a type of Enemy.

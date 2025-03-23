@@ -1,12 +1,11 @@
-﻿using Ascension.Enemies;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Ascension.Waves;
 using Microsoft.Xna.Framework;
-using Ascension.Business_Layer.Movement;
-using Ascension.Enemies.EnemyMovement;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Business_Layer.Enemies
+
+namespace Ascension
 {
     internal class EnemyManager
     {
@@ -19,9 +18,9 @@ namespace Ascension.Business_Layer.Enemies
 
         // Stuff passed in from Wave
         // EnemyManager manager = new EnemyManager()
-        public EnemyManager(EnemyFactory factory)
+        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
         {
-            this.factory = factory;
+            this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
             this.movementFactory = new MovementFactory();
             this.Enemies = new List<Enemy>();
         }
@@ -90,6 +89,5 @@ namespace Ascension.Business_Layer.Enemies
                 enemy.Update(gameTime);
             }
         }
-
     }
 }

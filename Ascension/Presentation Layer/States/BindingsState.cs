@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ascension.Content.States
+namespace Ascension
 {
     /* Currently, this class is empty. It will be used to handle the bindings of the game.
      * Thinking of possibly a different way then a state to handle this.

@@ -1,8 +1,7 @@
-﻿using Ascension.Business_Layer.Movement;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Ascension.Enemies.EnemyMovement
+namespace Ascension
 {
     /// <summary>
     /// SwoopMovementPattern is a smooth turning movement pattern.

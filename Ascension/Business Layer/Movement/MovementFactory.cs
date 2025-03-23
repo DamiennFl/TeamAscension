@@ -1,11 +1,6 @@
-﻿using Ascension.Enemies.EnemyMovement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace Ascension.Business_Layer.Movement
+namespace Ascension
 {
     internal class MovementFactory
     {

@@ -4,10 +4,8 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using Ascension.Enemies;
-using Ascension.Bullets;
 
-namespace Ascension.Collision
+namespace Ascension
 {
     /// <summary>
     /// Manages collision detection between game objects.

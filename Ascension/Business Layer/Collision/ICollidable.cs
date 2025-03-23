@@ -4,7 +4,7 @@
 
 using Microsoft.Xna.Framework;
 
-namespace Ascension.Collision
+namespace Ascension
 {
     /// <summary>
     /// Interface for objects that can collide with other objects.

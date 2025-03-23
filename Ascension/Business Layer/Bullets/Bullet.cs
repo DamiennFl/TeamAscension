@@ -2,12 +2,10 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-using Ascension.Business_Layer.Movement;
-using Ascension.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ascension.Bullets
+namespace Ascension
 {
     /// <summary>
     /// Bullet class.
