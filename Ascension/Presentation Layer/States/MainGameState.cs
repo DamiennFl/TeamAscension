@@ -76,11 +76,6 @@ namespace Ascension
 
             this.enemyManager.Draw(spriteBatch);
 
-            //foreach (var formation in this.enemyFormations)
-            //{
-            //    formation.Draw(spriteBatch);
-            //}
-
             this.playArea.BorderBuffer(spriteBatch);
 
             spriteBatch.End();
@@ -167,7 +162,6 @@ namespace Ascension
         private void InitEnemyManager()
         {
             this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.waves);
-            // this.enemyManager.SpawnEnemy(waves[0]);
         }
     }
 }
