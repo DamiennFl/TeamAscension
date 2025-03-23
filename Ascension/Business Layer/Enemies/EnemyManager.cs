@@ -20,7 +20,9 @@ namespace Ascension
         private int currentWaveIndex;
         private int enemiesSpawned;
 
-        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, List<Wave> waves)
+        private BulletManager bulletManager;
+
+        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves)
         {
             this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
             this.movementFactory = new MovementFactory();
@@ -29,6 +31,7 @@ namespace Ascension
             this.timeSinceLastSpawn = 0f;
             this.currentWaveIndex = 0;
             this.enemiesSpawned = 0;
+            this.bulletManager = bulletManager;
         }
 
         public void SpawnEnemy(Wave wave)
@@ -48,6 +51,8 @@ namespace Ascension
             IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern, wave.Duration);
             enemy.MovementPattern = movementPattern;
             this.Enemies.Add(enemy);
+
+            this.bulletManager.RegisterEnemy(enemy);
         }
 
         public void Update(GameTime gameTime)

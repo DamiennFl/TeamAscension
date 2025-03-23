@@ -22,10 +22,11 @@ namespace Ascension
         /// Initializes a new instance of the <see cref="BulletManager"/> class.
         /// </summary>
         /// <param name="contentManager">for loading textures.</param>
-        public BulletManager(ContentManager contentManager)
+        public BulletManager(ContentManager contentManager, CollisionManager collisionManager)
         {
             this.enemyBulletTexture = contentManager.Load<Texture2D>("Bullets/BulletBlue");
             this.playerBulletTexture = contentManager.Load<Texture2D>("Bullets/BulletOrange");
+            this.collisionManager = collisionManager;
         }
 
         /// <summary>

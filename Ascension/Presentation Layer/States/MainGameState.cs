@@ -36,6 +36,8 @@ namespace Ascension
 
         private CollisionManager collisionManager;
 
+        private BulletManager bulletManager;
+
         private List<Wave> waves = new List<Wave>();
 
         /// <summary>
@@ -52,6 +54,7 @@ namespace Ascension
 
             this.InitCollisions();
             this.InitWaves();
+            this.InitBulletManager();
             this.InitEnemyManager();
         }
 
@@ -75,11 +78,6 @@ namespace Ascension
             this.player.Draw(spriteBatch);
 
             this.enemyManager.Draw(spriteBatch);
-
-            //foreach (var formation in this.enemyFormations)
-            //{
-            //    formation.Draw(spriteBatch);
-            //}
 
             this.playArea.BorderBuffer(spriteBatch);
 
@@ -161,13 +159,17 @@ namespace Ascension
 
             Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2);
             this.waves.Add(testWave2);
-
         }
 
         private void InitEnemyManager()
         {
-            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.waves);
+            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.waves);
             // this.enemyManager.SpawnEnemy(waves[0]);
+        }
+
+        private void InitBulletManager()
+        {
+            this.bulletManager = new BulletManager(this.contentManager, this.collisionManager);
         }
     }
 }
