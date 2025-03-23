@@ -71,7 +71,7 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            this.UpdateMovementPatterns(gameTime);
+            this.MovementPattern.Move(gameTime, this);
 
             for (int i = 0; i < this.bullets.Count; i++)
             {
