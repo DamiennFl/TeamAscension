@@ -45,7 +45,7 @@ namespace Ascension
                 "EnemyB" => this.factory.CreateEnemyB(position, velocity),
                 "MidBoss" => this.factory.CreateMidBoss(position, velocity),
                 "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
-                _ => throw new ArgumentException("Unknown enemy type")
+                _ => throw new ArgumentException("Unknown enemy type inputted")
             };
 
             IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern, wave.Duration);
