@@ -25,25 +25,37 @@ namespace Ascension
         public float PlayerSpeed;
 #pragma warning restore SA1401 // Fields should be private
 
-
+        /// <summary>
+        /// Gets or sets the player's texture.
+        /// </summary>
         private Texture2D playerTexture;
 
+        /// <summary>
+        /// Gets or sets the bullet's texture.
+        /// </summary>
         private Texture2D bulletTexture;
 
+        /// <summary>
+        /// Gets or sets the font.
+        /// </summary>
         private SpriteFont font;
 
-        /// <summary>
-        /// Gets or sets the player's score.
-        /// </summary>
 #pragma warning disable SA1401 // Fields should be private
 
-
+        /// <summary>
+        /// Gets or sets the graphics device.
+        /// </summary>
         private GraphicsDevice graphicsDevice;
 
+        /// <summary>
+        /// Gets or sets the time remaining for invincibility.
+        /// </summary>
         private TimeSpan invincibleTimeRemaining = TimeSpan.Zero;
 
+        /// <summary>
+        /// Gets or sets the total time for invincibility.
+        /// </summary>
         private readonly TimeSpan totalInvincibleTime = TimeSpan.FromSeconds(3);
-
 
 
         /// <summary>
@@ -51,10 +63,19 @@ namespace Ascension
         /// </summary>
         protected Vector2 playerPosition;
 
+        /// <summary>
+        /// Gets or sets the player's shoot interval.
+        /// </summary>
         private float shootInterval = 0.5f;
 
+        /// <summary>
+        /// Gets or sets the player's shoot timer.
+        /// </summary>
         private float shootTimer = 0f;
 
+        /// <summary>
+        /// Gets the player's spawn position.
+        /// </summary>
         public Vector2 PlayerSpawn
         {
             get
@@ -63,22 +84,71 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// Gets the player's damage.
+        /// </summary>
         public const int PlayerDamage = 10;
 
+        /// <summary>
+        /// Gets or sets the bullet's velocity.
+        /// </summary>
         public Vector2 BulletVelocity = new Vector2(0, -3f);
 
+        /// <summary>
+        /// Gets or sets the bullet's position.
+        /// </summary>
         public Vector2 BulletPosition;
 
+        /// <summary>
+        /// Gets or sets the bullet.
+        /// </summary>
         public Bullet bullet;
 
+        /// <summary>
+        /// Gets or sets the bullets.
+        /// </summary>
         public List<Bullet> bullets = new List<Bullet>();
 
+        /// <summary>
+        /// Gets or sets the play area.
+        /// </summary>
         private PlayArea playArea;
 
+        /// <summary>
+        /// Event for when a bullet is fired.
+        /// </summary>
         public event Action<Vector2, Vector2, bool, Texture2D> BulletFired;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the player is invincible.
+        /// </summary>
         public bool IsInvincible { get; set; } = false;
 
+        /// <summary>
+        /// Gets the collision layer for the player.
+        /// </summary>
+        public string CollisionLayer => "Player";
+
+        /// <summary>
+        /// Gets the bounding rectangle for collision detection.
+        /// </summary>
+        /// <returns>A rectangle representing the player's collision bounds.</returns>
+        public Rectangle Bounds
+        {
+            get
+            {
+                int radius = this.playerTexture.Width / 8;
+                return new Rectangle(
+                    (int)this.playerPosition.X - radius,
+                    (int)this.playerPosition.Y - radius,
+                    radius * 2,
+                    radius * 2);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's movement binds.
+        /// </summary>
         public struct PlayerMovementKeys
         {
             /// <summary>
@@ -105,9 +175,12 @@ namespace Ascension
             /// Gets or sets the left key.
             /// </summary>
             public static Keys Sprint = Keys.LeftShift;
-        }
 
-       
+            /// <summary>
+            /// Gets or sets the shoot key.
+            /// </summary>
+            public static Keys Shoot = Keys.Space;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -159,6 +232,10 @@ namespace Ascension
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
         }
 
+        /// <summary>
+        /// Update method for updating the player.
+        /// </summary>
+        /// <param name="gameTime"> Game-time. </param>
         public void Update(GameTime gameTime)
         {
             this.PlayerMovement();
@@ -167,10 +244,32 @@ namespace Ascension
             this.InvincibleTimer(gameTime);
         }
 
+       
+
         /// <summary>
-        /// Player movement method.
+        /// This will activate the Invincibility of the player for a set amount of time.
         /// </summary>
-        /// <param name="updatedPlayerSpeed">updating the player speed.</param>
+        public void ActivateInvincibility()
+        {
+            this.IsInvincible = true;
+            this.invincibleTimeRemaining = this.totalInvincibleTime;
+            this.playerPosition = this.PlayerSpawn;
+            Debug.WriteLine("Invincibility activated.");
+        }
+
+        /// <summary>
+        /// Loss condition for the player.
+        /// </summary>
+        /// <returns>if the player is dead.</returns>
+        public bool LossCondition()
+        {
+            return this.Health <= 0;
+        }
+
+     
+        /// <summary>
+        /// Player movement.
+        /// </summary>
         private void PlayerMovement()
         {
             var kstate = Keyboard.GetState();
@@ -252,8 +351,9 @@ namespace Ascension
         }
 
         /// <summary>
-        /// The player shoots bullets.
+        /// Player shooting.
         /// </summary>
+        /// <param name="gameTime">game time.</param>
         private void PlayerShoot(GameTime gameTime)
         {
             // Timer for shooting
@@ -261,7 +361,7 @@ namespace Ascension
 
             // Checking if we can shoot a bullet
             // Change this
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) && this.shootTimer >= this.shootInterval)
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
                 this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, this.bulletTexture); // check this
                 this.shootTimer = 0;
@@ -287,48 +387,6 @@ namespace Ascension
                     this.invincibleTimeRemaining = TimeSpan.Zero;
                     Debug.WriteLine("Invincibility off.");
                 }
-            }
-        }
-
-        /// <summary>
-        /// This will activate the Invincibility of the player for a set amount of time.
-        /// </summary>
-        public void ActivateInvincibility()
-        {
-            this.IsInvincible = true;
-            this.invincibleTimeRemaining = this.totalInvincibleTime;
-            this.playerPosition = this.PlayerSpawn;
-            Debug.WriteLine("Invincibility activated.");
-        }
-
-        /// <summary>
-        /// Loss condition for the player.
-        /// </summary>
-        /// <returns>if the player is dead.</returns>
-        public bool LossCondition()
-        {
-            return this.Health <= 0;
-        }
-
-        /// <summary>
-        /// Gets the collision layer for the player.
-        /// </summary>
-        public string CollisionLayer => "Player";
-
-        /// <summary>
-        /// Gets the bounding rectangle for collision detection.
-        /// </summary>
-        /// <returns>A rectangle representing the player's collision bounds.</returns>
-        public Rectangle Bounds
-        {
-            get
-            {
-                int radius = this.playerTexture.Width / 8;
-                return new Rectangle(
-                    (int)this.playerPosition.X - radius,
-                    (int)this.playerPosition.Y - radius,
-                    radius * 2,
-                    radius * 2);
             }
         }
     }

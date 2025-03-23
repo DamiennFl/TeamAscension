@@ -86,36 +86,43 @@ namespace Ascension
 
             var forwardButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 250),
+                Pos = new Vector2(250, 150),
                 Text = "Forward",
                 Size = new Vector2(200, 100),
             };
 
             var backwardButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 350),
+                Pos = new Vector2(250, 250),
                 Text = "Backward",
                 Size = new Vector2(200, 100),
             };
 
             var rightButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 450),
+                Pos = new Vector2(250, 350),
                 Text = "Right",
                 Size = new Vector2(200, 100),
             };
 
             var leftButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 550),
+                Pos = new Vector2(250, 450),
                 Text = "Left",
                 Size = new Vector2(200, 100),
             };
 
             var sprintButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 650),
+                Pos = new Vector2(250, 550),
                 Text = "Sprint",
+                Size = new Vector2(200, 100),
+            };
+
+            var shootButton = new Button(this.buttonTexture, this.font)
+            {
+                Pos = new Vector2(250, 650),
+                Text = "Shoot",
                 Size = new Vector2(200, 100),
             };
 
@@ -125,6 +132,7 @@ namespace Ascension
             rightButton.Click += this.RightButton_Click;
             leftButton.Click += this.LeftButton_Click;
             sprintButton.Click += this.SprintButton_Click;
+            shootButton.Click += this.ShootButton_Click;
 
             // Adding buttons to the list of components.
             this.components = new List<Components>()
@@ -135,6 +143,7 @@ namespace Ascension
                 rightButton,
                 leftButton,
                 sprintButton,
+                shootButton,
             };
         }
 
@@ -148,24 +157,26 @@ namespace Ascension
                 " the default bindings are shown on the right hand side.\n To set a custom binding you must hold the desired key," +
                 "\n then click the button and your new binding will be set !";
 
-            string fowardBind = $"Current Binding: {Player.PlayerMovementKeys.Up}";
+            string forwardBind = $"Current Binding: {Player.PlayerMovementKeys.Up}";
             string backBind = $"Current Binding: {Player.PlayerMovementKeys.Down}";
             string rightBind = $"Current Binding: {Player.PlayerMovementKeys.Right}";
             string leftBind = $"Current Binding: {Player.PlayerMovementKeys.Left}";
             string sprintBind = $"Current Binding: {Player.PlayerMovementKeys.Sprint}";
+            string shootBind = $"Current Binding: {Player.PlayerMovementKeys.Shoot}";
 
             spriteBatch.DrawString(this.font, instructions, new Vector2(255, 10), Color.White);
 
-            spriteBatch.DrawString(this.font, fowardBind, new Vector2(450, 290), Color.White);
+            spriteBatch.DrawString(this.font, forwardBind, new Vector2(450, 190), Color.White);
 
-            spriteBatch.DrawString(this.font, backBind, new Vector2(450, 390), Color.White);
+            spriteBatch.DrawString(this.font, backBind, new Vector2(450, 290), Color.White);
 
-            spriteBatch.DrawString(this.font, rightBind, new Vector2(450, 490), Color.White);
+            spriteBatch.DrawString(this.font, rightBind, new Vector2(450, 390), Color.White);
 
-            spriteBatch.DrawString(this.font, leftBind, new Vector2(450, 590), Color.White);
+            spriteBatch.DrawString(this.font, leftBind, new Vector2(450, 490), Color.White);
 
-            spriteBatch.DrawString(this.font, sprintBind, new Vector2(450, 690), Color.White);
+            spriteBatch.DrawString(this.font, sprintBind, new Vector2(450, 590), Color.White);
 
+            spriteBatch.DrawString(this.font, shootBind, new Vector2(450, 690), Color.White);
         }
 
         /// <summary>
@@ -245,6 +256,20 @@ namespace Ascension
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Sprint = key.GetPressedKeys()[0];
+            }
+        }
+
+        /// <summary>
+        /// Sets the key binding.
+        /// </summary>
+        /// <param name="sender">Button. </param>
+        /// <param name="e">Clicked. </param>
+        private void ShootButton_Click(object sender, EventArgs e)
+        {
+            KeyboardState key = Keyboard.GetState();
+            if (key.GetPressedKeys().Length > 0)
+            {
+                Player.PlayerMovementKeys.Shoot = key.GetPressedKeys()[0];
             }
         }
     }
