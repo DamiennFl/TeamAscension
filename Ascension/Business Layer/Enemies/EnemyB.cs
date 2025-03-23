@@ -29,11 +29,6 @@ namespace Ascension
         private Texture2D bulletTexture;
 
         /// <summary>
-        /// The bullets for the enemy.
-        /// </summary>
-        private List<Bullet> bullets;
-
-        /// <summary>
         /// When the enemy will shoot.
         /// </summary>
         private float shootTimer;
@@ -58,7 +53,6 @@ namespace Ascension
         public EnemyB(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
         : base(velocity, position, texture)
         {
-            this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
@@ -73,15 +67,6 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-            for (int i = 0; i < this.bullets.Count; i++)
-            {
-                this.bullets[i].BulletUpdate(gameTime);
-                if (!this.bullets[i].IsActive)
-                {
-                    this.bullets.RemoveAt(i);
-                    i--;
-                }
-            }
 
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -110,18 +95,16 @@ namespace Ascension
                 new Vector2(0.4F, 0.4F),
                 SpriteEffects.None,
                 0f);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletDraw(spriteBatch);
-            }
         }
 
         /// <summary>
-        /// Shoot method for shooting bullets.
+        /// Shoots a bullet.
         /// </summary>
         public void Shoot()
         {
+            Vector2 bulletVelocity = new Vector2(0, 1.2f);
+            bool isPlayerBullet = false;
+            // base.Shoot(bulletVelocity, isPlayerBullet);
             this.StarShooting();
         }
 
@@ -133,7 +116,6 @@ namespace Ascension
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-            this.bullets.Add(bullet);
         }
 
         /// <summary>
@@ -146,8 +128,7 @@ namespace Ascension
             for (int i = 0; i < 5; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2);
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
+                base.Shoot(bulletVelocity, false, bulletTexture);
                 angle += 0.2F;
             }
         }

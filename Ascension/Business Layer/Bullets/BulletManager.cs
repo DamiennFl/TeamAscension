@@ -1,7 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿// <copyright file="BulletManager.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace Ascension
 {
@@ -10,18 +14,31 @@ namespace Ascension
     /// </summary>
     internal class BulletManager
     {
+        /// <summary>
+        /// List of bullets.
+        /// </summary>
         private List<Bullet> bullets = new List<Bullet>();
 
+        /// <summary>
+        /// Enemy bullet texture.
+        /// </summary>
         private Texture2D enemyBulletTexture;
 
+        /// <summary>
+        /// Player bullet texture.
+        /// </summary>
         private Texture2D playerBulletTexture;
 
+        /// <summary>
+        /// Collision manager for the bullets.
+        /// </summary>
         private CollisionManager collisionManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulletManager"/> class.
         /// </summary>
         /// <param name="contentManager">for loading textures.</param>
+        /// <param name ="collisionManager">for loading collisions.</param>
         public BulletManager(ContentManager contentManager, CollisionManager collisionManager)
         {
             this.enemyBulletTexture = contentManager.Load<Texture2D>("Bullets/BulletBlue");
@@ -39,14 +56,23 @@ namespace Ascension
         }
 
         /// <summary>
+        /// Registers the player.
+        /// </summary>
+        /// <param name="player">Player.</param>
+        public void RegisterPlayer(Player player)
+        {
+            player.BulletFired += this.OnBulletFired;
+        }
+
+        /// <summary>
         /// OnBulletFired event.
         /// </summary>
         /// <param name="pos">Position.</param>
         /// <param name="velo">Velocity.</param>
         /// <param name="isPlayerBullet">Bool if bullet is shot by the player.</param>
-        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet)
+        /// <param name="bulletTexture">Texture of the bullet.</param>
+        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, Texture2D bulletTexture)
         {
-            Texture2D bulletTexture = isPlayerBullet ? this.playerBulletTexture : this.enemyBulletTexture;
             Bullet bullet = new Bullet(1, velo, pos, bulletTexture);
             this.collisionManager.Register(bullet);
             bullet.IsPlayerBullet = isPlayerBullet;
@@ -69,11 +95,27 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// Draw method for each bullet.
+        /// </summary>
+        /// <param name="spriteBatch">Sprite.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (var item in this.bullets)
             {
                 item.BulletDraw(spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Clears the screen of bullets.
+        /// </summary>
+        public void ClearScreen()
+        {
+            for (int i = this.bullets.Count - 1; i >= 0; i--)
+            {
+                this.bullets[i].IsActive = false;
+                this.bullets.RemoveAt(i);
             }
         }
     }

@@ -56,6 +56,7 @@ namespace Ascension
             this.InitWaves();
             this.InitBulletManager();
             this.InitEnemyManager();
+            this.bulletManager.RegisterPlayer(this.player);
         }
 
         /// <summary>
@@ -78,6 +79,8 @@ namespace Ascension
             this.player.Draw(spriteBatch);
 
             this.enemyManager.Draw(spriteBatch);
+
+            this.bulletManager.Draw(spriteBatch);
 
             this.playArea.BorderBuffer(spriteBatch);
 
@@ -108,6 +111,8 @@ namespace Ascension
             }
 
             this.enemyManager.Update(gameTime);
+
+            this.bulletManager.Update(gameTime);
 
             this.player.Update(gameTime);
 

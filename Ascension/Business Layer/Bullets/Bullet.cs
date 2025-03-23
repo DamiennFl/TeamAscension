@@ -24,7 +24,7 @@ namespace Ascension
         {
             Damage = damage;
             Velocity = velocity;
-            BulletPosition = bulletPosition;
+            Position = bulletPosition;
             BulletTexture = bulletTexture;
             IsActive = true; // activate as soon  as it is
         }
@@ -43,11 +43,6 @@ namespace Ascension
         /// Gets or sets the speed of the bullet.
         /// </summary>
         public Texture2D BulletTexture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the speed of the bullet.
-        /// </summary>
-        public Vector2 BulletPosition { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the bullet is active.
@@ -94,7 +89,7 @@ namespace Ascension
         {
             if (this.IsActive)
             {
-                spriteBatch.Draw(this.BulletTexture, this.BulletPosition, Color.White);
+                spriteBatch.Draw(this.BulletTexture, this.Position, Color.White);
             }
         }
 
@@ -106,7 +101,7 @@ namespace Ascension
         {
             this.Position += this.Velocity; // Move bullet by velocity.
 
-            if (this.Position.X < 40 || this.BulletPosition.X > 480 || this.BulletPosition.Y < 40 || this.BulletPosition.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
+            if (this.Position.X < 40 || this.Position.X > 480 || this.Position.Y < 40 || this.Position.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
                 this.IsActive = false;
             }

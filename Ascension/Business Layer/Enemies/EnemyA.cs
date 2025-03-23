@@ -16,11 +16,6 @@ namespace Ascension
     internal class EnemyA : Enemy
     {
         /// <summary>
-        /// The bullets for the enemy.
-        /// </summary>
-        private List<Bullet> bullets;
-
-        /// <summary>
         /// The content manager for loading assets.
         /// </summary>
         private ContentManager contentManager;
@@ -50,7 +45,6 @@ namespace Ascension
         public EnemyA(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
         : base(velocity, position, texture)
         {
-            this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
@@ -73,11 +67,6 @@ namespace Ascension
                 new Vector2(0.4F, 0.4F),
                 SpriteEffects.None,
                 0f);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletDraw(spriteBatch);
-            }
         }
 
         /// <summary>
@@ -87,17 +76,6 @@ namespace Ascension
         public override void Update(GameTime gameTime)
         {
             this.MovementPattern.Move(gameTime, this);
-
-            for (int i = 0; i < this.bullets.Count; i++)
-            {
-                this.bullets[i].BulletUpdate(gameTime);
-                if (!this.bullets[i].IsActive)
-                {
-                    this.collisionManager.Unregister(this.bullets[i]);
-                    this.bullets.RemoveAt(i);
-                    i--;
-                }
-            }
 
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -115,9 +93,10 @@ namespace Ascension
         /// </summary>
         public void Shoot()
         {
+            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             bool isPlayerBullet = false;
-            base.Shoot(bulletVelocity, isPlayerBullet);
+            base.Shoot(bulletVelocity, isPlayerBullet, bulletTexture);
         }
 
         /// <summary>
@@ -129,7 +108,6 @@ namespace Ascension
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
             bullet.IsPlayerBullet = false;
-            this.bullets.Add(bullet);
 
             // Register with collision system
             this.collisionManager.Register(bullet);
@@ -146,7 +124,6 @@ namespace Ascension
             {
                 Vector2 bulletVelocity = new Vector2(angle, 0.2f);
                 Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
                 angle += 0.2F;
             }
         }

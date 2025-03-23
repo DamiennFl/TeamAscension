@@ -167,8 +167,7 @@ namespace Ascension
             {
                 float angle = i * angleIncrement;
                 Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
+                base.Shoot(bulletVelocity, false, bulletTexture);
             }
         }
 

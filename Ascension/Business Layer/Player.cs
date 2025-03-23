@@ -65,7 +65,7 @@ namespace Ascension
 
         public const int PlayerDamage = 10;
 
-        public Vector2 BulletVelocity = new Vector2(0, 2f);
+        public Vector2 BulletVelocity = new Vector2(0, -3f);
 
         public Vector2 BulletPosition;
 
@@ -74,6 +74,8 @@ namespace Ascension
         public List<Bullet> bullets = new List<Bullet>();
 
         private PlayArea playArea;
+
+        public event Action<Vector2, Vector2, bool, Texture2D> BulletFired;
 
         public bool IsInvincible { get; set; } = false;
 
@@ -121,8 +123,6 @@ namespace Ascension
             this.playArea = playArea;
 
             this.playerPosition = this.PlayerSpawn;
-            this.BulletPosition = this.playerPosition; // Spawning position of the bullet should be the where the player is at
-            this.bullet = new Bullet(PlayerDamage, BulletVelocity, this.BulletPosition, this.bulletTexture);
         }
 
         /// <summary>
@@ -157,11 +157,6 @@ namespace Ascension
 
             // Draw the player's health
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletDraw(spriteBatch);
-            }
         }
 
         public void Update(GameTime gameTime)
@@ -170,11 +165,6 @@ namespace Ascension
             this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
             this.PlayerShoot(gameTime);
             this.InvincibleTimer(gameTime);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletUpdate(gameTime);
-            }
         }
 
         /// <summary>
@@ -270,17 +260,15 @@ namespace Ascension
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Checking if we can shoot a bullet
+            // Change this
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && this.shootTimer >= this.shootInterval)
             {
-                Texture2D bulletTexture = this.bulletTexture;
-                this.BulletPosition = this.playerPosition;
-                this.bullet = new Bullet(PlayerDamage, -this.BulletVelocity, this.BulletPosition, bulletTexture);
-                this.bullets.Add(this.bullet);
-                this.shootTimer = 0f;
+                this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, this.bulletTexture); // check this
+                this.shootTimer = 0;
             }
         }
 
-        /// <summary>
+        /// <summary>Bu
         /// Timer for our invincibility.
         /// </summary>
         /// <param name="gameTime">time running.</param>

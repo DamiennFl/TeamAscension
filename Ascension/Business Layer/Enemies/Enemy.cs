@@ -2,10 +2,9 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace Ascension
 {
@@ -29,7 +28,7 @@ namespace Ascension
         /// <summary>
         /// Event for when a bullet is fired
         /// </summary>
-        public event Action<Vector2, Vector2, bool> BulletFired;
+        public event Action<Vector2, Vector2, bool, Texture2D> BulletFired;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
@@ -73,10 +72,9 @@ namespace Ascension
         /// </summary>
         /// <param name="velo">bulet velocity.</param>
         /// <param name="isPlayerBullet">if it is a user's bullet.</param>
-        public virtual void Shoot(Vector2 velo, bool isPlayerBullet)
+        public virtual void Shoot(Vector2 velo, bool isPlayerBullet, Texture2D bulletTexture)
         {
-            this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet);
+            this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture); // check this
         }
-
     }
 }
