@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using Ascension.Collision;
 using Ascension.Enemies;
-using Ascension.Enemies.EnemyFormation;
 using Ascension.States;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -32,12 +31,12 @@ namespace Ascension.Content.States
         /// <summary>
         /// List of enemy formations.
         /// </summary>
-        private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
+        //private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
 
         /// <summary>
         /// Basic enemy factory.
         /// </summary>
-        private BasicEnemyFactory basicEnemyFactory;
+        //private BasicEnemyFactory basicEnemyFactory;
 
         /// <summary>
         /// Defines a play area.
@@ -81,10 +80,10 @@ namespace Ascension.Content.States
             // Player drawn here
             this.player.Draw(spriteBatch);
 
-            foreach (var formation in this.enemyFormations)
-            {
-                formation.Draw(spriteBatch);
-            }
+            //foreach (var formation in this.enemyFormations)
+            //{
+            //    formation.Draw(spriteBatch);
+            //}
 
             this.playArea.BorderBuffer(spriteBatch);
 
@@ -113,10 +112,10 @@ namespace Ascension.Content.States
                this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.content));
             }
 
-            foreach (var formation in this.enemyFormations)
-            {
-                formation.Update(gameTime);
-            }
+            //foreach (var formation in this.enemyFormations)
+            //{
+            //    formation.Update(gameTime);
+            //}
 
             this.player.Update(gameTime);
 
@@ -149,7 +148,7 @@ namespace Ascension.Content.States
 
         private void InitWaves(GraphicsDevice graphicsDevice, ContentManager content)
         {
-            this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice, this.collisionManager);
+            //this.basicEnemyFactory = new BasicEnemyFactory(content, graphicsDevice, this.collisionManager);
             // Initialize a LinearFormation
             Vector2 formationStartPosition = new Vector2(100, 0); // Start position off-screen
             Vector2 formationEndPosition = new Vector2(100, 100); // End position on-screen
@@ -159,8 +158,8 @@ namespace Ascension.Content.States
             float enemySpacing = 50f;
             string enemyType = "EnemyA";
 
-            LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
-            this.enemyFormations.Add(linearFormation);
+            //LinearFormation linearFormation = new LinearFormation(formationStartPosition, formationEndPosition, numEnemies, spawnDelay, enemyVelocity, enemySpacing, this.basicEnemyFactory, enemyType);
+            //this.enemyFormations.Add(linearFormation);
 
             // Initialize a SwoopFormation
             Vector2 swoopFormationStartPosition = new Vector2(200, 0); // Start position off-screen
@@ -170,8 +169,8 @@ namespace Ascension.Content.States
             float swoopEnemySpacing = 50f;
             string swoopEnemyType = "EnemyA";
 
-            SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
-            this.enemyFormations.Add(swoopFormation);
+            //SwoopFormation swoopFormation = new SwoopFormation(swoopFormationStartPosition, swoopNumEnemies, swoopSpawnDelay, swoopEnemyVelocity, swoopEnemySpacing, this.basicEnemyFactory, swoopEnemyType);
+            //this.enemyFormations.Add(swoopFormation);
         }
     }
 }

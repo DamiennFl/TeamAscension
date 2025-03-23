@@ -7,6 +7,7 @@ using Ascension.Business_Layer.Movement;
 using Ascension.Collision;
 using Ascension.Enemies.EnemyMovement;
 using Microsoft.Xna.Framework;
+using Ascension.Business_Layer;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Enemies
@@ -14,7 +15,7 @@ namespace Ascension.Enemies
     /// <summary>
     /// Abstract class for enemies.
     /// </summary>
-    internal abstract class Enemy : IMovable
+    public abstract class Enemy : IMovable
     {
         /// <summary>
         /// The texture for the enemy.

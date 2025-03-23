@@ -7,7 +7,7 @@ namespace Ascension.Enemies.EnemyMovement
     /// <summary>
     /// SwoopMovementPattern is a smooth turning movement pattern.
     /// </summary>
-    internal class CircularMovementPattern : IMovementPattern
+    public class CircularMovementPattern : IMovementPattern
     {
         private Vector2 startPosition;
         private Vector2 center;

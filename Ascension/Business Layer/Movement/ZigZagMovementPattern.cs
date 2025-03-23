@@ -4,7 +4,7 @@ using System;
 
 namespace Ascension.Business_Layer.Movement
 {
-    internal class ZigZagMovementPattern : IMovementPattern
+    public class ZigZagMovementPattern : IMovementPattern
     {
         private bool complete;
 

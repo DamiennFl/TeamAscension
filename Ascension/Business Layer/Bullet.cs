@@ -5,6 +5,8 @@
 using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ascension.Collision;
+using Ascension.Business_Layer.Movement;
 
 namespace Ascension
 {
@@ -50,6 +52,8 @@ namespace Ascension
         /// </summary>
         public Vector2 BulletPosition { get; set; }
 
+
+
         /// <summary>
         /// Gets or sets a value indicating whether the bullet is active.
         /// </summary>
@@ -74,6 +78,8 @@ namespace Ascension
                 (int)this.BulletPosition.Y,
                 this.BulletTexture.Width,
                 this.BulletTexture.Height);
+
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Handles collision with another object.

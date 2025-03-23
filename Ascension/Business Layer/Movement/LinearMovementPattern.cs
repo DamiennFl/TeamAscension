@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Ascension.Enemies.EnemyMovement
 {
-    internal class LinearMovementPattern : IMovementPattern
+    public class LinearMovementPattern : IMovementPattern
     {
         private bool complete = false;
 

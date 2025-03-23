@@ -9,7 +9,7 @@ namespace Ascension.Enemies.EnemyMovement
     /// <summary>
     /// IMovementPattern is an interface for Enemy Movement patterns.
     /// </summary>
-    internal interface IMovementPattern
+    public interface IMovementPattern
     {
         public void Move(GameTime gameTime, IMovable movable, float duration);
 

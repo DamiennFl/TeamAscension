@@ -11,8 +11,5 @@ namespace Ascension.Waves
     {
         // Time for the Wave
         public int Time { get; set; }
-
-        private List<EnemyFormation> waveFormations = new List<EnemyFormation>();
-
     }
 }
