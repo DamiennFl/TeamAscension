@@ -11,7 +11,7 @@ namespace Ascension.Enemies.EnemyMovement
     /// </summary>
     public interface IMovementPattern
     {
-        public void Move(GameTime gameTime, IMovable movable, float duration);
+        public void Move(GameTime gameTime, IMovable movable);
 
         public bool IsComplete();
     }

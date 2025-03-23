@@ -56,8 +56,8 @@ namespace Ascension.Enemies
         /// <param name="position">The position of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
-        public EnemyB(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
-        : base(speed, position, texture, "EnemyB", collisionManager)
+        public EnemyB(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
+        : base(velocity, position, texture)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -72,7 +72,7 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            this.UpdateMovementPatterns(gameTime);
+            this.MovementPattern.Move(gameTime, this);
 
             for (int i = 0; i < this.bullets.Count; i++)
             {

@@ -8,7 +8,7 @@ namespace Ascension.Business_Layer.Movement
     {
         private bool complete;
 
-        public void Move(GameTime gameTime, IMovable movable, float duration)
+        public void Move(GameTime gameTime, IMovable movable)
         {
             if (this.complete)
             {
@@ -17,25 +17,22 @@ namespace Ascension.Business_Layer.Movement
 
             Random random = new Random();
             float elapsedTime = 0f;
-            float zigzagInterval = GetRandomInterval(random);
-            Vector2 direction = GetRandomDirection(random);
+            float zigzagInterval = this.GetRandomInterval(random);
+            Vector2 direction = this.GetRandomDirection(random);
             float speed = 100f; // Adjust the speed as needed
 
-            while (elapsedTime < duration)
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            elapsedTime += deltaTime;
+
+            if (elapsedTime >= zigzagInterval)
             {
-                float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                elapsedTime += deltaTime;
-
-                if (elapsedTime >= zigzagInterval)
-                {
-                    direction = GetRandomDirection(random);
-                    zigzagInterval = GetRandomInterval(random);
-                    elapsedTime = 0f; // Reset elapsed time for the next interval
-                }
-
-                Vector2 movement = direction * speed * deltaTime;
-                movable.Position += movement;
+                direction = this.GetRandomDirection(random);
+                zigzagInterval = this.GetRandomInterval(random);
+                elapsedTime = 0f; // Reset elapsed time for the next interval
             }
+
+            Vector2 movement = direction * speed * deltaTime;
+            movable.Position += movement;
 
             this.complete = true;
         }

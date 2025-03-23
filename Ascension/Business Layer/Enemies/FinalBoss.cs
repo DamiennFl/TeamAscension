@@ -53,8 +53,8 @@ namespace Ascension.Enemies
         /// <param name="speed">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
-        public FinalBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
-        : base(speed, position, texture, "FinalBoss", collisionManager)
+        public FinalBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
+        : base(velocity, position, texture)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -70,7 +70,7 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            this.UpdateMovementPatterns(gameTime);
+            this.MovementPattern.Move(gameTime, this);
 
             for (int i = 0; i < this.bullets.Count; i++)
             {

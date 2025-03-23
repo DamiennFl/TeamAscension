@@ -25,7 +25,7 @@ namespace Ascension.Enemies
         /// <summary>
         /// Queue of movement patterns.
         /// </summary>
-        protected Queue<IMovementPattern> movementPatterns = new Queue<IMovementPattern>();
+        public IMovementPattern MovementPattern { get; set; }
 
         protected CollisionManager collisionManager;
 
@@ -36,19 +36,13 @@ namespace Ascension.Enemies
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="enemyType">Type of enemy (A or B).</param>
-        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture, string enemyType)
+        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture)
         {
             this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
-            this.EnemyType = enemyType;
             this.collisionManager = collisionManager;
         }
-
-        /// <summary>
-        /// Gets or sets the type of enemy.
-        /// </summary>
-        public string EnemyType { get; set; }
 
         /// <summary>
         /// Gets or sets the speed of the enemy.
@@ -71,40 +65,5 @@ namespace Ascension.Enemies
         /// </summary>
         /// <param name="spriteBatch">Sprites.</param>
         public abstract void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Shoot method.
-        /// </summary>
-        public abstract void Shoot();
-
-        /// <summary>
-        /// Adds a movement pattern to the enemy.
-        /// </summary>
-        /// <param name="pattern">Movement pattern.</param>
-        public void AddMovementPattern(IMovementPattern pattern)
-        {
-            this.movementPatterns.Enqueue(pattern);
-        }
-
-        /// <summary>
-        /// Clears all movement patterns.
-        /// </summary>
-        public void ClearMovementPatterns()
-        {
-            this.movementPatterns.Clear();
-        }
-
-        /// <summary>
-        /// Updates the movement patterns.
-        /// </summary>
-        /// <param name="gameTime">Current game time.</param>
-        protected void UpdateMovementPatterns(GameTime gameTime)
-        {
-            if (this.movementPatterns.Count > 0)
-            {
-                var currentPattern = this.movementPatterns.Peek();
-                currentPattern.Move(gameTime, this);
-            }
-        }
     }
 }

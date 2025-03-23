@@ -55,8 +55,8 @@ namespace Ascension.Enemies
         /// <param name="position">The position of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
         /// <param name="contentManager">"The content manager for loading assets.</param>
-        public MidBoss(int speed, Vector2 position, Texture2D texture, ContentManager contentManager, CollisionManager collisionManager)
-        : base(speed, position, texture, "MidBoss", collisionManager)
+        public MidBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
+        : base(velocity, position, texture)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -72,7 +72,7 @@ namespace Ascension.Enemies
         /// <param name="gameTime">GameTime to sync with runtime.</param>
         public override void Update(GameTime gameTime)
         {
-            this.UpdateMovementPatterns(gameTime);
+            this.MovementPattern.Move(gameTime, this);
 
             for (int i = 0; i < this.bullets.Count; i++)
             {

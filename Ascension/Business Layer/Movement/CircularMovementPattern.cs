@@ -16,6 +16,8 @@ namespace Ascension.Enemies.EnemyMovement
         private bool complete = false;
         private Vector2 linearDirection;
         private float linearSpeed = 10f; // Adjust the speed as needed
+        public float Duration { get; set; }
+
 
         public CircularMovementPattern()
         {
@@ -25,7 +27,7 @@ namespace Ascension.Enemies.EnemyMovement
             this.linearDirection = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
         }
 
-        public void Move(GameTime gameTime, IMovable movable, float duration)
+        public void Move(GameTime gameTime, IMovable movable)
         {
             if (this.complete)
             {
@@ -38,29 +40,26 @@ namespace Ascension.Enemies.EnemyMovement
 
             float elapsedTime = 0f;
 
-            while (elapsedTime < duration)
+            // Calculate the angle increment based on the duration
+            float angleIncrement = (MathF.PI * 2); // Full circle (2 * PI) divided by duration
+            this.angle += angleIncrement * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (this.angle >= MathF.PI * 2)
             {
-                // Calculate the angle increment based on the duration
-                float angleIncrement = (MathF.PI * 2) / duration; // Full circle (2 * PI) divided by duration
-                this.angle += angleIncrement * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (this.angle >= MathF.PI * 2)
-                {
-                    this.angle -= MathF.PI * 2;
-                }
-
-                float newX = this.center.X + (this.radius * MathF.Cos(this.angle));
-                float newY = this.center.Y + (this.radius * MathF.Sin(this.angle));
-
-                // Calculate the linear displacement
-                float linearDisplacement = this.linearSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Vector2 linearMovement = this.linearDirection * linearDisplacement;
-
-                // Apply both circular and linear movements
-                movable.Position = new Vector2(newX, newY) + linearMovement;
-
-                elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                this.angle -= MathF.PI * 2;
             }
+
+            float newX = this.center.X + (this.radius * MathF.Cos(this.angle));
+            float newY = this.center.Y + (this.radius * MathF.Sin(this.angle));
+
+            // Calculate the linear displacement
+            float linearDisplacement = this.linearSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Vector2 linearMovement = this.linearDirection * linearDisplacement;
+
+            // Apply both circular and linear movements
+            movable.Position = new Vector2(newX, newY) + linearMovement;
+
+            elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             this.complete = true;
         }
