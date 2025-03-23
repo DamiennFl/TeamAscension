@@ -40,9 +40,9 @@ namespace Ascension
         }
 
 
-        public PlayArea(GraphicsDevice graphicsDevice, ContentManager content)
+        public PlayArea(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            this.backGround = content.Load<Texture2D>("Backgrounds/Stage1");
+            this.backGround = contentManager.Load<Texture2D>("Backgrounds/Stage1");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
         }

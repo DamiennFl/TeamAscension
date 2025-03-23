@@ -32,12 +32,12 @@ namespace Ascension
 
         private Texture2D buttonTexture;
 
-        public BindingsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+        public BindingsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+            : base(game, graphicsDevice, contentManager)
         {
             // Add an Escape Button to return to the main menu
-            this.buttonTexture = this.content.Load<Texture2D>("Controls/Button");
-            this.font = this.content.Load<SpriteFont>("Fonts/Font");
+            this.buttonTexture = this.contentManager.Load<Texture2D>("Controls/Button");
+            this.font = this.contentManager.Load<SpriteFont>("Fonts/Font");
 
             this.InitButtons();
         }
@@ -177,7 +177,7 @@ namespace Ascension
         /// <param name="e">Clicked. </param>
         private void EscapeButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.content));
+            this.game.ChangeState(new MenuState(this.game, this.graphicsDevice, this.contentManager));
         }
 
         /// <summary>

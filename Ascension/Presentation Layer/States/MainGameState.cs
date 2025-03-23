@@ -2,7 +2,9 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,23 +19,12 @@ namespace Ascension
         /// <summary>
         /// Player object.
         /// </summary>
-#pragma warning disable SA1401 // Fields should be private
         protected Player player;
 
         /// <summary>
         /// Time for midboss.
         /// </summary>
         private float midBossTime = 0f;
-
-        /// <summary>
-        /// List of enemy formations.
-        /// </summary>
-        //private List<EnemyFormation> enemyFormations = new List<EnemyFormation>();
-
-        /// <summary>
-        /// Basic enemy factory.
-        /// </summary>
-        //private BasicEnemyFactory basicEnemyFactory;
 
         /// <summary>
         /// Defines a play area.
@@ -44,19 +35,22 @@ namespace Ascension
 
         private CollisionManager collisionManager;
 
+        private List<Wave> waves = new List<Wave>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainGameState"/> class.
         /// </summary>
         /// <param name="game">The game itself.</param>
         /// <param name="graphicsDevice">Graphics device for the first state.</param>
         /// <param name="content">Content manager for the first state.</param>
-        public MainGameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+        public MainGameState(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+            : base(game, graphicsDevice, contentManager)
         {
-            this.playArea = new PlayArea(graphicsDevice, content);
-            this.player = new Player(graphicsDevice, content, this.playArea);
+            this.playArea = new PlayArea(graphicsDevice, contentManager);
+            this.player = new Player(graphicsDevice, contentManager, this.playArea);
 
             this.InitCollisions();
+            this.InitWaves();
             this.InitEnemyManager();
         }
 
@@ -78,6 +72,8 @@ namespace Ascension
 
             // Player drawn here
             this.player.Draw(spriteBatch);
+
+            this.enemyManager.Draw(spriteBatch);
 
             //foreach (var formation in this.enemyFormations)
             //{
@@ -106,12 +102,14 @@ namespace Ascension
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(20f))
+            if (this.IsBossTime(10f))
             {
-               this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.content));
+                Debug.WriteLine("I switched states");
+                this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.contentManager));
             }
 
             this.enemyManager.Update(gameTime);
+            this.enemyManager.SpawnEnemy(waves[0]);
 
             this.player.Update(gameTime);
 
@@ -119,7 +117,7 @@ namespace Ascension
 
             if (this.player.LossCondition())
             {
-                this.game.ChangeState(new GameOverState(this.game, this.graphicsDevice, this.content));
+                this.game.ChangeState(new GameOverState(this.game, this.graphicsDevice, this.contentManager));
             }
         }
 
@@ -144,13 +142,20 @@ namespace Ascension
 
         private void InitWaves()
         {
+            float duration = 10;
+            string enemyType = "EnemyA";
+            int enemyCount = 5;
+            float spawnInterval = 0.3f;
+            int health = 10;
+            string movementPattern = "Linear";
 
+            Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
+            this.waves.Add(testWave);
         }
 
         private void InitEnemyManager()
         {
-            this.enemyManager = new EnemyManager(content, graphicsDevice, this.collisionManager);
-            this.InitWaves();
+            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.waves);
         }
     }
 }

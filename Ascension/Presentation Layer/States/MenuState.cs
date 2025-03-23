@@ -42,13 +42,13 @@ namespace Ascension
         /// </summary>
         /// <param name="game">game.</param>
         /// <param name="graphicsDevice">GD.</param>
-        /// <param name="content">content.</param>
-        public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-            : base(game, graphicsDevice, content)
+        /// <param name="contentManager">content.</param>
+        public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+            : base(game, graphicsDevice, contentManager)
         {
-            var buttonTexture = this.content.Load<Texture2D>("Controls/Button");
-            var buttonFont = this.content.Load<SpriteFont>("Fonts/Font");
-            this.backGround = this.content.Load<Texture2D>("Backgrounds/AscensionTitle");
+            var buttonTexture = this.contentManager.Load<Texture2D>("Controls/Button");
+            var buttonFont = this.contentManager.Load<SpriteFont>("Fonts/Font");
+            this.backGround = this.contentManager.Load<Texture2D>("Backgrounds/AscensionTitle");
             this.screenHeight = graphicsDevice.Viewport.Height;
             this.screenWidth = graphicsDevice.Viewport.Width;
 
@@ -130,7 +130,7 @@ namespace Ascension
         /// <param name="e">Clicked.</param>
         private void PlayGameButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new MainGameState(this.game, this.graphicsDevice, this.content));
+            this.game.ChangeState(new MainGameState(this.game, this.graphicsDevice, this.contentManager));
         }
 
 
@@ -141,7 +141,7 @@ namespace Ascension
         /// <param name="e">Clicked. </param>
         private void BindingsButton_Click(object sender, EventArgs e)
         {
-            this.game.ChangeState(new BindingsState(this.game, this.graphicsDevice, this.content));
+            this.game.ChangeState(new BindingsState(this.game, this.graphicsDevice, this.contentManager));
         }
     }
 }

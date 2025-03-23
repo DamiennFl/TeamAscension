@@ -16,77 +16,76 @@ namespace Ascension
 
         private List<Wave> waves;
 
-        // Stuff passed in from Wave
-        // EnemyManager manager = new EnemyManager()
-        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
+        private float timeSinceLastSpawn;
+        private int currentWaveIndex;
+        private int enemiesSpawned;
+
+        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, List<Wave> waves)
         {
             this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
             this.movementFactory = new MovementFactory();
             this.Enemies = new List<Enemy>();
+            this.waves = waves;
+            this.timeSinceLastSpawn = 0f;
+            this.currentWaveIndex = 0;
+            this.enemiesSpawned = 0;
         }
 
-        // Spawn enemies for a duration, at an interval.
-        private void SpawnEnemy(Wave wave)
+        public void SpawnEnemy(Wave wave)
         {
-            for (int i = 0; i < wave.EnemyCount; i++)
+            Vector2 position = new Vector2(100, 100);
+            Vector2 velocity = new Vector2(1, 1);
+
+            Enemy enemy = wave.EnemyType switch
             {
-                Vector2 position = new Vector2(100, 100);
-                Vector2 velocity = new Vector2(1, 1);
+                "EnemyA" => this.factory.CreateEnemyA(position, velocity),
+                "EnemyB" => this.factory.CreateEnemyB(position, velocity),
+                "MidBoss" => this.factory.CreateMidBoss(position, velocity),
+                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
+                _ => throw new ArgumentException("Unknown enemy type")
+            };
 
-                Enemy enemy = wave.EnemyType switch
-                {
-                    "EnemyA" => this.factory.CreateEnemyA(position, velocity),
-                    "EnemyB" => this.factory.CreateEnemyB(position, velocity),
-                    "MidBoss" => this.factory.CreateMidBoss(position, velocity),
-                    "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
-                    _ => throw new ArgumentException("Unknown enemy type")
-                };
-
-                IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern, wave.Duration);
-                enemy.MovementPattern = movementPattern;
-                this.Enemies.Add(enemy);
-            }
-        }
-
-        // Remove enemies from this list
-        private void KillEnemies()
-        {
-
-        }
-
-
-        public void ProcessWaves(GameTime gameTime, List<Wave> waves)
-        {
-            // Main Wave Manager
-            foreach (Wave wave in waves)
-            {
-                float timeElapsed = 0;
-                float timeSinceLastSpawn = 0;
-                int enemiesSpawned = 0;
-                while (timeElapsed < wave.Duration)
-                {
-                    if (enemiesSpawned < wave.EnemyCount && timeSinceLastSpawn >= wave.SpawnInterval)
-                    {
-                        this.SpawnEnemy(wave);
-                    }
-
-                    timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    timeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                }
-            }
-        }
-
-        private void MoveEnemyOffScreen(GameTime gameTime, Enemy enemy)
-        {
-            // Move enemy to closest border with some randomization
-            // Check off-screen position, if they are then remove from the list
+            IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern, wave.Duration);
+            enemy.MovementPattern = movementPattern;
+            this.Enemies.Add(enemy);
         }
 
         public void Update(GameTime gameTime)
         {
+            // Process the current wave
+            if (this.currentWaveIndex < this.waves.Count)
+            {
+                Wave currentWave = this.waves[this.currentWaveIndex];
+                this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
+                {
+                    this.SpawnEnemy(currentWave);
+                    this.timeSinceLastSpawn = 0f;
+                    this.enemiesSpawned++;
+                }
+
+                // Move to the next wave if the current wave duration has passed
+                if (this.timeSinceLastSpawn >= currentWave.Duration)
+                {
+                    this.currentWaveIndex++;
+                    this.enemiesSpawned = 0;
+                    this.timeSinceLastSpawn = 0f;
+                }
+            }
+
+            // Update all enemies
             foreach (var enemy in this.Enemies)
             {
                 enemy.Update(gameTime);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var item in this.Enemies)
+            {
+                item.Draw(spriteBatch);
             }
         }
     }

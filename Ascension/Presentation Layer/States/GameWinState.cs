@@ -9,10 +9,10 @@ namespace Ascension
 
         private SpriteFont font;
 
-        public GameWinState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
-          : base(game, graphicsDevice, content)
+        public GameWinState(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
+          : base(game, graphicsDevice, contentManager)
         {
-            this.font = this.content.Load<SpriteFont>("Fonts/Font");
+            this.font = this.contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

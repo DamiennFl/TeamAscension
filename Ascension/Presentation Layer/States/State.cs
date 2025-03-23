@@ -16,8 +16,7 @@ namespace Ascension
         /// <summary>
         /// Field to load in our content.
         /// </summary>
-#pragma warning disable SA1401 // Fields should be private
-        protected ContentManager content;
+        protected ContentManager contentManager;
 
         /// <summary>
         /// Field to load in our graphics device.
@@ -34,12 +33,12 @@ namespace Ascension
         /// </summary>
         /// <param name="game">game.</param>
         /// <param name="graphicsDevice">GD.</param>
-        /// <param name="content">content.</param>
-        public State(Game1 game, GraphicsDevice graphicsDevice, ContentManager content)
+        /// <param name="contentManager">content.</param>
+        public State(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             this.game = game;
             this.graphicsDevice = graphicsDevice;
-            this.content = content;
+            this.contentManager = contentManager;
         }
 
         /// <summary>
