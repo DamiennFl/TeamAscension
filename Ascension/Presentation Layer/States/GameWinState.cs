@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace Ascension
 {
-    internal class GameWinState : State
+    public class GameWinState : State
     {
 
         private SpriteFont font;
