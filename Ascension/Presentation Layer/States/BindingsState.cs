@@ -5,8 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Runtime.CompilerServices;
 using Ascension.Content.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
