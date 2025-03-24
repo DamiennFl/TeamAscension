@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
-   
     /// <summary>
     /// Player class.
     /// </summary>
@@ -57,7 +56,6 @@ namespace Ascension
         /// </summary>
         private readonly TimeSpan totalInvincibleTime = TimeSpan.FromSeconds(3);
 
-
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
@@ -98,16 +96,6 @@ namespace Ascension
         /// Gets or sets the bullet's position.
         /// </summary>
         public Vector2 BulletPosition;
-
-        /// <summary>
-        /// Gets or sets the bullet.
-        /// </summary>
-        public Bullet bullet;
-
-        /// <summary>
-        /// Gets or sets the bullets.
-        /// </summary>
-        public List<Bullet> bullets = new List<Bullet>();
 
         /// <summary>
         /// Gets or sets the play area.
@@ -244,8 +232,6 @@ namespace Ascension
             this.InvincibleTimer(gameTime);
         }
 
-       
-
         /// <summary>
         /// This will activate the Invincibility of the player for a set amount of time.
         /// </summary>
@@ -266,7 +252,6 @@ namespace Ascension
             return this.Health <= 0;
         }
 
-     
         /// <summary>
         /// Player movement.
         /// </summary>

@@ -46,7 +46,7 @@ namespace Ascension
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyB"/> class.
         /// </summary>
-        /// <param name="speed">The speed of EnemyB.</param>
+        /// <param name="velocity">The speed of EnemyB.</param>
         /// <param name="position">The position of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"

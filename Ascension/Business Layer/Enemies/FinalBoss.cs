@@ -49,7 +49,7 @@ namespace Ascension
         /// <summary>
         /// Initializes a new instance of the <see cref="FinalBoss"/> class.
         /// </summary>
-        /// <param name="speed">The speed of FinalBoss.</param>
+        /// <param name="velocity">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
         public FinalBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)

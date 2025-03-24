@@ -38,7 +38,7 @@ namespace Ascension
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
         /// </summary>
-        /// <param name="speed">The speed of EnemyA.</param>
+        /// <param name="velocity">The speed of EnemyA.</param>
         /// <param name="position">The position of EnemyA.</param>
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
@@ -108,9 +108,6 @@ namespace Ascension
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
             Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
             bullet.IsPlayerBullet = false;
-
-            // Register with collision system
-            this.collisionManager.Register(bullet);
         }
 
         /// <summary>
