@@ -22,6 +22,8 @@ namespace Ascension
 
         private BulletManager bulletManager;
 
+        private CollisionManager collisionManager;
+
         public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves)
         {
             this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
@@ -32,6 +34,7 @@ namespace Ascension
             this.currentWaveIndex = 0;
             this.enemiesSpawned = 0;
             this.bulletManager = bulletManager;
+            this.collisionManager = collisionManager;
         }
 
         public void SpawnEnemy(Wave wave)
@@ -53,6 +56,7 @@ namespace Ascension
             this.Enemies.Add(enemy);
 
             this.bulletManager.RegisterEnemy(enemy);
+            this.collisionManager.Register(enemy);
         }
 
         public void Update(GameTime gameTime)

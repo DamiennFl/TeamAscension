@@ -90,6 +90,7 @@ namespace Ascension
                 this.bullets[i].BulletUpdate(gTime);
                 if (!this.bullets[i].IsActive)
                 {
+                    this.collisionManager.Unregister(this.bullets[i]);
                     this.bullets.RemoveAt(i);
                 }
             }

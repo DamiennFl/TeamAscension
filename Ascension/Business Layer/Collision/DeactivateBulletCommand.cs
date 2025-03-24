@@ -2,6 +2,8 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
+
 namespace Ascension
 {
     /// <summary>

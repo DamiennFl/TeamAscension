@@ -2,16 +2,16 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Ascension
 {
     /// <summary>
     /// Abstract class for enemies.
     /// </summary>
-    public abstract class Enemy : IMovable
+    public abstract class Enemy : IMovable, ICollidable
     {
         /// <summary>
         /// The texture for the enemy.
@@ -19,11 +19,18 @@ namespace Ascension
         protected Texture2D texture;
 
         /// <summary>
-        /// Queue of movement patterns.
+        /// Initializes a new instance of the <see cref="Enemy"/> class.
         /// </summary>
-        public IMovementPattern MovementPattern { get; set; }
-
-        protected CollisionManager collisionManager;
+        /// <param name="velocity">Speed of the enemy.</param>
+        /// <param name="position">Postion of the enemy.</param>
+        /// <param name="texture">Texture of the enemy.</param>
+        /// <param name="collisionManager">The collision manager.</param>
+        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture)
+        {
+            this.Velocity = velocity;
+            this.texture = texture;
+            this.Position = position;
+        }
 
         /// <summary>
         /// Event for when a bullet is fired
@@ -31,19 +38,19 @@ namespace Ascension
         public event Action<Vector2, Vector2, bool, Texture2D> BulletFired;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Enemy"/> class.
+        /// Gets or sets queue of movement patterns.
         /// </summary>
-        /// <param name="speed">Speed of the enemy.</param>
-        /// <param name="position">Postion of the enemy.</param>
-        /// <param name="texture">Texture of the enemy.</param>
-        /// <param name="enemyType">Type of enemy (A or B).</param>
-        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture)
-        {
-            this.Velocity = velocity;
-            this.texture = texture;
-            this.Position = position;
-            this.collisionManager = collisionManager;
-        }
+        public IMovementPattern MovementPattern { get; set; }
+
+        /// <summary>
+        /// Gets the bounding box of the enemy.
+        /// </summary>
+        public Rectangle Bounds => new Rectangle((int)this.Position.X, (int)this.Position.Y, this.texture.Width, this.texture.Height);
+
+        /// <summary>
+        /// Gets the collision layer identifier.
+        /// </summary>
+        public string CollisionLayer => "Enemy";
 
         /// <summary>
         /// Gets or sets the speed of the enemy.
