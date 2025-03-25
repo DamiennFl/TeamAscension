@@ -86,11 +86,26 @@ namespace Ascension
                 }
             }
 
+            this.IsDead();
+
             // Update all enemies
             foreach (var enemy in this.Enemies)
             {
                 enemy.Update(gameTime);
                 CheckAndReverseVelocity(enemy);
+            }
+        }
+
+        private void IsDead()
+        {
+            var enemies = this.Enemies.ToArray();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.IsDead)
+                {
+                    this.Enemies.Remove(enemy);
+                    this.collisionManager.Unregister(enemy);
+                }
             }
         }
 

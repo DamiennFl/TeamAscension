@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Ascension.Business_Layer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +16,7 @@ namespace Ascension
     /// <summary>
     /// Player class.
     /// </summary>
-    public class Player : ICollidable
+    public class Player : ICollidable, IEntity
     {
         /// <summary>
         /// Gets or sets the player's speed.
@@ -60,7 +61,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
-        private float shootInterval = 0.5f;
+        private float shootInterval = 0.1f;
 
         /// <summary>
         /// Gets or sets the player's shoot timer.
@@ -77,11 +78,6 @@ namespace Ascension
                 return new Vector2(this.graphicsDevice.Viewport.Width / 4, this.graphicsDevice.Viewport.Height - 150);
             }
         }
-
-        /// <summary>
-        /// Gets the player's damage.
-        /// </summary>
-        public const int PlayerDamage = 10;
 
         /// <summary>
         /// Gets or sets the bullet's velocity.
@@ -196,6 +192,11 @@ namespace Ascension
         public int Health { get; set; } = 100;
 
         /// <summary>
+        /// Gets a value indicating whether the player is dead.
+        /// </summary>
+        public bool IsDead => this.Health <= 0;
+
+        /// <summary>
         /// Draw method for drawing the player.
         /// </summary>
         /// <param name="spriteBatch">Sprites.</param>
@@ -254,15 +255,6 @@ namespace Ascension
             this.invincibleTimeRemaining = this.totalInvincibleTime;
             this.playerPosition = this.PlayerSpawn;
             Debug.WriteLine("Invincibility activated.");
-        }
-
-        /// <summary>
-        /// Loss condition for the player.
-        /// </summary>
-        /// <returns>if the player is dead.</returns>
-        public bool LossCondition()
-        {
-            return this.Health <= 0;
         }
 
         /// <summary>
@@ -376,14 +368,14 @@ namespace Ascension
             if (this.IsInvincible)
             {
                 this.invincibleTimeRemaining -= gameTime.ElapsedGameTime;
-                Debug.WriteLine($"Invincible time remaining: {this.invincibleTimeRemaining.TotalSeconds:F2} seconds");
+                // Debug.WriteLine($"Invincible time remaining: {this.invincibleTimeRemaining.TotalSeconds:F2} seconds");
 
                 // Are we no longer invincible? then set invincible to false.
                 if (this.invincibleTimeRemaining <= TimeSpan.Zero)
                 {
                     this.IsInvincible = false;
                     this.invincibleTimeRemaining = TimeSpan.Zero;
-                    Debug.WriteLine("Invincibility off.");
+                    // Debug.WriteLine("Invincibility off.");
                 }
             }
         }

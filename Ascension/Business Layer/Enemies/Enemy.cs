@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using Ascension.Business_Layer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,7 +12,7 @@ namespace Ascension
     /// <summary>
     /// Abstract class for enemies.
     /// </summary>
-    public abstract class Enemy : IMovable, ICollidable
+    public abstract class Enemy : IMovable, ICollidable, IEntity
     {
         /// <summary>
         /// The texture for the enemy.
@@ -98,6 +99,21 @@ namespace Ascension
         public Vector2 Position { get; set; }
 
         /// <summary>
+        /// Gets or sets the health of the enemy.
+        /// </summary>
+        public int Health { get; set; } = 10;
+
+        /// <summary>
+        /// Gets or Sets a value indicating whether the enemy is invincible.
+        /// </summary>
+        public bool IsInvincible { get; set; } = false;
+
+        /// <summary>
+        /// Gets a value indicating whether the enemy is dead.
+        /// </summary>
+        public bool IsDead => this.Health <= 0;
+
+        /// <summary>
         /// Updates the enemy.
         /// </summary>
         /// <param name="gameTime">Time of game.</param>
@@ -117,6 +133,13 @@ namespace Ascension
         public virtual void Shoot(Vector2 velo, bool isPlayerBullet, Texture2D bulletTexture)
         {
             this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture); // check this
+        }
+
+        /// <summary>
+        /// Activates the invincibility of the enemy, if Need be.
+        /// </summary>
+        public void ActivateInvincibility()
+        {
         }
     }
 }

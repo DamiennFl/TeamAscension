@@ -2,6 +2,7 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Business_Layer;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -117,13 +118,14 @@ namespace Ascension
         {
             switch (a)
             {
-                case Player player when b is Bullet bullet && !bullet.IsPlayerBullet:
-                    this.commandQueue.Enqueue(new DamagePlayerCommand(player, bullet.Damage));
+                case IEntity player when b is Bullet bullet && !bullet.IsPlayerBullet:
+                    this.commandQueue.Enqueue(new DamagePlayerCommand(player));
                     this.commandQueue.Enqueue(new DeactivateBulletCommand(bullet));
                     break;
 
-                case Bullet bulletA when b is Enemy && bulletA.IsPlayerBullet:
-                    this.commandQueue.Enqueue(new DeactivateBulletCommand(bulletA));
+                case IEntity enemy when b is Bullet bullet && bullet.IsPlayerBullet:
+                    this.commandQueue.Enqueue(new DamagePlayerCommand(enemy));
+                    this.commandQueue.Enqueue(new DeactivateBulletCommand(bullet));
                     break;
             }
         }
