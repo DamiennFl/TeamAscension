@@ -20,7 +20,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the Border Color.
         /// </summary>
-        private Color BorderColor { get; set; } = Color.Black;
+        private Color BorderColor { get; set; } = Color.Red;
 
         /// <summary>
         /// Background texture.
@@ -88,16 +88,16 @@ namespace Ascension
         public void BorderBuffer(SpriteBatch spriteBatch)
         {
             // Top part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 40, this.BorderRectangle.Y - 40, this.BorderRectangle.Width + 90, this.BorderWidth + 40), this.BorderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 40, this.BorderRectangle.Y - 40, this.BorderRectangle.Width + 90, this.BorderWidth + 40), Color.Blue);
 
             // Bottom part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 30, this.BorderRectangle.Y + this.BorderRectangle.Height - this.BorderWidth, this.BorderRectangle.Width + 30, this.BorderWidth + 40), this.BorderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 30, this.BorderRectangle.Y + this.BorderRectangle.Height - this.BorderWidth, this.BorderRectangle.Width + 30, this.BorderWidth + 40), Color.Red);
 
             // Left part of rectangle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 60, this.BorderRectangle.Y - 30, this.BorderWidth + 60, this.BorderRectangle.Height + 60), this.BorderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X - 60, this.BorderRectangle.Y - 30, this.BorderWidth + 60, this.BorderRectangle.Height + 60), Color.Yellow);
 
             // Right part of rectagnle
-            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X + this.BorderRectangle.Width - this.BorderWidth, this.BorderRectangle.Y - 30, this.BorderWidth + 300, this.BorderRectangle.Height + 30), this.BorderColor);
+            spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X + this.BorderRectangle.Width - this.BorderWidth, this.BorderRectangle.Y - 30, this.BorderWidth + 90, this.BorderRectangle.Height + 30), Color.Green);
         }
     }
 }

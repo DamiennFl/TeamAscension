@@ -197,7 +197,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's health.
         /// </summary>
-        public int Health { get; set; } = 3;
+        public int Health { get; set; } = 100;
 
         /// <summary>
         /// Draw method for drawing the player.

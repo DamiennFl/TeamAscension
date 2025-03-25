@@ -12,7 +12,7 @@ namespace Ascension
             {
                 case "Linear":
                     return new LinearMovementPattern();
-                case "Circular":
+                case "Wave":
                     return new WaveMovementPattern();
                 case "ZigZag":
                     return new ZigZagMovementPattern();

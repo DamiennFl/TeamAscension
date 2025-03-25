@@ -66,6 +66,22 @@ namespace Ascension
             }
         }
 
+        public void DrawBounds(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = this.texture;
+            Rectangle bounds = this.Bounds;
+            Color color = Color.Red;
+
+            // Draw top line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, bounds.Width, 1), color);
+            // Draw bottom line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Bottom, bounds.Width, 1), color);
+            // Draw left line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, 1, bounds.Height), color);
+            // Draw right line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Right, bounds.Top, 1, bounds.Height), color);
+        }
+
         /// <summary>
         /// Gets the collision layer identifier.
         /// </summary>
