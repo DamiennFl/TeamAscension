@@ -65,15 +65,15 @@ namespace Ascension.Business_Layer.Bullets
             {
                 case "A":
                     Bullet bulletA = new BulletA(damage, velocity, bulletPosition, texture);
-                    bulletA.MovementPattern = this.movementFactory.CreateMovementPattern("Linear", 0);
+                    bulletA.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
                     return bulletA;
                 case "B":
                     Bullet bulletB = new BulletB(damage, velocity, bulletPosition, texture);
-                    bulletB.MovementPattern = this.movementFactory.CreateMovementPattern("Wave", 0);
+                    bulletB.MovementPattern = this.movementFactory.CreateMovementPattern("Wave");
                     return bulletB;
                 default:
                     Bullet bullet = new BulletA(damage, velocity, bulletPosition, texture);
-                    bullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear", 0);
+                    bullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
                     return bullet;
             }
         }

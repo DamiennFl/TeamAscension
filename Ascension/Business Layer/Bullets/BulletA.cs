@@ -30,7 +30,7 @@ namespace Ascension.Business_Layer.Bullets
             : base(damage, velocity, bulletPosition)
         {
             this.Damage = damage;
-            this.Velocity = new Vector2(0, 2);
+            this.Velocity = velocity;
             this.BulletTexture = bulletTexture;
             this.IsActive = true;
             this.IsPlayerBullet = false;
