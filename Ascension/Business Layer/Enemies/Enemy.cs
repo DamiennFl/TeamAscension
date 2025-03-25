@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using Ascension.Business_Layer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,7 +12,7 @@ namespace Ascension
     /// <summary>
     /// Abstract class for enemies.
     /// </summary>
-    public abstract class Enemy : IMovable, ICollidable
+    public abstract class Enemy : IMovable, ICollidable, IEntity
     {
         /// <summary>
         /// The texture for the enemy.
@@ -66,6 +67,22 @@ namespace Ascension
             }
         }
 
+        public void DrawBounds(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = this.texture;
+            Rectangle bounds = this.Bounds;
+            Color color = Color.Red;
+
+            // Draw top line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, bounds.Width, 1), color);
+            // Draw bottom line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Bottom, bounds.Width, 1), color);
+            // Draw left line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, 1, bounds.Height), color);
+            // Draw right line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Right, bounds.Top, 1, bounds.Height), color);
+        }
+
         /// <summary>
         /// Gets the collision layer identifier.
         /// </summary>
@@ -80,6 +97,21 @@ namespace Ascension
         /// Gets or sets the position of the enemy.
         /// </summary>
         public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets the health of the enemy.
+        /// </summary>
+        public int Health { get; set; } = 10;
+
+        /// <summary>
+        /// Gets or Sets a value indicating whether the enemy is invincible.
+        /// </summary>
+        public bool IsInvincible { get; set; } = false;
+
+        /// <summary>
+        /// Gets a value indicating whether the enemy is dead.
+        /// </summary>
+        public bool IsDead => this.Health <= 0;
 
         /// <summary>
         /// Updates the enemy.
@@ -102,6 +134,13 @@ namespace Ascension
         public virtual void Shoot(Vector2 velo, bool isPlayerBullet, string bulletTexture)
         {
             this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture); // check this
+        }
+
+        /// <summary>
+        /// Activates the invincibility of the enemy, if Need be.
+        /// </summary>
+        public void ActivateInvincibility()
+        {
         }
     }
 }

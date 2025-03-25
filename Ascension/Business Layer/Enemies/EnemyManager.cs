@@ -86,6 +86,8 @@ namespace Ascension
                 }
             }
 
+            this.IsDead();
+
             // Update all enemies
             foreach (var enemy in this.Enemies)
             {
@@ -93,6 +95,20 @@ namespace Ascension
                 CheckAndReverseVelocity(enemy);
             }
         }
+
+        private void IsDead()
+        {
+            var enemies = this.Enemies.ToArray();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.IsDead)
+                {
+                    this.Enemies.Remove(enemy);
+                    this.collisionManager.Unregister(enemy);
+                }
+            }
+        }
+
         private void CheckAndReverseVelocity(Enemy enemy)
         {
             Rectangle border = this.playArea.BorderRectangle;
@@ -101,13 +117,18 @@ namespace Ascension
             Rectangle bounds = enemy.Bounds;
 
             int topHalfHeight = border.Height / 2;
+            float sineOffset = 0f;
+            if (enemy.MovementPattern is WaveMovementPattern)
+            {
+                sineOffset = 25f;
+            }
 
-            if (position.X <= border.Left || position.X >= border.Right)
+            if (position.X <= border.Left + (bounds.Width / 2) || position.X >= border.Right - (bounds.Width / 2))
             {
                 velocity.X = -velocity.X;
             }
 
-            if (position.Y <= border.Top || position.Y >= border.Top + topHalfHeight)
+            if (position.Y <= border.Top + sineOffset + (bounds.Height / 2) || position.Y >= border.Top + topHalfHeight - (bounds.Height / 2))
             {
                 velocity.Y = -velocity.Y;
             }
@@ -117,9 +138,10 @@ namespace Ascension
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var item in this.Enemies)
+            foreach (var enemy in this.Enemies)
             {
-                item.Draw(spriteBatch);
+                enemy.Draw(spriteBatch);
+                enemy.DrawBounds(spriteBatch);
             }
         }
     }
