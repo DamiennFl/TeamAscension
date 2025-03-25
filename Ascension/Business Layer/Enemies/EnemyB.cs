@@ -103,8 +103,8 @@ namespace Ascension
         public void Shoot()
         {
             Vector2 bulletVelocity = new Vector2(0, 1.2f);
-            bool isPlayerBullet = false;
-            // base.Shoot(bulletVelocity, isPlayerBullet);
+
+            // base.Shoot(bulletVelocity, false);
             this.StarShooting();
         }
 
@@ -124,12 +124,12 @@ namespace Ascension
         public void StarShooting()
         {
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
-            float angle = -0.5F;
-            for (int i = 0; i < 5; i++)
+            float angle = -0.9F;
+            for (int i = 0; i < 3; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2);
                 base.Shoot(bulletVelocity, false, bulletTexture);
-                angle += 0.2F;
+                angle += 0.6F;
             }
         }
 
@@ -139,7 +139,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
+            return ((float)this.random.NextDouble() * 3f) + 2f; // Random interval between 2 and 5 seconds
         }
     }
 }
