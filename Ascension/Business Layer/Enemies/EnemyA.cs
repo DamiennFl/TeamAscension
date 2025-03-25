@@ -63,8 +63,8 @@ namespace Ascension
                 null,
                 Color.White,
                 0f,
-                new Vector2(this.texture.Width * 0.4f, this.texture.Height * 0.4f),
-                new Vector2(0.4F, 0.4F),
+                new Vector2(this.texture.Width / 2, this.texture.Height / 2),
+                new Vector2(this.Scale, this.Scale),
                 SpriteEffects.None,
                 0f);
         }

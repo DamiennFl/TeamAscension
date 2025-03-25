@@ -211,7 +211,7 @@ namespace Ascension
                 null,
                 Color.White,
                 0f,
-                new Vector2(this.playerTexture.Width / 4, this.playerTexture.Height / 4),
+                new Vector2(this.playerTexture.Width / 2, this.playerTexture.Height / 2),
                 new Vector2(0.25F, 0.25F),
                 SpriteEffects.None,
                 0f);

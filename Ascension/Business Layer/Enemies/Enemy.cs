@@ -19,6 +19,11 @@ namespace Ascension
         protected Texture2D texture;
 
         /// <summary>
+        /// Gets or sets the scale at which the enemy is rendered.
+        /// </summary>
+        protected float Scale { get; set; } = 0.4f; // Default scale for all enemies
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Enemy"/> class.
         /// </summary>
         /// <param name="velocity">Speed of the enemy.</param>
@@ -45,7 +50,21 @@ namespace Ascension
         /// <summary>
         /// Gets the bounding box of the enemy.
         /// </summary>
-        public Rectangle Bounds => new Rectangle((int)this.Position.X, (int)this.Position.Y, this.texture.Width, this.texture.Height);
+        public Rectangle Bounds
+        {
+            get
+            {
+                // Calculate scaled dimensions
+                int scaledWidth = (int)(this.texture.Width * this.Scale);
+                int scaledHeight = (int)(this.texture.Height * this.Scale);
+
+                // Position is the center point, calculate top-left for the rectangle
+                int x = (int)this.Position.X - (scaledWidth / 2);
+                int y = (int)this.Position.Y - (scaledHeight / 2);
+
+                return new Rectangle(x, y, scaledWidth, scaledHeight);
+            }
+        }
 
         /// <summary>
         /// Gets the collision layer identifier.
