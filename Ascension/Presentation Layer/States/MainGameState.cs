@@ -142,6 +142,9 @@ namespace Ascension
             this.collisionManager.Register(this.player);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitWaves()
         {
             float duration = 5;
@@ -150,8 +153,9 @@ namespace Ascension
             float spawnInterval = 0.3f;
             string movementPattern = "Linear";
             int health = 10;
+            string bulletType = "A";
 
-            Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
+            Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
             this.waves.Add(testWave);
 
             float duration2 = 10;

@@ -52,8 +52,10 @@ namespace Ascension
         /// <param name="velocity">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
-        public FinalBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(velocity, position, texture)
+        /// <param name="contentManager">The content manager for loading assets.</param>
+        /// <param name="bulletType">The type of bullet to shoot.</param>
+        public FinalBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, texture, bulletType)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -136,7 +138,6 @@ namespace Ascension
         /// </summary>
         public void CircularShooting()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
             int numberOfBullets = 12; // Total bullets in the circles
             float bulletSpeed = 3f; // Adjust the speed as needed
             float angleIncrement = MathF.PI * 2 / numberOfBullets;
@@ -145,7 +146,7 @@ namespace Ascension
             {
                 float angle = i * angleIncrement;
                 Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                base.Shoot(bulletVelocity, false, "Green");
+                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
             }
         }
 

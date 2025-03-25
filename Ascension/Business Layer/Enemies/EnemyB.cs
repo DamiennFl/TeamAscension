@@ -50,8 +50,9 @@ namespace Ascension
         /// <param name="position">The position of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
-        public EnemyB(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(velocity, position, texture)
+        /// <param name="bulletType">The type of bullet to shoot.</param>
+        public EnemyB(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, texture, bulletType)
         {
             this.contentManager = contentManager;
             this.random = new Random();
@@ -109,13 +110,12 @@ namespace Ascension
 
         public void StarShooting()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
             float angle = -0.9F;
             for (int i = 0; i < 3; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2);
-                base.Shoot(bulletVelocity, false, "Orange");
-                angle += 0.6F;
+                base.Shoot(bulletVelocity, false, "Orange", this.BulletType);
+                angle += 0.9F;
             }
         }
 
