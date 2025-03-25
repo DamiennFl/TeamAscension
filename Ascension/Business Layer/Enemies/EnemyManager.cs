@@ -24,7 +24,9 @@ namespace Ascension
 
         private CollisionManager collisionManager;
 
-        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves)
+        private PlayArea playArea;
+
+        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
         {
             this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
             this.movementFactory = new MovementFactory();
@@ -35,6 +37,7 @@ namespace Ascension
             this.enemiesSpawned = 0;
             this.bulletManager = bulletManager;
             this.collisionManager = collisionManager;
+            this.playArea = playArea;
         }
 
         public void SpawnEnemy(Wave wave)
@@ -87,7 +90,29 @@ namespace Ascension
             foreach (var enemy in this.Enemies)
             {
                 enemy.Update(gameTime);
+                CheckAndReverseVelocity(enemy);
             }
+        }
+        private void CheckAndReverseVelocity(Enemy enemy)
+        {
+            Rectangle border = this.playArea.BorderRectangle;
+            Vector2 position = enemy.Position;
+            Vector2 velocity = enemy.Velocity;
+            Rectangle bounds = enemy.Bounds;
+
+            int topHalfHeight = border.Height / 2;
+
+            if (position.X <= border.Left || position.X >= border.Right)
+            {
+                velocity.X = -velocity.X;
+            }
+
+            if (position.Y <= border.Top || position.Y >= border.Top + topHalfHeight)
+            {
+                velocity.Y = -velocity.Y;
+            }
+
+            enemy.Velocity = velocity;
         }
 
         public void Draw(SpriteBatch spriteBatch)

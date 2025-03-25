@@ -12,6 +12,7 @@ namespace Ascension
         private float time; // Track elapsed time for the sine wave calculation
         private readonly float amplitude = 100f;
         private readonly float frequency = 5f;
+
         public void Move(GameTime gameTime, IMovable movable)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;

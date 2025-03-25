@@ -168,8 +168,7 @@ namespace Ascension
 
         private void InitEnemyManager()
         {
-            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.waves);
-            // this.enemyManager.SpawnEnemy(waves[0]);
+            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.waves, this.playArea);
         }
 
         private void InitBulletManager()
