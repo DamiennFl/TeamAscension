@@ -40,7 +40,7 @@ namespace Ascension
         /// <summary>
         /// Event for when a bullet is fired
         /// </summary>
-        public event Action<Vector2, Vector2, bool, Texture2D> BulletFired;
+        public event Action<Vector2, Vector2, bool, string> BulletFired;
 
         /// <summary>
         /// Gets or sets queue of movement patterns.
@@ -98,7 +98,8 @@ namespace Ascension
         /// </summary>
         /// <param name="velo">bulet velocity.</param>
         /// <param name="isPlayerBullet">if it is a user's bullet.</param>
-        public virtual void Shoot(Vector2 velo, bool isPlayerBullet, Texture2D bulletTexture)
+        /// <param name="bulletTexture">texture of the bullet.</param>
+        public virtual void Shoot(Vector2 velo, bool isPlayerBullet, string bulletTexture)
         {
             this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture); // check this
         }

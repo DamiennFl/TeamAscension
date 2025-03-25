@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.Generic;
+using Ascension.Business_Layer.Bullets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,30 +21,24 @@ namespace Ascension
         private List<Bullet> bullets = new List<Bullet>();
 
         /// <summary>
-        /// Enemy bullet texture.
-        /// </summary>
-        private Texture2D enemyBulletTexture;
-
-        /// <summary>
-        /// Player bullet texture.
-        /// </summary>
-        private Texture2D playerBulletTexture;
-
-        /// <summary>
         /// Collision manager for the bullets.
         /// </summary>
         private CollisionManager collisionManager;
+
+        /// <summary>
+        /// To create different kinds of bullets.
+        /// </summary>
+        private BulletFactory bulletFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulletManager"/> class.
         /// </summary>
         /// <param name="contentManager">for loading textures.</param>
         /// <param name ="collisionManager">for loading collisions.</param>
-        public BulletManager(ContentManager contentManager, CollisionManager collisionManager)
+        public BulletManager(CollisionManager collisionManager, ContentManager contentManager)
         {
-            this.enemyBulletTexture = contentManager.Load<Texture2D>("Bullets/BulletBlue");
-            this.playerBulletTexture = contentManager.Load<Texture2D>("Bullets/BulletOrange");
             this.collisionManager = collisionManager;
+            this.bulletFactory = new BulletFactory(contentManager);
         }
 
         /// <summary>
@@ -71,9 +66,9 @@ namespace Ascension
         /// <param name="velo">Velocity.</param>
         /// <param name="isPlayerBullet">Bool if bullet is shot by the player.</param>
         /// <param name="bulletTexture">Texture of the bullet.</param>
-        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, Texture2D bulletTexture)
+        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, string bulletTexture)
         {
-            Bullet bullet = new Bullet(1, velo, pos, bulletTexture);
+            Bullet bullet = this.bulletFactory.CreateBullet(1, velo, pos, bulletTexture);
             this.collisionManager.Register(bullet);
             bullet.IsPlayerBullet = isPlayerBullet;
             this.bullets.Add(bullet);
@@ -85,7 +80,7 @@ namespace Ascension
         /// <param name="gTime">Current Gametime.</param>
         public void Update(GameTime gTime)
         {
-            for (int i = bullets.Count - 1; i >= 0; i--)
+            for (int i = this.bullets.Count - 1; i >= 0; i--)
             {
                 this.bullets[i].BulletUpdate(gTime);
                 if (!this.bullets[i].IsActive)

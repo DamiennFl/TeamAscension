@@ -173,7 +173,7 @@ namespace Ascension
 
         private void InitBulletManager()
         {
-            this.bulletManager = new BulletManager(this.contentManager, this.collisionManager);
+            this.bulletManager = new BulletManager(this.collisionManager, this.contentManager);
         }
     }
 }
