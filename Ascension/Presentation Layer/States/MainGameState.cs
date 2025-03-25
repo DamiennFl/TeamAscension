@@ -118,7 +118,7 @@ namespace Ascension
 
             this.collisionManager.Update();
 
-            if (this.player.LossCondition())
+            if (this.player.IsDead)
             {
                 this.game.ChangeState(new GameOverState(this.game, this.graphicsDevice, this.contentManager));
             }
@@ -147,7 +147,7 @@ namespace Ascension
         {
             float duration = 5;
             string enemyType = "EnemyA";
-            int enemyCount = 5;
+            int enemyCount = 1;
             float spawnInterval = 0.3f;
             int health = 10;
             string movementPattern = "Wave";
@@ -155,15 +155,15 @@ namespace Ascension
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
             this.waves.Add(testWave);
 
-            float duration2 = 10;
-            string enemyType2 = "EnemyB";
-            int enemyCount2 = 10;
-            float spawnInterval2 = 0.3f;
-            int health2 = 10;
-            string movementPattern2 = "Linear";
+            //float duration2 = 10;
+            //string enemyType2 = "EnemyB";
+            //int enemyCount2 = 10;
+            //float spawnInterval2 = 0.3f;
+            //int health2 = 10;
+            //string movementPattern2 = "Linear";
 
-            Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2);
-            this.waves.Add(testWave2);
+            //Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2);
+            //this.waves.Add(testWave2);
         }
 
         private void InitEnemyManager()
@@ -173,7 +173,7 @@ namespace Ascension
 
         private void InitBulletManager()
         {
-            this.bulletManager = new BulletManager(this.contentManager, this.collisionManager);
+            this.bulletManager = new BulletManager(this.collisionManager, this.contentManager);
         }
     }
 }

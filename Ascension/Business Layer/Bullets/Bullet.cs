@@ -10,7 +10,7 @@ namespace Ascension
     /// <summary>
     /// Bullet class.
     /// </summary>
-    public class Bullet : IMovable, ICollidable
+    public abstract class Bullet : IMovable, ICollidable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Bullet"/> class.
@@ -20,19 +20,19 @@ namespace Ascension
         /// <param name="velocity">Velocity of bullet.</param>
         /// <param name="bulletPosition">Bullet position.</param>
         /// <param name="bulletTexture">Bullet texture.</param>
-        public Bullet(int damage, Vector2 velocity, Vector2 bulletPosition, Texture2D bulletTexture)
+        /// <param name ="movementPattern">Movement of bullet.</param>
+        public Bullet(int damage, Vector2 velocity, Vector2 bulletPosition)
         {
-            Damage = damage;
-            Velocity = velocity;
-            Position = bulletPosition;
-            BulletTexture = bulletTexture;
-            IsActive = true; // activate as soon  as it is
+            this.Damage = damage;
+            this.Velocity = velocity;
+            this.Position = bulletPosition;
+            this.IsActive = true; // activate as soon  as it is
         }
 
         /// <summary>
-        /// Gets or sets the speed of the bullet.
+        /// Gets or sets the damage of the bullet.
         /// </summary>
-        public int Damage { get; set; }
+        public int Damage { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the speed of the bullet.
@@ -69,7 +69,15 @@ namespace Ascension
                 this.BulletTexture.Width,
                 this.BulletTexture.Height);
 
+        /// <summary>
+        /// position of bullet.
+        /// </summary>
         public Vector2 Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets movement of bullet.
+        /// </summary>
+        public IMovementPattern MovementPattern { get; set; }
 
         /// <summary>
         /// Handles collision with another object.
@@ -118,7 +126,7 @@ namespace Ascension
         /// <param name="gameTime">Time of game.</param>
         public void BulletUpdate(GameTime gameTime)
         {
-            this.Position += this.Velocity; // Move bullet by velocity.
+            this.MovementPattern.Move(gameTime, this);
 
             if (this.Position.X < 40 || this.Position.X > 480 || this.Position.Y < 40 || this.Position.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {

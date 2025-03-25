@@ -2,6 +2,8 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Business_Layer;
+using System;
 using System.Diagnostics;
 
 namespace Ascension
@@ -18,22 +20,16 @@ namespace Ascension
         /// <summary>
         /// The player entity that will receive damage from this command.
         /// </summary>
-        private readonly Player player;
-
-        /// <summary>
-        /// The amount of damage to be applied to the player.
-        /// </summary>
-        private readonly int damage;
+        private readonly IEntity entity;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DamagePlayerCommand"/> class.
         /// </summary>
         /// <param name="player">The player who will receive damage.</param>
         /// <param name="damage">The amount of damage to be dealt to the player.</param>
-        public DamagePlayerCommand(Player player, int damage)
+        public DamagePlayerCommand(IEntity currentEntity)
         {
-            this.player = player;
-            this.damage = damage;
+            this.entity = currentEntity;
         }
 
         /// <summary>
@@ -41,11 +37,11 @@ namespace Ascension
         /// </summary>
         public void Execute()
         {
-            if (!this.player.IsInvincible)
+            if (!this.entity.IsInvincible)
             {
-                this.player.Health -= this.damage;
-                Debug.WriteLine($"Player Health: {this.player.Health}");
-                this.player.ActivateInvincibility();
+                this.entity.Health -= 1;
+                Debug.WriteLine($"Entity Health: {this.entity.Health}");
+                this.entity.ActivateInvincibility();
             }
         }
     }

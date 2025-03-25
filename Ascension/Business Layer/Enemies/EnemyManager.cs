@@ -70,6 +70,8 @@ namespace Ascension
                 }
             }
 
+            this.IsDead();
+
             // Update all enemies
             foreach (var enemy in this.Enemies)
             {
@@ -100,6 +102,19 @@ namespace Ascension
 
             this.bulletManager.RegisterEnemy(enemy);
             this.collisionManager.Register(enemy);
+        }
+
+        private void IsDead()
+        {
+            var enemies = this.Enemies.ToArray();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.IsDead)
+                {
+                    this.Enemies.Remove(enemy);
+                    this.collisionManager.Unregister(enemy);
+                }
+            }
         }
 
         private void CheckAndReverseVelocity(Enemy enemy)
