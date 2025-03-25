@@ -40,7 +40,7 @@ namespace Ascension
         public void SpawnEnemy(Wave wave)
         {
             Vector2 position = new Vector2(100, 100);
-            Vector2 velocity = new Vector2(1, 1);
+            Vector2 velocity = new Vector2(2, 1);
 
             Enemy enemy = wave.EnemyType switch
             {

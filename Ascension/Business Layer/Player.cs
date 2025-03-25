@@ -90,7 +90,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the bullet's velocity.
         /// </summary>
-        public Vector2 BulletVelocity = new Vector2(0, -3f);
+        public Vector2 BulletVelocity = new Vector2(0, -7f);
 
         /// <summary>
         /// Gets or sets the bullet's position.
