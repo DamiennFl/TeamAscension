@@ -67,13 +67,12 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.shootTimer >= this.shootInterval)
             {
-                this.Shoot();
+                this.StarShooting();
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -115,7 +114,7 @@ namespace Ascension
             for (int i = 0; i < 3; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2);
-                base.Shoot(bulletVelocity, false, bulletTexture);
+                base.Shoot(bulletVelocity, false, "Orange");
                 angle += 0.6F;
             }
         }
@@ -126,7 +125,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 3f) + 2f; // Random interval between 2 and 5 seconds
+            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
         }
     }
 }

@@ -97,7 +97,7 @@ namespace Ascension
         /// <summary>
         /// Event for when a bullet is fired.
         /// </summary>
-        public event Action<Vector2, Vector2, bool, string> BulletFired;
+        public event Action<Vector2, Vector2, bool, string, string> BulletFired;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invincible.
@@ -353,7 +353,7 @@ namespace Ascension
             // Change this
             if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
-                this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "Green"); // check this
+                this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "Green", "A"); // check this
                 this.shootTimer = 0;
             }
         }

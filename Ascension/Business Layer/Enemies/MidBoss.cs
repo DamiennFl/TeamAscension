@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Business_Layer.Bullets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -146,8 +147,7 @@ namespace Ascension
             for (int i = 0; i < 5; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2f);
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
+                base.Shoot(bulletVelocity, false, "Green");
                 angle += 0.2F;
             }
         }
@@ -167,7 +167,7 @@ namespace Ascension
             {
                 float angle = i * angleIncrement;
                 Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                base.Shoot(bulletVelocity, false, bulletTexture);
+                base.Shoot(bulletVelocity, false, "Green");
             }
         }
 

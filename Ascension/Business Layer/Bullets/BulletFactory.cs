@@ -35,11 +35,13 @@ namespace Ascension.Business_Layer.Bullets
         /// <param name="collisionManager">Collision manager.</param>
         public BulletFactory(ContentManager contentManager)
         {
+            this.contentManager = contentManager; // Initialize the contentManager field
+
             this.bulletTextures = new Dictionary<string, Texture2D>
             {
                 { "Orange", this.contentManager.Load<Texture2D>("Bullets/BulletOrange") },
                 { "Blue", this.contentManager.Load<Texture2D>("Bullets/BulletBlue") },
-                { "Green", this.contentManager.Load<Texture2D>("Bulets/BulletGreen") },
+                { "Green", this.contentManager.Load<Texture2D>("Bullets/BulletGreen") },
             };
         }
 
@@ -51,7 +53,7 @@ namespace Ascension.Business_Layer.Bullets
         /// <param name="bulletPosition">Start position.</param>
         /// <param name="bulletTexture">Color and texture.</param>
         /// <returns>New bullet.</returns>
-        public Bullet CreateBullet(int damage, Vector2 velocity, Vector2 bulletPosition, string bulletTexture)
+        public Bullet CreateBullet(int damage, Vector2 velocity, Vector2 bulletPosition, string bulletTexture, string bulletType)
         {
             Texture2D texture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue"); // default bullet texture if not valid texture input.
             if (this.bulletTextures.ContainsKey(bulletTexture))
@@ -59,7 +61,21 @@ namespace Ascension.Business_Layer.Bullets
                 texture = this.bulletTextures[bulletTexture];
             }
 
-            return new BulletA(damage, velocity, bulletPosition, texture);
+            switch (bulletType)
+            {
+                case "A":
+                    Bullet bulletA = new BulletA(damage, velocity, bulletPosition, texture);
+                    bulletA.MovementPattern = this.movementFactory.CreateMovementPattern("Linear", 0);
+                    return bulletA;
+                case "B":
+                    Bullet bulletB = new BulletB(damage, velocity, bulletPosition, texture);
+                    bulletB.MovementPattern = this.movementFactory.CreateMovementPattern("Wave", 0);
+                    return bulletB;
+                default:
+                    Bullet bullet = new BulletA(damage, velocity, bulletPosition, texture);
+                    bullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear", 0);
+                    return bullet;
+            }
         }
     }
 }

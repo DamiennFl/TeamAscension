@@ -118,18 +118,18 @@ namespace Ascension
         /// <summary>
         /// Shoots a bullet Shaped Like a star.
         /// </summary>
-        public void StarShooting()
-        {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
-            float angle = -0.5F;
-            for (int i = 0; i < 5; i++)
-            {
-                Vector2 bulletVelocity = new Vector2(angle, 2f);
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
-                angle += 0.2F;
-            }
-        }
+        //public void StarShooting()
+        //{
+        //    Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
+        //    float angle = -0.5F;
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        Vector2 bulletVelocity = new Vector2(angle, 2f);
+        //        Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
+        //        this.bullets.Add(bullet);
+        //        angle += 0.2F;
+        //    }
+        //}
 
         /// <summary>
         /// Shoots bullets in a circular pattern.
@@ -145,8 +145,7 @@ namespace Ascension
             {
                 float angle = i * angleIncrement;
                 Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                this.bullets.Add(bullet);
+                base.Shoot(bulletVelocity, false, "Green");
             }
         }
 

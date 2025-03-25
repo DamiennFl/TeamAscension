@@ -5,16 +5,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Business_Layer.Bullets
 {
     internal class BulletB : Bullet
     {
-        private static new WaveMovementPattern MovementPattern;
+        private static new IMovementPattern MovementPattern;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulletB"/> class.

@@ -96,7 +96,7 @@ namespace Ascension
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             Vector2 bulletVelocity = new Vector2(0, 2f);
             bool isPlayerBullet = false;
-            base.Shoot(bulletVelocity, isPlayerBullet, bulletTexture);
+            base.Shoot(bulletVelocity, isPlayerBullet, "Blue");
         }
 
         /// <summary>

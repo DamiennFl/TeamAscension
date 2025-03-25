@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="MovementFactory.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System;
 
 namespace Ascension
 {
