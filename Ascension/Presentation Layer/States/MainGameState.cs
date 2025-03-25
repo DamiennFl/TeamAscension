@@ -2,7 +2,6 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
@@ -165,7 +164,7 @@ namespace Ascension
             int health2 = 10;
             string movementPattern2 = "Linear";
 
-            Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2);
+            Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2, bulletType);
             this.waves.Add(testWave2);
         }
 
