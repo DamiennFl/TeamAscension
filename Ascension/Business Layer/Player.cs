@@ -61,7 +61,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
-        private float shootInterval = 0.1f;
+        private float shootInterval = 0.25f;
 
         /// <summary>
         /// Gets or sets the player's shoot timer.
@@ -242,8 +242,14 @@ namespace Ascension
         {
             this.PlayerMovement();
             this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
-            this.PlayerShoot(gameTime);
             this.InvincibleTimer(gameTime);
+
+            this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.shootTimer >= this.shootInterval)
+            {
+                this.PlayerShoot(gameTime);
+                this.shootTimer = 0f;
+            }
         }
 
         /// <summary>
