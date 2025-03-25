@@ -104,7 +104,7 @@ namespace Ascension
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(10f))
+            if (this.IsBossTime(60f))
             {
                 Debug.WriteLine("I switched states");
                 this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.contentManager));
@@ -150,7 +150,7 @@ namespace Ascension
             int enemyCount = 5;
             float spawnInterval = 0.3f;
             int health = 10;
-            string movementPattern = "ZigZag";
+            string movementPattern = "Circular";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
             this.waves.Add(testWave);

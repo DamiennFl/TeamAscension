@@ -5,39 +5,30 @@ namespace Ascension
 {
     public class ZigZagMovementPattern : IMovementPattern
     {
+        private float elapsedTime = 0f;
+        private const float ChangeInterval = 1f; // Change direction every second
+        private Random random = new Random();
+
         public void Move(GameTime gameTime, IMovable movable)
         {
+            elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            Random random = new Random();
-            float elapsedTime = 0f;
-            float zigzagInterval = this.GetRandomInterval(random);
-            Vector2 direction = this.GetRandomDirection(random);
-            float speed = 100f; // Adjust the speed as needed
-
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            elapsedTime += deltaTime;
-
-            if (elapsedTime >= zigzagInterval)
+            // Change direction every second
+            if (elapsedTime >= ChangeInterval)
             {
-                direction = this.GetRandomDirection(random);
-                zigzagInterval = this.GetRandomInterval(random);
-                elapsedTime = 0f; // Reset elapsed time for the next interval
+                elapsedTime = 0f; // Reset timer
+
+                // Generate a random direction while maintaining speed
+                float speed = movable.Velocity.Length();
+                float angle = (float)(random.NextDouble() * Math.PI * 2); // Random angle (0 to 360 degrees)
+
+                // Convert angle to velocity vector
+                Vector2 newVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * speed;
+                movable.Velocity = newVelocity;
             }
 
-            Vector2 movement = direction * speed * deltaTime;
-            movable.Position += movement;
-
-        }
-
-        private float GetRandomInterval(Random random)
-        {
-            return (float)(random.NextDouble() * 0.5 + 0.5); // Random interval between 0.5 and 1 second
-        }
-
-        private Vector2 GetRandomDirection(Random random)
-        {
-            float angle = (float)(random.NextDouble() * MathF.PI * 2);
-            return new Vector2(MathF.Cos(angle), MathF.Sin(angle));
+            // Apply movement
+            movable.Position += movable.Velocity;
         }
     }
 }
