@@ -42,6 +42,13 @@ namespace Ascension
 
         private List<Rectangle> spawnAreaRectangles;
 
+        public List<Rectangle> SpawnAreaRectangles
+        {
+            get
+            {
+                return this.spawnAreaRectangles;
+            }
+        }
 
         public PlayArea(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {

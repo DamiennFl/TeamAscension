@@ -3,164 +3,194 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Ascension;
 
-
-namespace Ascension
+internal class EnemyManager
 {
-    internal class EnemyManager
+    private EnemyFactory factory;
+    private MovementFactory movementFactory;
+
+    public List<Enemy> Enemies { get; }
+
+    private List<Wave> waves;
+
+    private float timeSinceLastSpawn;
+    private int currentWaveIndex;
+    private int enemiesSpawned;
+
+    private BulletManager bulletManager;
+
+    private CollisionManager collisionManager;
+
+    private PlayArea playArea;
+
+    private Rectangle selectedSpawnArea; // Field to store the selected spawn area for the current wave
+    private Vector2 spawnPosition; // Field to store the spawn position for the current wave
+    private Vector2 spawnVelocity;
+
+    public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
     {
-        private EnemyFactory factory;
-        private MovementFactory movementFactory;
+        this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
+        this.movementFactory = new MovementFactory();
+        this.Enemies = new List<Enemy>();
+        this.waves = waves;
+        this.timeSinceLastSpawn = 0f;
+        this.currentWaveIndex = 0;
+        this.enemiesSpawned = 0;
+        this.bulletManager = bulletManager;
+        this.collisionManager = collisionManager;
+        this.playArea = playArea;
+    }
 
-        public List<Enemy> Enemies { get; }
-
-        private List<Wave> waves;
-
-        private float timeSinceLastSpawn;
-        private int currentWaveIndex;
-        private int enemiesSpawned;
-
-        private BulletManager bulletManager;
-
-        private CollisionManager collisionManager;
-
-        private PlayArea playArea;
-
-        public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
+    public void Update(GameTime gameTime)
+    {
+        // Process the current wave
+        if (this.currentWaveIndex < this.waves.Count)
         {
-            this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
-            this.movementFactory = new MovementFactory();
-            this.Enemies = new List<Enemy>();
-            this.waves = waves;
-            this.timeSinceLastSpawn = 0f;
-            this.currentWaveIndex = 0;
-            this.enemiesSpawned = 0;
-            this.bulletManager = bulletManager;
-            this.collisionManager = collisionManager;
-            this.playArea = playArea;
-        }
+            Wave currentWave = this.waves[this.currentWaveIndex];
+            this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        public void Update(GameTime gameTime)
-        {
-            // Process the current wave
-            if (this.currentWaveIndex < this.waves.Count)
+            if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave
             {
-                Wave currentWave = this.waves[this.currentWaveIndex];
-                this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Random random = new Random();
+                List<Rectangle> spawnAreas = this.playArea.SpawnAreaRectangles;
+                this.selectedSpawnArea = spawnAreas[random.Next(spawnAreas.Count)];
 
-                if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
-                {
-                    // TODO
-                    //if (currentWave.IsBossWave)
-                    //{
-                    //    this.bulletManager.ClearScreen();
-                    //}
+                this.spawnPosition = new Vector2(
+                    random.Next(this.selectedSpawnArea.Left, this.selectedSpawnArea.Right),
+                    random.Next(this.selectedSpawnArea.Top, this.selectedSpawnArea.Bottom));
 
-                    this.SpawnEnemy(currentWave);
-                    this.timeSinceLastSpawn = 0f;
-                    this.enemiesSpawned++;
-                }
-
-                // Move to the next wave if the current wave duration has passed
-                if (this.timeSinceLastSpawn >= currentWave.Duration)
-                {
-                    this.currentWaveIndex++;
-                    this.enemiesSpawned = 0;
-                    this.timeSinceLastSpawn = 0f;
-                }
+                this.spawnVelocity = this.GetInitialVelocity(this.selectedSpawnArea);
             }
 
-            this.IsDead();
-
-            // Update all enemies
-            foreach (var enemy in this.Enemies)
+            if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
             {
-                enemy.Update(gameTime);
-                CheckAndReverseVelocity(enemy);
+                // TODO
+                // if (currentWave.IsBossWave)
+                // {
+                //     this.bulletManager.ClearScreen();
+                // }
+
+                this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
+                this.timeSinceLastSpawn = 0f;
+                this.enemiesSpawned++;
+            }
+
+            // Move to the next wave if the current wave duration has passed
+            if (this.timeSinceLastSpawn >= currentWave.Duration)
+            {
+                this.currentWaveIndex++;
+                this.enemiesSpawned = 0;
+                this.timeSinceLastSpawn = 0f;
             }
         }
 
-        private void SpawnEnemy(Wave wave)
+        this.IsDead();
+
+        // Update all enemies
+        foreach (var enemy in this.Enemies)
         {
-            //Vector2 position = this.GetRandomSpawnPosition();
-            //Vector2 velocity = this.GetInitialVelocity();
-            Vector2 position = new Vector2(100, 100);
-            Vector2 velocity = new Vector2(1, 1);
-
-            Enemy enemy = wave.EnemyType switch
-            {
-                "EnemyA" => this.factory.CreateEnemyA(position, velocity),
-                "EnemyB" => this.factory.CreateEnemyB(position, velocity),
-                "MidBoss" => this.factory.CreateMidBoss(position, velocity),
-                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
-                _ => throw new ArgumentException("Unknown enemy type inputted")
-            };
-
-            IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
-            enemy.MovementPattern = movementPattern;
-            this.Enemies.Add(enemy);
-
-            this.bulletManager.RegisterEnemy(enemy);
-            this.collisionManager.Register(enemy);
+            enemy.Update(gameTime);
+            this.CheckAndReverseVelocity(enemy);
         }
+    }
 
-        private void IsDead()
+    private void SpawnEnemy(Wave wave, Vector2 position, Vector2 velocity)
+    {
+        Enemy enemy = wave.EnemyType switch
         {
-            var enemies = this.Enemies.ToArray();
-            foreach (var enemy in enemies)
+            "EnemyA" => this.factory.CreateEnemyA(position, velocity),
+            "EnemyB" => this.factory.CreateEnemyB(position, velocity),
+            "MidBoss" => this.factory.CreateMidBoss(position, velocity),
+            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
+            _ => throw new ArgumentException("Unknown enemy type inputted")
+        };
+
+        IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
+        enemy.MovementPattern = movementPattern;
+        this.Enemies.Add(enemy);
+
+        this.bulletManager.RegisterEnemy(enemy);
+        this.collisionManager.Register(enemy);
+    }
+
+    private void IsDead()
+    {
+        var enemies = this.Enemies.ToArray();
+        foreach (var enemy in enemies)
+        {
+            if (enemy.IsDead)
             {
-                if (enemy.IsDead)
-                {
-                    this.Enemies.Remove(enemy);
-                    this.collisionManager.Unregister(enemy);
-                }
+                this.Enemies.Remove(enemy);
+                this.collisionManager.Unregister(enemy);
             }
         }
+    }
 
-        private void CheckAndReverseVelocity(Enemy enemy)
+    private void CheckAndReverseVelocity(Enemy enemy)
+    {
+        Rectangle border = this.playArea.BorderRectangle;
+        Vector2 position = enemy.Position;
+        Vector2 velocity = enemy.Velocity;
+        Rectangle bounds = enemy.Bounds;
+
+        // Check if the enemy is inside the play area
+        bool isInsidePlayArea = position.X > (border.Left + (bounds.Width / 2)) &&
+                                position.X < (border.Right - (bounds.Width / 2)) &&
+                                position.Y > (border.Top + (bounds.Height / 2)) &&
+                                position.Y < (border.Bottom - (bounds.Height / 2));
+
+        if (isInsidePlayArea)
         {
-            Rectangle border = this.playArea.BorderRectangle;
-            Vector2 position = enemy.Position;
-            Vector2 velocity = enemy.Velocity;
-            Rectangle bounds = enemy.Bounds;
-
-            int topHalfHeight = border.Height / 2;
-            float sineOffset = 0f;
-            if (enemy.MovementPattern is WaveMovementPattern)
-            {
-                sineOffset = 25f;
-            }
-
-            if (position.X <= border.Left + sineOffset + (bounds.Width / 2) || position.X >= border.Right - sineOffset - (bounds.Width / 2))
+            if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
             {
                 velocity.X = -velocity.X;
             }
 
-            if (position.Y <= border.Top + sineOffset + (bounds.Height / 2) || position.Y >= border.Top + topHalfHeight - (bounds.Height / 2))
+            if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - (bounds.Height / 2)))
             {
                 velocity.Y = -velocity.Y;
             }
-
-            enemy.Velocity = velocity;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        enemy.Velocity = velocity;
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        foreach (var enemy in this.Enemies)
         {
-            foreach (var enemy in this.Enemies)
-            {
-                enemy.Draw(spriteBatch);
-                enemy.DrawBounds(spriteBatch);
-            }
+            enemy.Draw(spriteBatch);
+            enemy.DrawBounds(spriteBatch);
+        }
+    }
+
+    private Vector2 GetInitialVelocity(Rectangle spawnArea)
+    {
+        Random random = new Random();
+        Vector2 velocity = Vector2.Zero;
+
+        // Top Spawn area
+        if (spawnArea == this.playArea.SpawnAreaRectangles[0])
+        {
+            velocity.X = (float)(random.NextDouble() - 0.5);
+            velocity.Y = 2.5f;
         }
 
-        //private Vector2 GetRandomSpawnPosition()
-        //{
-        //    Random random = new Random();
-        //}
+        // Left spawn area
+        else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
+        {
+            velocity.X = 2.5f;
+            velocity.Y = (float)(random.NextDouble() - 0.5);
+        }
 
-        //private Vector2 GetInitialVelocity(Vector2 spawnPosition)
-        //{
+        // Right spawn area
+        else if (spawnArea == this.playArea.SpawnAreaRectangles[2])
+        {
+            velocity.X = -2.5f;
+            velocity.Y = (float)(random.NextDouble() - 0.5);
+        }
 
-        //}
+        return velocity;
     }
 }
