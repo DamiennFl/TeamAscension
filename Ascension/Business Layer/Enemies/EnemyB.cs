@@ -108,19 +108,6 @@ namespace Ascension
             this.StarShooting();
         }
 
-        /// <summary>
-        /// Will shoot bullets in a regular pattern.
-        /// </summary>
-        public void RegularShooting()
-        {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
-            Vector2 bulletVelocity = new Vector2(0, 1.2f);
-            Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-        }
-
-        /// <summary>
-        /// Shoots Bullets in a star pattern.
-        /// </summary>
         public void StarShooting()
         {
             Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");

@@ -20,9 +20,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's speed.
         /// </summary>
-#pragma warning disable SA1401 // Fields should be private
         public float PlayerSpeed;
-#pragma warning restore SA1401 // Fields should be private
 
         /// <summary>
         /// Gets or sets the player's texture.
@@ -38,8 +36,6 @@ namespace Ascension
         /// Gets or sets the font.
         /// </summary>
         private SpriteFont font;
-
-#pragma warning disable SA1401 // Fields should be private
 
         /// <summary>
         /// Gets or sets the graphics device.
@@ -125,12 +121,12 @@ namespace Ascension
         {
             get
             {
-                int radius = this.playerTexture.Width / 8;
+                int radius = this.playerTexture.Width / 10;
                 return new Rectangle(
                     (int)this.playerPosition.X - radius,
                     (int)this.playerPosition.Y - radius,
-                    radius * 2,
-                    radius * 2);
+                    radius,
+                    radius);
             }
         }
 
@@ -205,19 +201,36 @@ namespace Ascension
         /// <param name="spriteBatch">Sprites.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(
-                this.playerTexture,
-                this.playerPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(this.playerTexture.Width / 2, this.playerTexture.Height / 2),
-                new Vector2(0.25F, 0.25F),
-                SpriteEffects.None,
-                0f);
+            //spriteBatch.Draw(
+            //    this.playerTexture,
+            //    this.playerPosition,
+            //    null,
+            //    Color.White,
+            //    0f,
+            //    new Vector2((this.playerTexture.Width / 2) + 13f, this.playerTexture.Height / 2),
+            //    new Vector2(0.25F, 0.25F),
+            //    SpriteEffects.None,
+            //    0f);
 
             // Draw the player's health
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
+            DrawBounds(spriteBatch);
+        }
+
+        public void DrawBounds(SpriteBatch spriteBatch)
+        {
+            Texture2D texture = this.playerTexture;
+            Rectangle bounds = this.Bounds;
+            Color color = Color.Red;
+
+            // Draw top line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, bounds.Width, 1), color);
+            // Draw bottom line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Bottom, bounds.Width, 1), color);
+            // Draw left line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, 1, bounds.Height), color);
+            // Draw right line
+            spriteBatch.Draw(texture, new Rectangle(bounds.Right, bounds.Top, 1, bounds.Height), color);
         }
 
         /// <summary>

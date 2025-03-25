@@ -16,20 +16,23 @@ namespace Ascension
         public void Move(GameTime gameTime, IMovable movable)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            time += deltaTime;
+            this.time += deltaTime;
 
             Vector2 velocity = movable.Velocity;
             Vector2 direction = Vector2.Normalize(velocity); // Ensure direction is unit length
 
             // Compute forward movement
-            movable.Position += velocity;
+            Vector2 newPosition = movable.Position + velocity;
 
             // Compute sine wave displacement perpendicular to movement direction
             Vector2 perpendicular = new Vector2(-direction.Y, direction.X); // Perpendicular vector
-            float sineOffset = (float)Math.Sin(time * frequency) * amplitude;
+            float sineOffset = (float)Math.Sin(this.time * this.frequency) * this.amplitude;
 
             // Apply only the sine wave offset to position
-            movable.Position += perpendicular * sineOffset * deltaTime; // Scale by deltaTime for smoothness
+            newPosition += perpendicular * sineOffset * deltaTime; // Scale by deltaTime for smoothness
+
+            // Update the position
+            movable.Position = newPosition;
         }
     }
 }

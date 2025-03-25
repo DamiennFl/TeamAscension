@@ -102,13 +102,18 @@ namespace Ascension
             Rectangle bounds = enemy.Bounds;
 
             int topHalfHeight = border.Height / 2;
+            float sineOffset = 0f;
+            if (enemy.MovementPattern is WaveMovementPattern)
+            {
+                sineOffset = 25f;
+            }
 
             if (position.X <= border.Left + (bounds.Width / 2) || position.X >= border.Right - (bounds.Width / 2))
             {
                 velocity.X = -velocity.X;
             }
 
-            if (position.Y <= border.Top + (bounds.Height / 2) || position.Y >= border.Top + topHalfHeight - (bounds.Height / 2))
+            if (position.Y <= border.Top + sineOffset + (bounds.Height / 2) || position.Y >= border.Top + topHalfHeight - (bounds.Height / 2))
             {
                 velocity.Y = -velocity.Y;
             }

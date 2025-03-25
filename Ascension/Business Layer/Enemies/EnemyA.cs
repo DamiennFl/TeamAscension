@@ -100,32 +100,6 @@ namespace Ascension
         }
 
         /// <summary>
-        /// Shoots a bullet.
-        /// </summary>
-        public void RegularShoot()
-        {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
-            Vector2 bulletVelocity = new Vector2(0, 1.2f);
-            Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-            bullet.IsPlayerBullet = false;
-        }
-
-        /// <summary>
-        /// Shoots a bullet Shaped Like a star.
-        /// </summary>
-        public void StarShooting()
-        {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletOrange");
-            float angle = -0.5F;
-            for (int i = 0; i < 5; i++)
-            {
-                Vector2 bulletVelocity = new Vector2(angle, 0.2f);
-                Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-                angle += 0.2F;
-            }
-        }
-
-        /// <summary>
         /// Gets a random shoot interval.
         /// </summary>
         /// <returns>the random time generated for our next shot.</returns>

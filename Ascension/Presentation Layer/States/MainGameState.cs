@@ -150,7 +150,7 @@ namespace Ascension
             int enemyCount = 5;
             float spawnInterval = 0.3f;
             int health = 10;
-            string movementPattern = "ZigZag";
+            string movementPattern = "Wave";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern);
             this.waves.Add(testWave);

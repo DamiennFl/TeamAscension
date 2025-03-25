@@ -87,7 +87,6 @@ namespace Ascension
 
             if (this.shootTimer >= this.shootInterval)
             {
-                //this.Shoot();
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -115,23 +114,6 @@ namespace Ascension
                 bullet.BulletDraw(spriteBatch);
             }
         }
-
-        /// <summary>
-        /// Shoot method.
-        /// </summary>
-        /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
-        //public override void Shoot()
-        //{
-        //    if (this.CircularShootingTimer >= 2f)
-        //    {
-        //        this.CircularShootingTimer = 0f;
-        //        this.CircularShooting();
-        //    }
-        //    else
-        //    {
-        //        this.StarShooting();
-        //    }
-        //}
 
         /// <summary>
         /// Shoots a bullet Shaped Like a star.
