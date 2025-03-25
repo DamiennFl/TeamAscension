@@ -10,7 +10,7 @@ namespace Ascension
     {
         public MovementFactory() { }
 
-        public IMovementPattern CreateMovementPattern(string type, float duration)
+        public IMovementPattern CreateMovementPattern(string type)
         {
             switch (type)
             {
