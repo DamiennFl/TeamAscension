@@ -40,28 +40,6 @@ namespace Ascension
             this.playArea = playArea;
         }
 
-        public void SpawnEnemy(Wave wave)
-        {
-            Vector2 position = new Vector2(100, 100);
-            Vector2 velocity = new Vector2(2, 1);
-
-            Enemy enemy = wave.EnemyType switch
-            {
-                "EnemyA" => this.factory.CreateEnemyA(position, velocity),
-                "EnemyB" => this.factory.CreateEnemyB(position, velocity),
-                "MidBoss" => this.factory.CreateMidBoss(position, velocity),
-                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
-                _ => throw new ArgumentException("Unknown enemy type inputted")
-            };
-
-            IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern, wave.Duration);
-            enemy.MovementPattern = movementPattern;
-            this.Enemies.Add(enemy);
-
-            this.bulletManager.RegisterEnemy(enemy);
-            this.collisionManager.Register(enemy);
-        }
-
         public void Update(GameTime gameTime)
         {
             // Process the current wave
@@ -72,6 +50,12 @@ namespace Ascension
 
                 if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
                 {
+                    // TODO
+                    //if (currentWave.IsBossWave)
+                    //{
+                    //    this.bulletManager.ClearScreen();
+                    //}
+
                     this.SpawnEnemy(currentWave);
                     this.timeSinceLastSpawn = 0f;
                     this.enemiesSpawned++;
@@ -94,6 +78,30 @@ namespace Ascension
             }
         }
 
+        private void SpawnEnemy(Wave wave)
+        {
+            //Vector2 position = this.GetRandomSpawnPosition();
+            //Vector2 velocity = this.GetInitialVelocity();
+            Vector2 position = new Vector2(100, 100);
+            Vector2 velocity = new Vector2(1, 1);
+
+            Enemy enemy = wave.EnemyType switch
+            {
+                "EnemyA" => this.factory.CreateEnemyA(position, velocity),
+                "EnemyB" => this.factory.CreateEnemyB(position, velocity),
+                "MidBoss" => this.factory.CreateMidBoss(position, velocity),
+                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
+                _ => throw new ArgumentException("Unknown enemy type inputted")
+            };
+
+            IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
+            enemy.MovementPattern = movementPattern;
+            this.Enemies.Add(enemy);
+
+            this.bulletManager.RegisterEnemy(enemy);
+            this.collisionManager.Register(enemy);
+        }
+
         private void CheckAndReverseVelocity(Enemy enemy)
         {
             Rectangle border = this.playArea.BorderRectangle;
@@ -108,7 +116,7 @@ namespace Ascension
                 sineOffset = 25f;
             }
 
-            if (position.X <= border.Left + (bounds.Width / 2) || position.X >= border.Right - (bounds.Width / 2))
+            if (position.X <= border.Left + sineOffset + (bounds.Width / 2) || position.X >= border.Right - sineOffset - (bounds.Width / 2))
             {
                 velocity.X = -velocity.X;
             }
@@ -129,5 +137,15 @@ namespace Ascension
                 enemy.DrawBounds(spriteBatch);
             }
         }
+
+        //private Vector2 GetRandomSpawnPosition()
+        //{
+        //    Random random = new Random();
+        //}
+
+        //private Vector2 GetInitialVelocity(Vector2 spawnPosition)
+        //{
+
+        //}
     }
 }
