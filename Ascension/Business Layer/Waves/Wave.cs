@@ -14,7 +14,9 @@
 
         public string MovementPattern { get; set; }
 
-        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern)
+        public string BulletType { get; set; }
+
+        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType)
         {
             this.Duration = duration;
             this.EnemyType = enemyType;
@@ -22,6 +24,7 @@
             this.SpawnInterval = spawnInterval;
             this.Health = health;
             this.MovementPattern = movementPattern;
+            this.BulletType = bulletType;
         }
     }
 }

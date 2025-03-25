@@ -42,8 +42,9 @@ namespace Ascension
         /// <param name="position">The position of EnemyA.</param>
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
-        public EnemyA(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(velocity, position, texture)
+        /// <param name="bulletType">The type of bullet to shoot.</param>
+        public EnemyA(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, texture, bulletType)
         {
             this.contentManager = contentManager;
             this.random = new Random();
@@ -93,10 +94,9 @@ namespace Ascension
         /// </summary>
         public void Shoot()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue");
             Vector2 bulletVelocity = new Vector2(0, 2f);
             bool isPlayerBullet = false;
-            base.Shoot(bulletVelocity, isPlayerBullet, "Blue");
+            base.Shoot(bulletVelocity, isPlayerBullet, "Blue", this.BulletType);
         }
 
         /// <summary>

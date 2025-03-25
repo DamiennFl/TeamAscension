@@ -51,12 +51,13 @@ namespace Ascension
         /// <summary>
         /// Initializes a new instance of the <see cref="MidBoss"/> class.
         /// </summary>
-        /// <param name="speed">The speed of MidBoss.</param>
+        /// <param name="velocity">The speed of MidBoss.</param>
         /// <param name="position">The position of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
         /// <param name="contentManager">"The content manager for loading assets.</param>
-        public MidBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager)
-        : base(velocity, position, texture)
+        /// <param name="bulletType">The type of bullet to shoot.</param>
+        public MidBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, texture, bulletType)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
@@ -147,7 +148,7 @@ namespace Ascension
             for (int i = 0; i < 5; i++)
             {
                 Vector2 bulletVelocity = new Vector2(angle, 2f);
-                base.Shoot(bulletVelocity, false, "Green");
+                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
                 angle += 0.2F;
             }
         }
@@ -167,7 +168,7 @@ namespace Ascension
             {
                 float angle = i * angleIncrement;
                 Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                base.Shoot(bulletVelocity, false, "Green");
+                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
             }
         }
 

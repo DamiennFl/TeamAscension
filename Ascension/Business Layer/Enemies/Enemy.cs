@@ -30,12 +30,13 @@ namespace Ascension
         /// <param name="velocity">Speed of the enemy.</param>
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
-        /// <param name="collisionManager">The collision manager.</param>
-        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture)
+        /// <param name="bulletType">The bullet type.</param>
+        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture, string bulletType)
         {
             this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
+            this.BulletType = bulletType;
         }
 
         /// <summary>
@@ -89,6 +90,11 @@ namespace Ascension
         public string CollisionLayer => "Enemy";
 
         /// <summary>
+        /// Gets or sets a value indicating the bullet type.
+        /// </summary>
+        public string BulletType { get; set; }
+
+        /// <summary>
         /// Gets or sets the speed of the enemy.
         /// </summary>
         public Vector2 Velocity { get; set; }
@@ -131,9 +137,10 @@ namespace Ascension
         /// <param name="velo">bulet velocity.</param>
         /// <param name="isPlayerBullet">if it is a user's bullet.</param>
         /// <param name="bulletTexture">texture of the bullet.</param>
-        public virtual void Shoot(Vector2 velo, bool isPlayerBullet, string bulletTexture)
+        /// <param name="bulletType">type of bullet.</param>
+        public virtual void Shoot(Vector2 velo, bool isPlayerBullet, string bulletTexture, string bulletType)
         {
-            this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture, "A"); // check this
+            this.BulletFired?.Invoke(this.Position, velo, isPlayerBullet, bulletTexture, bulletType); // check this
         }
 
         /// <summary>

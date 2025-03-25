@@ -89,10 +89,10 @@ namespace Ascension
 
             Enemy enemy = wave.EnemyType switch
             {
-                "EnemyA" => this.factory.CreateEnemyA(position, velocity),
-                "EnemyB" => this.factory.CreateEnemyB(position, velocity),
-                "MidBoss" => this.factory.CreateMidBoss(position, velocity),
-                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity),
+                "EnemyA" => this.factory.CreateEnemyA(position, velocity, wave.BulletType),
+                "EnemyB" => this.factory.CreateEnemyB(position, velocity, wave.BulletType),
+                "MidBoss" => this.factory.CreateMidBoss(position, velocity, wave.BulletType),
+                "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, wave.BulletType),
                 _ => throw new ArgumentException("Unknown enemy type inputted")
             };
 
