@@ -26,10 +26,9 @@ namespace Ascension.Business_Layer.Bullets
         /// <param name="velocity">Velocity of bullet.</param>
         /// <param name="bulletPosition">Position of bullet.</param>
         /// <param name="bulletTexture">Texture of bullet.</param>
-        public BulletA(int damage, Vector2 velocity, Vector2 bulletPosition, Texture2D bulletTexture)
-            : base(damage, velocity, bulletPosition)
+        public BulletA(Vector2 velocity, Vector2 bulletPosition, Texture2D bulletTexture)
+            : base(velocity, bulletPosition)
         {
-            this.Damage = damage;
             this.Velocity = velocity;
             this.BulletTexture = bulletTexture;
             this.IsActive = true;

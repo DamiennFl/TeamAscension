@@ -119,12 +119,12 @@ namespace Ascension
             switch (a)
             {
                 case IEntity player when b is Bullet bullet && !bullet.IsPlayerBullet:
-                    this.commandQueue.Enqueue(new DamagePlayerCommand(player));
+                    this.commandQueue.Enqueue(new DamageEntityCommand(player));
                     this.commandQueue.Enqueue(new DeactivateBulletCommand(bullet));
                     break;
 
                 case IEntity enemy when b is Bullet bullet && bullet.IsPlayerBullet:
-                    this.commandQueue.Enqueue(new DamagePlayerCommand(enemy));
+                    this.commandQueue.Enqueue(new DamageEntityCommand(enemy));
                     this.commandQueue.Enqueue(new DeactivateBulletCommand(bullet));
                     break;
             }

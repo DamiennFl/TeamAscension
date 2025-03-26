@@ -142,7 +142,7 @@ namespace Ascension
         }
 
         /// <summary>
-        /// 
+        /// Initializes the waves for the game.
         /// </summary>
         private void InitWaves()
         {
@@ -168,14 +168,21 @@ namespace Ascension
             this.waves.Add(testWave2);
         }
 
+        /// <summary>
+        /// Initializes the enemy manager.
+        /// </summary>
         private void InitEnemyManager()
         {
             this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.waves, this.playArea);
         }
 
+        /// <summary>
+        /// Initializes the bullet manager.
+        /// </summary>
         private void InitBulletManager()
         {
             this.bulletManager = new BulletManager(this.collisionManager, this.contentManager);
+            this.player.bulletManager = this.bulletManager;
         }
     }
 }

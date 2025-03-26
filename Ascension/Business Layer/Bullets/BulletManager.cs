@@ -13,7 +13,7 @@ namespace Ascension
     /// <summary>
     /// Bullet manager class.
     /// </summary>
-    internal class BulletManager
+    public class BulletManager
     {
         /// <summary>
         /// List of bullets.
@@ -69,7 +69,7 @@ namespace Ascension
         /// <param name="bulletType">Type of bullet.</param>
         private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, string bulletTexture, string bulletType)
         {
-            Bullet bullet = this.bulletFactory.CreateBullet(1, velo, pos, bulletTexture, bulletType);
+            Bullet bullet = this.bulletFactory.CreateBullet(velo, pos, bulletTexture, bulletType);
             this.collisionManager.Register(bullet);
             bullet.IsPlayerBullet = isPlayerBullet;
             this.bullets.Add(bullet);
