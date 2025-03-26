@@ -370,7 +370,7 @@ namespace Ascension
             if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
                 this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "Green", "A"); // check this
-                this.shootTimer = 0;
+                //this.shootTimer = 0;
             }
         }
 

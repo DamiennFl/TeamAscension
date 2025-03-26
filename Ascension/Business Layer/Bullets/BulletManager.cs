@@ -111,9 +111,12 @@ namespace Ascension
         {
             for (int i = this.bullets.Count - 1; i >= 0; i--)
             {
-                this.bullets[i].IsActive = false;
-                this.collisionManager.Unregister(this.bullets[i]);
-                this.bullets.RemoveAt(i);
+                if (!this.bullets[i].IsPlayerBullet)
+                {
+                    this.bullets[i].IsActive = false;
+                    this.collisionManager.Unregister(this.bullets[i]);
+                    this.bullets.RemoveAt(i);
+                }
             }
         }
     }
