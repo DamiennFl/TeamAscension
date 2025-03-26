@@ -21,18 +21,12 @@ namespace Ascension
         /// <param name="bulletPosition">Bullet position.</param>
         /// <param name="bulletTexture">Bullet texture.</param>
         /// <param name ="movementPattern">Movement of bullet.</param>
-        public Bullet(int damage, Vector2 velocity, Vector2 bulletPosition)
+        public Bullet(Vector2 velocity, Vector2 bulletPosition)
         {
-            this.Damage = damage;
             this.Velocity = velocity;
             this.Position = bulletPosition;
             this.IsActive = true; // activate as soon  as it is
         }
-
-        /// <summary>
-        /// Gets or sets the damage of the bullet.
-        /// </summary>
-        public int Damage { get; set; } = 1;
 
         /// <summary>
         /// Gets or sets the speed of the bullet.

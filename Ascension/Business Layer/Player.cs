@@ -95,6 +95,12 @@ namespace Ascension
         private PlayArea playArea;
 
         /// <summary>
+        /// Gets or sets the bullet manager.
+        /// </summary>
+
+        public BulletManager bulletManager;
+
+        /// <summary>
         /// Event for when a bullet is fired.
         /// </summary>
         public event Action<Vector2, Vector2, bool, string, string> BulletFired;
@@ -105,9 +111,21 @@ namespace Ascension
         public bool IsInvincible { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets the player's health.
+        /// </summary>
+        public int Health { get; set; } = 100;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is dead.
+        /// </summary>
+        public bool IsDead => this.Health <= 0;
+
+        /// <summary>
         /// Gets the collision layer for the player.
         /// </summary>
         public string CollisionLayer => "Player";
+
+
 
         /// <summary>
         /// Gets the bounding rectangle for collision detection.
@@ -174,6 +192,7 @@ namespace Ascension
             this.bulletTexture = contentManager.Load<Texture2D>("Bullets/BulletGreen");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.playArea = playArea;
+            this.bulletManager = bulletManager;
 
             this.playerPosition = this.PlayerSpawn;
         }
@@ -185,16 +204,6 @@ namespace Ascension
         public Player()
         {
         }
-
-        /// <summary>
-        /// Gets or sets the player's health.
-        /// </summary>
-        public int Health { get; set; } = 100;
-
-        /// <summary>
-        /// Gets a value indicating whether the player is dead.
-        /// </summary>
-        public bool IsDead => this.Health <= 0;
 
         /// <summary>
         /// Draw method for drawing the player.
@@ -260,6 +269,7 @@ namespace Ascension
             this.IsInvincible = true;
             this.invincibleTimeRemaining = this.totalInvincibleTime;
             this.playerPosition = this.PlayerSpawn;
+            this.bulletManager.ClearScreen();
             Debug.WriteLine("Invincibility activated.");
         }
 

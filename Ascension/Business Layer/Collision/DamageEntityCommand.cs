@@ -15,7 +15,7 @@ namespace Ascension
     /// This command follows the Command pattern and implements ICollisionCommand interface.
     /// It decreases the player's health by the specified damage amount when executed.
     /// </remarks>
-    public class DamagePlayerCommand : ICollisionCommand
+    public class DamageEntityCommand : ICollisionCommand
     {
         /// <summary>
         /// The player entity that will receive damage from this command.
@@ -23,11 +23,11 @@ namespace Ascension
         private readonly IEntity entity;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DamagePlayerCommand"/> class.
+        /// Initializes a new instance of the <see cref="DamageEntityCommand"/> class.
         /// </summary>
         /// <param name="player">The player who will receive damage.</param>
         /// <param name="damage">The amount of damage to be dealt to the player.</param>
-        public DamagePlayerCommand(IEntity currentEntity)
+        public DamageEntityCommand(IEntity currentEntity)
         {
             this.entity = currentEntity;
         }
