@@ -192,7 +192,6 @@ namespace Ascension
             this.bulletTexture = contentManager.Load<Texture2D>("Bullets/BulletGreen");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.playArea = playArea;
-            this.bulletManager = bulletManager;
 
             this.playerPosition = this.PlayerSpawn;
         }
@@ -224,9 +223,13 @@ namespace Ascension
 
             // Draw the player's health
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
-            DrawBounds(spriteBatch);
+            this.DrawBounds(spriteBatch);
         }
 
+        /// <summary>
+        /// Draws the bounds of the player for debugging purposes.
+        /// </summary>
+        /// <param name="spriteBatch">spriteBatch.</param>
         public void DrawBounds(SpriteBatch spriteBatch)
         {
             Texture2D texture = this.playerTexture;
@@ -257,7 +260,7 @@ namespace Ascension
             if (this.shootTimer >= this.shootInterval)
             {
                 this.PlayerShoot(gameTime);
-                //this.shootTimer = 0f;
+                this.shootTimer = 0f;
             }
         }
 
@@ -370,7 +373,7 @@ namespace Ascension
             if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
                 this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "Green", "A"); // check this
-                //this.shootTimer = 0;
+                this.shootTimer = 0;
             }
         }
 
