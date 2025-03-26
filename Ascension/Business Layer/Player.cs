@@ -384,6 +384,7 @@ namespace Ascension
             if (this.IsInvincible)
             {
                 this.invincibleTimeRemaining -= gameTime.ElapsedGameTime;
+                // this.bulletManager.ClearScreen();
                 // Debug.WriteLine($"Invincible time remaining: {this.invincibleTimeRemaining.TotalSeconds:F2} seconds");
 
                 // Are we no longer invincible? then set invincible to false.
