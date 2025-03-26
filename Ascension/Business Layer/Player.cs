@@ -257,7 +257,7 @@ namespace Ascension
             if (this.shootTimer >= this.shootInterval)
             {
                 this.PlayerShoot(gameTime);
-                this.shootTimer = 0f;
+                //this.shootTimer = 0f;
             }
         }
 
