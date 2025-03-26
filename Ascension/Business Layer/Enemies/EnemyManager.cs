@@ -44,10 +44,11 @@ internal class EnemyManager
 
     public void Update(GameTime gameTime)
     {
+        Wave currentWave;
         // Process the current wave
         if (this.currentWaveIndex < this.waves.Count)
         {
-            Wave currentWave = this.waves[this.currentWaveIndex];
+            currentWave = this.waves[this.currentWaveIndex];
             this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave

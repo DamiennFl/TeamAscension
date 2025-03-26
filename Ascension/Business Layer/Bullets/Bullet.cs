@@ -128,7 +128,7 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-            if (this.Position.X < 40 || this.Position.X > 480 || this.Position.Y < 40 || this.Position.Y > 750) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
+            if (this.Position.X < 30 || this.Position.X > 490 || this.Position.Y < 30 || this.Position.Y > 760) // If bullet is outside of border (40, 40, 460, 720) then deactivate it.
             {
                 this.IsActive = false;
             }
