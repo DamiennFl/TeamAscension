@@ -17,7 +17,7 @@ namespace Ascension.Business_Layer.Bullets
     /// </summary>
     internal class BulletA : Bullet
     {
-        private static new LinearMovementPattern MovementPattern;
+        private static new IMovementPattern MovementPattern;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BulletA"/> class.
