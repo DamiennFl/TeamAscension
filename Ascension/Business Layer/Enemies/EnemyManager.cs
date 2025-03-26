@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Ascension;
+using Ascension.Business_Layer;
 
 internal class EnemyManager
 {
@@ -21,6 +22,8 @@ internal class EnemyManager
     private BulletManager bulletManager;
 
     private CollisionManager collisionManager;
+
+    private BorderManager borderManager;
 
     private PlayArea playArea;
 
@@ -40,6 +43,7 @@ internal class EnemyManager
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
         this.playArea = playArea;
+        this.borderManager = new BorderManager(this.playArea);
     }
 
     public void Update(GameTime gameTime)
@@ -92,7 +96,7 @@ internal class EnemyManager
         foreach (var enemy in this.Enemies)
         {
             enemy.Update(gameTime);
-            this.CheckAndReverseVelocity(enemy);
+            this.borderManager.CheckAndReverseVelocity(enemy);
         }
     }
 
@@ -126,42 +130,6 @@ internal class EnemyManager
                 this.collisionManager.Unregister(enemy);
             }
         }
-    }
-
-    private void CheckAndReverseVelocity(Enemy enemy)
-    {
-        Rectangle border = this.playArea.BorderRectangle;
-        Vector2 position = enemy.Position;
-        Vector2 velocity = enemy.Velocity;
-        Rectangle bounds = enemy.Bounds;
-
-        float enemySpawnHalf = border.Height / 2;
-
-        if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
-        {
-            if (position.X <= (border.Left + (bounds.Width / 2)))
-            {
-                velocity.X = Math.Abs(velocity.X);
-            }
-            else
-            {
-                velocity.X = -Math.Abs(velocity.X);
-            }
-        }
-
-        if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - enemySpawnHalf - (bounds.Height / 2)))
-        {
-            if (position.Y <= (border.Top + (bounds.Height / 2)))
-            {
-                velocity.Y = Math.Abs(velocity.Y);
-            }
-            else
-            {
-                velocity.Y = -Math.Abs(velocity.Y);
-            }
-        }
-
-        enemy.Velocity = velocity;
     }
 
     public void Draw(SpriteBatch spriteBatch)
