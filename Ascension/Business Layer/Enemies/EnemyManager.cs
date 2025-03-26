@@ -57,8 +57,8 @@ internal class EnemyManager
                 this.selectedSpawnArea = spawnAreas[random.Next(spawnAreas.Count)];
 
                 this.spawnPosition = new Vector2(
-                    random.Next(this.selectedSpawnArea.Left, this.selectedSpawnArea.Right),
-                    random.Next(this.selectedSpawnArea.Top, this.selectedSpawnArea.Bottom));
+                    random.Next(this.selectedSpawnArea.Left + (this.selectedSpawnArea.Width / 4), this.selectedSpawnArea.Right - (this.selectedSpawnArea.Width / 4)),
+                    random.Next(this.selectedSpawnArea.Top + (this.selectedSpawnArea.Height / 4), this.selectedSpawnArea.Bottom - (this.selectedSpawnArea.Height / 4)));
 
                 this.spawnVelocity = this.GetInitialVelocity(this.selectedSpawnArea);
             }
@@ -134,22 +134,29 @@ internal class EnemyManager
         Vector2 velocity = enemy.Velocity;
         Rectangle bounds = enemy.Bounds;
 
-        // Check if the enemy is inside the play area
-        bool isInsidePlayArea = position.X > (border.Left + (bounds.Width / 2)) &&
-                                position.X < (border.Right - (bounds.Width / 2)) &&
-                                position.Y > (border.Top + (bounds.Height / 2)) &&
-                                position.Y < (border.Bottom - (bounds.Height / 2));
+        float enemySpawnHalf = border.Height / 2;
 
-        if (isInsidePlayArea)
+        if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
         {
-            if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
+            if (position.X <= (border.Left + (bounds.Width / 2)))
             {
-                velocity.X = -velocity.X;
+                velocity.X = Math.Abs(velocity.X);
             }
-
-            if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - (bounds.Height / 2)))
+            else
             {
-                velocity.Y = -velocity.Y;
+                velocity.X = -Math.Abs(velocity.X);
+            }
+        }
+
+        if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - enemySpawnHalf - (bounds.Height / 2)))
+        {
+            if (position.Y <= (border.Top + (bounds.Height / 2)))
+            {
+                velocity.Y = Math.Abs(velocity.Y);
+            }
+            else
+            {
+                velocity.Y = -Math.Abs(velocity.Y);
             }
         }
 
@@ -173,7 +180,7 @@ internal class EnemyManager
         // Top Spawn area
         if (spawnArea == this.playArea.SpawnAreaRectangles[0])
         {
-            velocity.X = (float)(random.NextDouble() - 0.5);
+            velocity.X = (float)(random.NextDouble() - 0.25);
             velocity.Y = 2.5f;
         }
 
@@ -181,14 +188,14 @@ internal class EnemyManager
         else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
         {
             velocity.X = 2.5f;
-            velocity.Y = (float)(random.NextDouble() - 0.5);
+            velocity.Y = (float)(random.NextDouble() * -0.75);
         }
 
         // Right spawn area
         else if (spawnArea == this.playArea.SpawnAreaRectangles[2])
         {
             velocity.X = -2.5f;
-            velocity.Y = (float)(random.NextDouble() - 0.5);
+            velocity.Y = (float)(random.NextDouble() * -0.75);
         }
 
         return velocity;
