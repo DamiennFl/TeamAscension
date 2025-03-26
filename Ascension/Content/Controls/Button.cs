@@ -54,6 +54,11 @@ namespace Ascension.Content.Controls
         public Color PenColor { get; set; }
 
         /// <summary>
+        /// Gets or sets the size of the button.
+        /// </summary>
+        public Vector2 Size { get; set; }
+
+        /// <summary>
         /// Gets or sets the position of the button.
         /// </summary>
         public Vector2 Pos { get; set; }
@@ -65,7 +70,7 @@ namespace Ascension.Content.Controls
         {
             get
             {
-                return new Rectangle((int)this.Pos.X, (int)this.Pos.Y, this.texture.Width, this.texture.Height);
+                return new Rectangle((int)this.Pos.X, (int)this.Pos.Y, (int)this.Size.X, (int)this.Size.Y);
             }
         }
 
@@ -79,6 +84,7 @@ namespace Ascension.Content.Controls
         /// </summary>
         /// <param name="texture">The texture of the button.</param>
         /// <param name="font">The font of the button.</param>
+        /// <param name="sizeParameter"
         public Button(Texture2D texture, SpriteFont font)
         {
             this.texture = texture;
