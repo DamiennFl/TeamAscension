@@ -86,11 +86,6 @@ namespace Ascension
         public Vector2 BulletVelocity = new Vector2(0, -7f);
 
         /// <summary>
-        /// Gets or sets the play area.
-        /// </summary>
-        private PlayArea playArea;
-
-        /// <summary>
         /// Gets or sets the bullet manager.
         /// </summary>
 
@@ -186,7 +181,6 @@ namespace Ascension
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
-            this.playArea = playArea;
             this.borderManager = new BorderManager(playArea);
             this.Position = this.PlayerSpawn;
         }
