@@ -263,7 +263,6 @@ namespace Ascension
             this.invincibleTimeRemaining = this.totalInvincibleTime;
             this.Position = this.PlayerSpawn;
             this.bulletManager.ClearScreen();
-            Debug.WriteLine("Invincibility activated.");
         }
 
         /// <summary>
