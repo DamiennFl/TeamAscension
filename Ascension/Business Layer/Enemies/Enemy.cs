@@ -280,7 +280,7 @@ namespace Ascension
 
         public void BulletWall()
         {
-            int bulletsPerRow = 15;
+            int bulletsPerRow = 20;
             int bulletRows = 4;
             float bulletSpeed = 0.75f;
             float spacing = 0.5f; // Adjust for tighter or looser grids
