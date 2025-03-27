@@ -16,7 +16,7 @@ internal class EnemyManager
 
     private List<Wave> waves;
 
-    private float timeSinceLastSpawn;
+    private float waveDuration;
     private int enemiesSpawned;
     private int currentWaveIndex;
 
@@ -38,7 +38,7 @@ internal class EnemyManager
         this.movementFactory = new MovementFactory();
         this.Enemies = new List<Enemy>();
         this.waves = waves;
-        this.timeSinceLastSpawn = 0f;
+        this.waveDuration = 0f;
         this.enemiesSpawned = 0;
         this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
@@ -49,10 +49,10 @@ internal class EnemyManager
 
     public void Update(GameTime gameTime)
     {
-        if (currentWaveIndex < this.waves.Count)
+        if (this.currentWaveIndex < this.waves.Count)
         {
-            Wave currentWave = this.waves[currentWaveIndex];
-            this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Wave currentWave = this.waves[this.currentWaveIndex];
+            this.waveDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave
             {
@@ -67,15 +67,20 @@ internal class EnemyManager
                 this.spawnVelocity = this.GetInitialVelocity(this.selectedSpawnArea);
             }
 
-            if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
+            if (this.enemiesSpawned < currentWave.EnemyCount && this.waveDuration >= currentWave.SpawnInterval)
             {
                 this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
-                this.timeSinceLastSpawn = 0f;
+                this.waveDuration = 0f;
                 this.enemiesSpawned++;
             }
 
+            if (this.enemiesSpawned == currentWave.EnemyCount && this.Enemies.Count == 0)
+            {
+                this.waveDuration = currentWave.Duration + 1;
+            }
+
             // Move to the next wave if the current wave duration has passed
-            if (this.timeSinceLastSpawn >= currentWave.Duration)
+            if (this.waveDuration >= currentWave.Duration)
             {
                 foreach (Enemy enemy in this.Enemies)
                 {
@@ -84,7 +89,7 @@ internal class EnemyManager
 
                 this.currentWaveIndex++;
                 this.enemiesSpawned = 0;
-                this.timeSinceLastSpawn = 0f;
+                this.waveDuration = 0f;
             }
         }
 
