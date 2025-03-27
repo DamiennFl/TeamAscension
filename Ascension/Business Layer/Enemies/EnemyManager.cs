@@ -99,6 +99,7 @@ internal class EnemyManager
         this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
+        this.playArea = playArea;
         this.borderManager = new BorderManager(this.playArea);
     }
 
