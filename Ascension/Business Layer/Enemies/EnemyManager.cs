@@ -17,7 +17,6 @@ internal class EnemyManager
     private List<Wave> waves;
 
     private float timeSinceLastSpawn;
-    private int currentWaveIndex;
     private int enemiesSpawned;
 
     private BulletManager bulletManager;
@@ -39,7 +38,6 @@ internal class EnemyManager
         this.Enemies = new List<Enemy>();
         this.waves = waves;
         this.timeSinceLastSpawn = 0f;
-        this.currentWaveIndex = 0;
         this.enemiesSpawned = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
@@ -49,11 +47,11 @@ internal class EnemyManager
 
     public void Update(GameTime gameTime)
     {
-        Wave currentWave;
-        // Process the current wave
-        if (this.currentWaveIndex < this.waves.Count)
+        Wave currentWave = this.waves[0];
+        int currentWaveIndex = 0;
+        if (currentWaveIndex < this.waves.Count)
         {
-            currentWave = this.waves[this.currentWaveIndex];
+            currentWave = this.waves[currentWaveIndex];
             this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave
@@ -71,12 +69,6 @@ internal class EnemyManager
 
             if (this.enemiesSpawned < currentWave.EnemyCount && this.timeSinceLastSpawn >= currentWave.SpawnInterval)
             {
-                // TODO
-                // if (currentWave.IsBossWave)
-                // {
-                //     this.bulletManager.ClearScreen();
-                // }
-
                 this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
                 this.timeSinceLastSpawn = 0f;
                 this.enemiesSpawned++;
@@ -85,7 +77,7 @@ internal class EnemyManager
             // Move to the next wave if the current wave duration has passed
             if (this.timeSinceLastSpawn >= currentWave.Duration)
             {
-                this.currentWaveIndex++;
+                currentWaveIndex++;
                 this.enemiesSpawned = 0;
                 this.timeSinceLastSpawn = 0f;
             }
@@ -97,6 +89,7 @@ internal class EnemyManager
         foreach (var enemy in this.Enemies)
         {
             enemy.Update(gameTime);
+
             this.borderManager.CheckAndReverseVelocity(enemy);
         }
     }
@@ -105,10 +98,10 @@ internal class EnemyManager
     {
         Enemy enemy = wave.EnemyType switch
         {
-            "EnemyA" => this.factory.CreateEnemyA(position, velocity, wave.BulletType),
-            "EnemyB" => this.factory.CreateEnemyB(position, velocity, wave.BulletType),
-            "MidBoss" => this.factory.CreateMidBoss(position, velocity, wave.BulletType),
-            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, wave.BulletType),
+            "EnemyA" => this.factory.CreateEnemyA(position, velocity, wave.Health, wave.BulletType),
+            "EnemyB" => this.factory.CreateEnemyB(position, velocity, wave.Health, wave.BulletType),
+            "MidBoss" => this.factory.CreateMidBoss(position, velocity, wave.Health, wave.BulletType),
+            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, wave.Health, wave.BulletType),
             _ => throw new ArgumentException("Unknown enemy type inputted")
         };
 

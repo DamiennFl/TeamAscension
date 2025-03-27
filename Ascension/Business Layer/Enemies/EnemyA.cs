@@ -43,8 +43,8 @@ namespace Ascension
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyA(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
-        : base(velocity, position, texture, bulletType)
+        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, health, texture, bulletType)
         {
             this.contentManager = contentManager;
             this.random = new Random();
