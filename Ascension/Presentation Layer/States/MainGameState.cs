@@ -148,10 +148,10 @@ namespace Ascension
         {
             float duration = 5;
             string enemyType = "FinalBoss";
-            int enemyCount = 1;
+            int enemyCount = 3;
             float spawnInterval = 0.3f;
             string movementPattern = "Linear";
-            int health = 10;
+            int health = 1000;
             string bulletType = "A";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);

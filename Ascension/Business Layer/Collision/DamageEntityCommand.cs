@@ -40,7 +40,7 @@ namespace Ascension
             if (!this.entity.IsInvincible)
             {
                 this.entity.Health -= 1;
-                Debug.WriteLine($"Entity Health: {this.entity.Health}");
+                // Debug.WriteLine($"Entity Health: {this.entity.Health}");
                 this.entity.ActivateInvincibility();
             }
         }

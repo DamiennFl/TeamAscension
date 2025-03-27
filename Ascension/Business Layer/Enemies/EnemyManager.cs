@@ -34,7 +34,7 @@ internal class EnemyManager
 
     public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
     {
-        this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice, collisionManager);
+        this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
         this.Enemies = new List<Enemy>();
         this.waves = waves;

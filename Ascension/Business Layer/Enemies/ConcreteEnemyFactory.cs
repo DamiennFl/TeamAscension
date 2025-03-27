@@ -30,8 +30,8 @@ namespace Ascension
         /// </summary>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="graphicsDevice">The graphics device for rendering.</param>
-        public ConcreteEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager)
-            : base(contentManager, graphicsDevice, collisionManager)
+        public ConcreteEnemyFactory(ContentManager contentManager, GraphicsDevice graphicsDevice)
+            : base(contentManager, graphicsDevice)
         {
             // Here we are creating the EnemyTextures dictionary and loading the textures.
             this.enemyTextures = new Dictionary<string, Texture2D>
