@@ -104,7 +104,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's health.
         /// </summary>
-        public int Health { get; set; } = 100;
+        public int Health { get; set; } = 10;
 
         /// <summary>
         /// Gets a value indicating whether the player is dead.
