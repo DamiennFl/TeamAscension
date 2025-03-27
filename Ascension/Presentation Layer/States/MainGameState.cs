@@ -147,10 +147,10 @@ namespace Ascension
         private void InitWaves()
         {
             float duration = 5;
-            string enemyType = "FinalBoss";
-            int enemyCount = 3;
+            string enemyType = "MidBoss";
+            int enemyCount = 1;
             float spawnInterval = 0.3f;
-            string movementPattern = "Linear";
+            string movementPattern = "GoMiddle";
             int health = 1000;
             string bulletType = "A";
 
