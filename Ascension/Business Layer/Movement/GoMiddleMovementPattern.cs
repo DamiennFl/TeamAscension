@@ -9,8 +9,10 @@ namespace Ascension
 {
     internal class GoMiddleMovementPattern : IMovementPattern
     {
+        private readonly Vector2 targetPosition = new Vector2(280, 250);
+
         /// <summary>
-        /// Moves the enemy to the middle of the screen and stays there.
+        /// Moves the enemy to the middle of the screen and stops there.
         /// </summary>
         /// <param name="gameTime">Current gametime.</param>
         /// <param name="movable">Movable object.</param>
@@ -18,26 +20,44 @@ namespace Ascension
         {
             Vector2 velocity = movable.Velocity;
             Vector2 position = movable.Position;
-            if (position.X < 400)
-            {
-                velocity.X = 1;
-            }
-            else if (position.X > 400)
-            {
-                velocity.X = -1;
-            }
 
-            if (position.Y < 300)
+            if (Vector2.Distance(position, targetPosition) < 1f)
             {
-                velocity.Y = 1;
+                // Stop the enemy when it reaches the target position
+                velocity = Vector2.Zero;
             }
-            else if (position.Y > 300)
+            else
             {
-                velocity.Y = -1;
+                // Move towards the target position
+                if (position.X < targetPosition.X)
+                {
+                    velocity.X = 1;
+                }
+                else if (position.X > targetPosition.X)
+                {
+                    velocity.X = -1;
+                }
+                else
+                {
+                    velocity.X = 0;
+                }
+
+                if (position.Y < targetPosition.Y)
+                {
+                    velocity.Y = 1;
+                }
+                else if (position.Y > targetPosition.Y)
+                {
+                    velocity.Y = -1;
+                }
+                else
+                {
+                    velocity.Y = 0;
+                }
             }
 
             movable.Velocity = velocity;
-            movable.Position = position;
+            movable.Position += velocity;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Ascension
         /// <param name="collidable">The object to register.</param>
         public void Register(ICollidable collidable)
         {
-            Debug.WriteLine($"Registering colliable, count: {this.collidables.Count}");
+            // Debug.WriteLine($"Registering colliable, count: {this.collidables.Count}");
             this.collidables.Add(collidable);
         }
 

@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using Ascension.Business_Layer;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension
@@ -19,6 +20,8 @@ namespace Ascension
         /// The texture for the enemy.
         /// </summary>
         protected Texture2D texture;
+
+        protected SpriteFont font;
 
         /// <summary>
         /// Gets or sets the scale at which the enemy is rendered.

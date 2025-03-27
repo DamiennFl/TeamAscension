@@ -147,11 +147,11 @@ namespace Ascension
         private void InitWaves()
         {
             float duration = 5;
-            string enemyType = "FinalBoss";
+            string enemyType = "MidBoss";
             int enemyCount = 1;
             float spawnInterval = 0.3f;
-            string movementPattern = "Linear";
-            int health = 10;
+            string movementPattern = "GoMiddle";
+            int health = 1000;
             string bulletType = "A";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);

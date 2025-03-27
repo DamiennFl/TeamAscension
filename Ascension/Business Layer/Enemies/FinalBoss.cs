@@ -63,6 +63,7 @@ namespace Ascension
             this.shootTimer = 0f;
             this.shootInterval = this.GetRandomShootInterval();
             this.CircularShootingTimer = 0f;
+            this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
         /// <summary>
@@ -101,6 +102,7 @@ namespace Ascension
                new Vector2(this.Scale, this.Scale),
                SpriteEffects.None,
                0f);
+            spriteBatch.DrawString(this.font, string.Empty + this.Health, new Vector2(this.Bounds.X, this.Bounds.Y), Color.Red);
         }
 
         /// <summary>
