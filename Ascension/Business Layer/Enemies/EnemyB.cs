@@ -73,7 +73,7 @@ namespace Ascension
 
             if (this.shootTimer >= this.shootInterval)
             {
-                this.StarShooting();
+                this.BurstShoot();
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -100,23 +100,9 @@ namespace Ascension
         /// <summary>
         /// Shoots a bullet.
         /// </summary>
-        public void Shoot()
+        public override void Shoot()
         {
-            Vector2 bulletVelocity = new Vector2(0, 1.2f);
-
-            // base.Shoot(bulletVelocity, false);
-            this.StarShooting();
-        }
-
-        public void StarShooting()
-        {
-            float angle = -0.9F;
-            for (int i = 0; i < 3; i++)
-            {
-                Vector2 bulletVelocity = new Vector2(angle, 2);
-                base.Shoot(bulletVelocity, false, "Orange", this.BulletType);
-                angle += 0.9F;
-            }
+            this.BurstShoot();
         }
 
         /// <summary>

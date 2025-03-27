@@ -67,9 +67,9 @@ namespace Ascension
         /// <param name="isPlayerBullet">Bool if bullet is shot by the player.</param>
         /// <param name="bulletTexture">Texture of the bullet.</param>
         /// <param name="bulletType">Type of bullet.</param>
-        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, string bulletTexture, string bulletType)
+        private void OnBulletFired(Vector2 pos, Vector2 velo, bool isPlayerBullet, string bulletType)
         {
-            Bullet bullet = this.bulletFactory.CreateBullet(velo, pos, bulletTexture, bulletType);
+            Bullet bullet = this.bulletFactory.CreateBullet(velo, pos, bulletType);
             this.collisionManager.Register(bullet);
             bullet.IsPlayerBullet = isPlayerBullet;
             this.bullets.Add(bullet);

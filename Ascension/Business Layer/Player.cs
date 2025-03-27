@@ -29,11 +29,6 @@ namespace Ascension
         private Texture2D playerTexture;
 
         /// <summary>
-        /// Gets or sets the bullet's texture.
-        /// </summary>
-        private Texture2D bulletTexture;
-
-        /// <summary>
         /// Gets or sets the font.
         /// </summary>
         private SpriteFont font;
@@ -103,7 +98,7 @@ namespace Ascension
         /// <summary>
         /// Event for when a bullet is fired.
         /// </summary>
-        public event Action<Vector2, Vector2, bool, string, string> BulletFired;
+        public event Action<Vector2, Vector2, bool, string> BulletFired;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invincible.
@@ -189,7 +184,6 @@ namespace Ascension
         {
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
-            this.bulletTexture = contentManager.Load<Texture2D>("Bullets/BulletGreen");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.playArea = playArea;
 
@@ -372,7 +366,7 @@ namespace Ascension
             // Change this
             if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
-                this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "Green", "A"); // check this
+                this.BulletFired?.Invoke(this.playerPosition, this.BulletVelocity, true, "C"); // check this
                 this.shootTimer = 0;
             }
         }

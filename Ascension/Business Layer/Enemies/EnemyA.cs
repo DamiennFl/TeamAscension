@@ -92,11 +92,9 @@ namespace Ascension
         /// <summary>
         /// Shoots a bullet.
         /// </summary>
-        public void Shoot()
+        public override void Shoot()
         {
-            Vector2 bulletVelocity = new Vector2(0, 2f);
-            bool isPlayerBullet = false;
-            base.Shoot(bulletVelocity, isPlayerBullet, "Blue", this.BulletType);
+            base.Shoot();
         }
 
         /// <summary>

@@ -20,6 +20,8 @@ namespace Ascension
                     return new WaveMovementPattern();
                 case "ZigZag":
                     return new ZigZagMovementPattern();
+                case "GoMiddle":
+                    return new GoMiddleMovementPattern();
                 default:
                     throw new NotImplementedException($"No Movement Pattern by name: {type}");
             }

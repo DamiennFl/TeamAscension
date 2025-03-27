@@ -73,24 +73,15 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-            for (int i = 0; i < this.bullets.Count; i++)
-            {
-                this.bullets[i].BulletUpdate(gameTime);
-                if (!this.bullets[i].IsActive)
-                {
-                    this.bullets.RemoveAt(i);
-                    i--;
-                }
-            }
-
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.shootTimer >= this.shootInterval)
             {
+                this.Shoot();
                 this.shootTimer = 0f;
-                this.shootInterval = this.GetRandomShootInterval();
+                this.shootInterval = 3f;
             }
         }
 
@@ -110,44 +101,14 @@ namespace Ascension
                new Vector2(this.Scale, this.Scale),
                SpriteEffects.None,
                0f);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletDraw(spriteBatch);
-            }
         }
 
         /// <summary>
-        /// Shoots a bullet Shaped Like a star.
+        /// Shoots a bullet.
         /// </summary>
-        //public void StarShooting()
-        //{
-        //    Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
-        //    float angle = -0.5F;
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        Vector2 bulletVelocity = new Vector2(angle, 2f);
-        //        Bullet bullet = new Bullet(1, bulletVelocity, this.Position, bulletTexture);
-        //        this.bullets.Add(bullet);
-        //        angle += 0.2F;
-        //    }
-        //}
-
-        /// <summary>
-        /// Shoots bullets in a circular pattern.
-        /// </summary>
-        public void CircularShooting()
+        public override void Shoot()
         {
-            int numberOfBullets = 12; // Total bullets in the circles
-            float bulletSpeed = 3f; // Adjust the speed as needed
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-
-            for (int i = 0; i < numberOfBullets; i++)
-            {
-                float angle = i * angleIncrement;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
-            }
+            this.RealityCollapse();
         }
 
         /// <summary>

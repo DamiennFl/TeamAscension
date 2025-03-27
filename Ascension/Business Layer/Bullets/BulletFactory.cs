@@ -52,26 +52,24 @@ namespace Ascension.Business_Layer.Bullets
         /// <param name="bulletPosition">Start position.</param>
         /// <param name="bulletTexture">Color and texture.</param>
         /// <returns>New bullet.</returns>
-        public Bullet CreateBullet(Vector2 velocity, Vector2 bulletPosition, string bulletTexture, string bulletType)
+        public Bullet CreateBullet(Vector2 velocity, Vector2 bulletPosition, string bulletType)
         {
-            Texture2D texture = this.contentManager.Load<Texture2D>("Bullets/BulletBlue"); // default bullet texture if not valid texture input.
-            if (this.bulletTextures.ContainsKey(bulletTexture))
-            {
-                texture = this.bulletTextures[bulletTexture];
-            }
-
             switch (bulletType)
             {
                 case "A":
-                    Bullet bulletA = new BulletA(velocity, bulletPosition, texture);
+                    Bullet bulletA = new BulletA(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletGreen"));
                     bulletA.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
                     return bulletA;
                 case "B":
-                    Bullet bulletB = new BulletB(velocity, bulletPosition, texture);
+                    Bullet bulletB = new BulletB(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletOrange"));
                     bulletB.MovementPattern = this.movementFactory.CreateMovementPattern("Wave");
                     return bulletB;
+                case "C":
+                    Bullet playerBullet = new BulletA(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletBlue"));
+                    playerBullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
+                    return playerBullet;
                 default:
-                    Bullet bullet = new BulletA(velocity, bulletPosition, texture);
+                    Bullet bullet = new BulletA(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletGreen"));
                     bullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
                     return bullet;
             }

@@ -147,25 +147,25 @@ namespace Ascension
         private void InitWaves()
         {
             float duration = 5;
-            string enemyType = "EnemyA";
-            int enemyCount = 5;
+            string enemyType = "FinalBoss";
+            int enemyCount = 1;
             float spawnInterval = 0.3f;
-            string movementPattern = "ZigZag";
+            string movementPattern = "Linear";
             int health = 10;
             string bulletType = "A";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
             this.waves.Add(testWave);
 
-            float duration2 = 10;
-            string enemyType2 = "EnemyB";
-            int enemyCount2 = 10;
-            float spawnInterval2 = 0.3f;
-            int health2 = 10;
-            string movementPattern2 = "Wave";
+            //float duration2 = 10;
+            //string enemyType2 = "EnemyB";
+            //int enemyCount2 = 10;
+            //float spawnInterval2 = 0.3f;
+            //int health2 = 10;
+            //string movementPattern2 = "Wave";
 
-            Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2, bulletType);
-            this.waves.Add(testWave2);
+            //Wave testWave2 = new Wave(duration2, enemyType2, enemyCount2, spawnInterval2, health2, movementPattern2, bulletType);
+            //this.waves.Add(testWave2);
         }
 
         /// <summary>

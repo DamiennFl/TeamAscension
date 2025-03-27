@@ -20,16 +20,9 @@ namespace Ascension
     internal class MidBoss : Enemy
     {
 
-
-        /// <summary>
-        /// The bullets for the enemy.
-        /// </summary>
-        private List<Bullet> bullets;
-
         /// <summary>
         /// The content manager for loading assets.
         /// </summary>
-        private ContentManager contentManager;
 
         /// <summary>
         /// Random number generator.
@@ -59,8 +52,6 @@ namespace Ascension
         public MidBoss(Vector2 velocity, Vector2 position, Texture2D texture, ContentManager contentManager, string bulletType)
         : base(velocity, position, texture, bulletType)
         {
-            this.bullets = new List<Bullet>();
-            this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
             this.shootInterval = this.GetRandomShootInterval();
@@ -75,23 +66,13 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-            for (int i = 0; i < this.bullets.Count; i++)
-            {
-                this.bullets[i].BulletUpdate(gameTime);
-                if (!this.bullets[i].IsActive)
-                {
-                    this.bullets.RemoveAt(i);
-                    i--;
-                }
-            }
-
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.shootTimer >= this.shootInterval)
             {
-                //this.Shoot();
+                this.Shoot();
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -113,66 +94,20 @@ namespace Ascension
                new Vector2(this.Scale, this.Scale),
                SpriteEffects.None,
                0f);
-
-            foreach (var bullet in this.bullets)
-            {
-                bullet.BulletDraw(spriteBatch);
-            }
         }
 
         /// <summary>
         /// Shoot method.
         /// </summary>
         /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
-        //public override void Shoot()
-        //{
-        //    if (this.CircularShootingTimer >= 5f)
-        //    {
-        //        this.CircularShootingTimer = 0f;
-        //        this.CircularShooting();
-        //    }
-        //    else
-        //    {
-        //        this.StarShooting();
-        //    }
-        //}
-
-
-        /// <summary>
-        /// Shoots a bullet Shaped Like a star.
-        /// </summary>
-        public void StarShooting()
+        public override void Shoot()
         {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
-            float angle = -0.5F;
-            for (int i = 0; i < 5; i++)
+            if (this.CircularShootingTimer >= 0.6f)
             {
-                Vector2 bulletVelocity = new Vector2(angle, 2f);
-                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
-                angle += 0.2F;
+                this.CircularShootingTimer = 0f;
+                this.CircularShoot();
             }
         }
-
-
-        /// <summary>
-        /// Shoots bullets in a circular pattern.
-        /// </summary>
-        public void CircularShooting()
-        {
-            Texture2D bulletTexture = this.contentManager.Load<Texture2D>("Bullets/BulletGreen");
-            int numberOfBullets = 12; // Total bullets in the circles
-            float bulletSpeed = 3f; // Adjust the speed as needed
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-
-            for (int i = 0; i < numberOfBullets; i++)
-            {
-                float angle = i * angleIncrement;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                base.Shoot(bulletVelocity, false, "Green", this.BulletType);
-            }
-        }
-
-
 
         /// <summary>
         /// Gets a random shoot interval.
@@ -180,7 +115,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
+            return ((float)this.random.NextDouble() * 0.5f); // Random interval between 0 and 1 second
         }
     }
 }
