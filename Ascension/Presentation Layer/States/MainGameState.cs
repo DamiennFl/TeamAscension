@@ -102,7 +102,7 @@ namespace Ascension
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(60f))
+            if (this.IsBossTime(190f))
             {
                 Debug.WriteLine("I switched states");
                 this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.contentManager));
@@ -146,11 +146,46 @@ namespace Ascension
         /// </summary>
         private void InitWaves()
         {
-            float duration = 5;
+
+            float durationA = 30;
+            string enemyTypeA = "EnemyA";
+            int enemyCountA = 8;
+            float spawnIntervalA = 0.5f;
+            string movementPatternA = "Linear";
+            int healthA = 5;
+            string bulletTypeA = "A";
+
+            Wave waveA = new Wave(durationA, enemyTypeA, enemyCountA, spawnIntervalA, healthA, movementPatternA, bulletTypeA);
+            this.waves.Add(waveA);
+
+            float durationB = 40;
+            string enemyTypeB = "EnemyB";
+            int enemyCountB = 8;
+            float spawnIntervalB = 0.3f;
+            string movementPatternB = "Wave";
+            int healthB = 7;
+            string bulletTypeB = "B";
+            
+            Wave waveB = new Wave(durationB, enemyTypeB, enemyCountB, spawnIntervalB, healthB, movementPatternB, bulletTypeB);
+            this.waves.Add(waveB);
+
+
+            float durationMid = 60;
+            string enemyTypeMid = "MidBoss";
+            int enemyCountMid = 1;
+            float spawnIntervalMid = 0.3f;
+            string movementPatternMid = "ZigZag";
+            int healthMid = 30;
+            string bulletTypeMid = "B";
+
+            Wave waveMid = new Wave(durationMid, enemyTypeMid, enemyCountMid, spawnIntervalMid, healthMid, movementPatternMid, bulletTypeMid);
+            this.waves.Add(waveMid);
+
+            float duration = 60;
             string enemyType = "FinalBoss";
             int enemyCount = 1;
             float spawnInterval = 0.3f;
-            string movementPattern = "Wave";
+            string movementPattern = "GoMiddle";
             int health = 1000;
             string bulletType = "B";
 
