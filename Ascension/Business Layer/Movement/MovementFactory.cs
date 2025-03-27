@@ -2,6 +2,7 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Business_Layer.Movement;
 using System;
 
 namespace Ascension
@@ -22,6 +23,8 @@ namespace Ascension
                     return new ZigZagMovementPattern();
                 case "GoMiddle":
                     return new GoMiddleMovementPattern();
+                case "GoOffScreen":
+                    return new GoOffScreenMovementPattern();
                 default:
                     throw new NotImplementedException($"No Movement Pattern by name: {type}");
             }

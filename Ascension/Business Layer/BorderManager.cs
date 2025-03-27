@@ -2,8 +2,10 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Security.Cryptography;
 
 namespace Ascension.Business_Layer
 {
@@ -40,31 +42,34 @@ namespace Ascension.Business_Layer
 
             float enemySpawnHalf = border.Height / 2;
 
-            if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
+            if (!(enemy.MovementPattern is GoOffScreenMovementPattern))
             {
-                if (position.X <= (border.Left + (bounds.Width / 2)))
+                if (position.X <= (border.Left + (bounds.Width / 2)) || position.X >= (border.Right - (bounds.Width / 2)))
                 {
-                    velocity.X = System.Math.Abs(velocity.X);
+                    if (position.X <= (border.Left + (bounds.Width / 2)))
+                    {
+                        velocity.X = System.Math.Abs(velocity.X);
+                    }
+                    else
+                    {
+                        velocity.X = -System.Math.Abs(velocity.X);
+                    }
                 }
-                else
-                {
-                    velocity.X = -System.Math.Abs(velocity.X);
-                }
-            }
 
-            if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - enemySpawnHalf - (bounds.Height / 2)))
-            {
-                if (position.Y <= (border.Top + (bounds.Height / 2)))
+                if (position.Y <= (border.Top + (bounds.Height / 2)) || position.Y >= (border.Bottom - enemySpawnHalf - (bounds.Height / 2)))
                 {
-                    velocity.Y = System.Math.Abs(velocity.Y);
+                    if (position.Y <= (border.Top + (bounds.Height / 2)))
+                    {
+                        velocity.Y = System.Math.Abs(velocity.Y);
+                    }
+                    else
+                    {
+                        velocity.Y = -System.Math.Abs(velocity.Y);
+                    }
                 }
-                else
-                {
-                    velocity.Y = -System.Math.Abs(velocity.Y);
-                }
-            }
 
-            enemy.Velocity = velocity;
+                enemy.Velocity = velocity;
+            }
         }
 
         /// <summary>

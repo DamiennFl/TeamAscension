@@ -150,7 +150,7 @@ namespace Ascension
             string enemyType = "FinalBoss";
             int enemyCount = 1;
             float spawnInterval = 0.3f;
-            string movementPattern = "GoMiddle";
+            string movementPattern = "Wave";
             int health = 1000;
             string bulletType = "A";
 
