@@ -187,7 +187,7 @@ namespace Ascension
             float spawnInterval = 0.3f;
             string movementPattern = "GoMiddle";
             int health = 1000;
-            string bulletType = "B";
+            string bulletType = "A";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
             this.waves.Add(testWave);
