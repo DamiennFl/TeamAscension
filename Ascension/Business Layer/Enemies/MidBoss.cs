@@ -33,12 +33,12 @@ namespace Ascension
         /// </summary>
         private float shootTimer;
 
-        private float CircularShootingTimer;
-
         /// <summary>
         /// Interval between shots.
         /// </summary>
         private float shootInterval;
+
+        private int shootCounter = 0;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MidBoss"/> class.
@@ -54,7 +54,6 @@ namespace Ascension
             this.random = new Random();
             this.shootTimer = 0f;
             this.shootInterval = this.GetRandomShootInterval();
-            this.CircularShootingTimer = 0f;
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -68,7 +67,6 @@ namespace Ascension
 
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.shootTimer >= this.shootInterval)
             {
@@ -103,10 +101,15 @@ namespace Ascension
         /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
         public override void Shoot()
         {
-            if (this.CircularShootingTimer >= 0.6f)
+            if (this.shootCounter % 3 == 0)
             {
-                this.CircularShootingTimer = 0f;
-                this.CircularShoot();
+                this.FlowerBloomShoot();
+                this.shootCounter++;
+            }
+            else
+            {
+                this.AlternatingRingsShoot();
+                this.shootCounter++;
             }
         }
 
@@ -116,7 +119,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 0.5f); // Random interval between 0 and 1 second
+            return ((float)this.random.NextDouble() * 1f) + 1.5f; // Random interval between 0 and 1 second
         }
     }
 }
