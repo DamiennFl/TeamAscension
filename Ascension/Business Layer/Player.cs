@@ -16,12 +16,13 @@ namespace Ascension
     /// <summary>
     /// Player class.
     /// </summary>
-    public class Player : ICollidable, IEntity
+    public class Player : ICollidable, IEntity, IMovable
     {
+
         /// <summary>
-        /// Gets or sets the player's speed.
+        /// Gets or sets the player's velocity.
         /// </summary>
-        public float PlayerSpeed;
+        public Vector2 Velocity { get; set; }
 
         /// <summary>
         /// Gets or sets the player's texture.
@@ -51,7 +52,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's position.
         /// </summary>
-        protected Vector2 playerPosition;
+        public Vector2 Position { get; set; }
 
         /// <summary>
         /// Gets or sets the player's shoot interval.
@@ -62,6 +63,11 @@ namespace Ascension
         /// Gets or sets the player's shoot timer.
         /// </summary>
         private float shootTimer = 0f;
+
+        /// <summary>
+        /// Gets or sets the ICE instance for collision detection.
+        /// </summary>
+        private BorderManager borderManager;
 
         /// <summary>
         /// Gets the player's spawn position.
@@ -78,11 +84,6 @@ namespace Ascension
         /// Gets or sets the bullet's velocity.
         /// </summary>
         public Vector2 BulletVelocity = new Vector2(0, -7f);
-
-        /// <summary>
-        /// Gets or sets the bullet's position.
-        /// </summary>
-        public Vector2 BulletPosition;
 
         /// <summary>
         /// Gets or sets the play area.
@@ -132,8 +133,8 @@ namespace Ascension
             {
                 int radius = this.playerTexture.Width / 10;
                 return new Rectangle(
-                    (int)this.playerPosition.X - radius,
-                    (int)this.playerPosition.Y - radius,
+                    (int)this.Position.X - radius,
+                    (int)this.Position.Y - radius,
                     radius,
                     radius);
             }
@@ -186,8 +187,8 @@ namespace Ascension
             this.playerTexture = contentManager.Load<Texture2D>("ball");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.playArea = playArea;
-
-            this.playerPosition = this.PlayerSpawn;
+            this.borderManager = new BorderManager(playArea);
+            this.Position = this.PlayerSpawn;
         }
 
         /// <summary>
@@ -247,7 +248,8 @@ namespace Ascension
         public void Update(GameTime gameTime)
         {
             this.PlayerMovement();
-            this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
+            //this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
+            this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
 
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -265,7 +267,7 @@ namespace Ascension
         {
             this.IsInvincible = true;
             this.invincibleTimeRemaining = this.totalInvincibleTime;
-            this.playerPosition = this.PlayerSpawn;
+            this.Position = this.PlayerSpawn;
             this.bulletManager.ClearScreen();
             Debug.WriteLine("Invincibility activated.");
         }
@@ -302,11 +304,11 @@ namespace Ascension
 
             if (kstate.IsKeyDown(PlayerMovementKeys.Sprint))
             {
-                this.PlayerSpeed = 7f;
+                this.Velocity = new Vector2(7f, 7f);
             }
             else
             {
-                this.PlayerSpeed = 3.75f;
+                this.Velocity = new Vector2(3.75f, 3.75F);
             }
 
             // If Vector has values, normalize movement.
@@ -316,41 +318,7 @@ namespace Ascension
             }
 
             // Update position after normalizing
-            this.playerPosition += dir * this.PlayerSpeed;
-        }
-
-        /// <summary>
-        /// This ensures that the player stays within the border.
-        /// </summary>
-        /// <param name="screenBounds">Playing Screen.</param>
-        /// <param name="borderWidth">Width of the border.</param>
-        private void StayInBorder(Rectangle screenBounds, int borderWidth)
-        {
-            int radius = this.playerTexture.Width / 8;
-
-            // Left border
-            if (this.playerPosition.X - radius < screenBounds.X)
-            {
-                this.playerPosition.X = screenBounds.X + radius;
-            }
-
-            // Right border
-            else if (this.playerPosition.X + radius > screenBounds.X + screenBounds.Width - (2 * borderWidth))
-            {
-                this.playerPosition.X = screenBounds.X + screenBounds.Width - (2 * borderWidth) - radius;
-            }
-
-            // Top border
-            if (this.playerPosition.Y - radius < screenBounds.Y)
-            {
-                this.playerPosition.Y = screenBounds.Y + radius;
-            }
-
-            // Bottom border
-            else if (this.playerPosition.Y + radius > screenBounds.Y + screenBounds.Height - (2 * borderWidth))
-            {
-                this.playerPosition.Y = screenBounds.Y + screenBounds.Height - (2 * borderWidth) - radius;
-            }
+            this.Position += dir * this.Velocity;
         }
 
         /// <summary>
