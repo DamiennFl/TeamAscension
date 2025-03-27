@@ -46,6 +46,8 @@ namespace Ascension
         /// </summary>
         private float shootInterval;
 
+        private bool shootOption = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FinalBoss"/> class.
         /// </summary>
@@ -82,7 +84,7 @@ namespace Ascension
             {
                 this.Shoot();
                 this.shootTimer = 0f;
-                this.shootInterval = 3f;
+                this.shootInterval = 2f;
             }
         }
 
@@ -110,7 +112,16 @@ namespace Ascension
         /// </summary>
         public override void Shoot()
         {
-            this.RealityCollapse();
+            if (this.shootOption)
+            {
+                this.FireworkExplosionShoot();
+                this.shootOption = false;
+            }
+            else
+            {
+                this.BulletWall();
+                this.shootOption = true;
+            }
         }
 
         /// <summary>

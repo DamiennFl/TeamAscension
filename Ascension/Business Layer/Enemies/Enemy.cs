@@ -221,7 +221,7 @@ namespace Ascension
 
                 for (int i = 0; i < numberOfBullets; i++)
                 {
-                    float angle = i * angleIncrement;
+                    float angle = i * angleIncrement + (Random.Shared.NextSingle() - 3f) * 0.2f; // Add randomness to the angle
                     Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * (baseSpeed * speedMultiplier);
                     this.Shoot(bulletVelocity, false, this.BulletType);
                 }
@@ -281,8 +281,8 @@ namespace Ascension
         public void BulletWall()
         {
             int bulletsPerRow = 15;
-            int bulletRows = 3;
-            float bulletSpeed = 1f;
+            int bulletRows = 4;
+            float bulletSpeed = 0.75f;
             float spacing = 0.5f; // Adjust for tighter or looser grids
 
             for (int row = 0; row < bulletRows; row++)
@@ -337,7 +337,7 @@ namespace Ascension
         public void FireworkExplosionShoot()
         {
             int bursts = 5;
-            int bulletsPerBurst = 20;
+            int bulletsPerBurst = 15;
             float baseSpeed = 2f;
 
             for (int burst = 0; burst < bursts; burst++)
@@ -373,6 +373,9 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// Shoots bullets in a flower bloom pattern.
+        /// </summary>
         public void FlowerBloomShoot()
         {
             int petals = 8;
@@ -385,7 +388,7 @@ namespace Ascension
 
                 for (int i = 0; i < bulletsPerPetal; i++)
                 {
-                    float progress = (float)i / bulletsPerPetal;
+                    float progress = (float)(i + 1) / bulletsPerPetal; // Start from 1 to avoid bullet staying next to the enemy
                     float angle = angleOffset + progress * MathF.PI / petals;
                     float radius = progress * 5f;
                     Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * radius * growthSpeed;
@@ -410,8 +413,9 @@ namespace Ascension
         public void TornadoShoot()
         {
             int spirals = 3;
-            int bulletsPerSpiral = 50;
-            float spiralSpacing = 0.1f;
+            int bulletsPerSpiral = 30;
+            float spiralSpacing = 0.5f;
+            float baseSpeed = 2f; // Base speed for the innermost bullets
 
             for (int s = 0; s < spirals; s++)
             {
@@ -420,7 +424,8 @@ namespace Ascension
                     float progress = (float)i / bulletsPerSpiral;
                     float angle = progress * MathF.PI * 4 + s * MathF.PI * 2 / spirals;
                     float radius = progress * 5f;
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * radius * 0.3f;
+                    float speedMultiplier = 1f + (1 - progress); // Decrease speed as bullets move outward
+                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * radius * 0.5f * speedMultiplier;
                     this.Shoot(bulletVelocity, false, this.BulletType);
                 }
             }
