@@ -18,6 +18,7 @@ internal class EnemyManager
 
     private float timeSinceLastSpawn;
     private int enemiesSpawned;
+    private int currentWaveIndex;
 
     private BulletManager bulletManager;
 
@@ -39,6 +40,7 @@ internal class EnemyManager
         this.waves = waves;
         this.timeSinceLastSpawn = 0f;
         this.enemiesSpawned = 0;
+        this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
         this.playArea = playArea;
@@ -47,11 +49,9 @@ internal class EnemyManager
 
     public void Update(GameTime gameTime)
     {
-        Wave currentWave = this.waves[0];
-        int currentWaveIndex = 0;
         if (currentWaveIndex < this.waves.Count)
         {
-            currentWave = this.waves[currentWaveIndex];
+            Wave currentWave = this.waves[currentWaveIndex];
             this.timeSinceLastSpawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave
@@ -77,7 +77,12 @@ internal class EnemyManager
             // Move to the next wave if the current wave duration has passed
             if (this.timeSinceLastSpawn >= currentWave.Duration)
             {
-                currentWaveIndex++;
+                foreach (Enemy enemy in this.Enemies)
+                {
+                    enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
+                }
+
+                this.currentWaveIndex++;
                 this.enemiesSpawned = 0;
                 this.timeSinceLastSpawn = 0f;
             }
@@ -89,7 +94,6 @@ internal class EnemyManager
         foreach (var enemy in this.Enemies)
         {
             enemy.Update(gameTime);
-
             this.borderManager.CheckAndReverseVelocity(enemy);
         }
     }
