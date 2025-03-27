@@ -35,12 +35,13 @@ namespace Ascension
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="bulletType">The bullet type.</param>
-        public Enemy(Vector2 velocity, Vector2 position, Texture2D texture, string bulletType)
+        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType)
         {
             this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
             this.BulletType = bulletType;
+            this.Health = health;
         }
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the health of the enemy.
         /// </summary>
-        public int Health { get; set; } = 10;
+        public int Health { get; set; }
 
         /// <summary>
         /// Gets or Sets a value indicating whether the enemy is invincible.
