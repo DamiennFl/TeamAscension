@@ -191,7 +191,7 @@ namespace Ascension
             Wave waveC = new Wave(durationC, enemyTypeC, enemyCountC, spawnIntervalC, healthC, movementPatternC, bulletTypeC);
             this.waves.Add(waveC);
 
-            float duration = 60;
+            float duration = 90;
             string enemyType = "FinalBoss";
             int enemyCount = 1;
             float spawnInterval = 0.3f;

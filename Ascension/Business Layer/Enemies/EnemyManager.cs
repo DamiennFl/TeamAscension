@@ -8,79 +8,148 @@ using Ascension;
 using Ascension.Business_Layer;
 
 internal class EnemyManager
-{
+{   
+    /// <summary>
+    /// EnemyFactory to create enemies.
+    /// </summary>
     private EnemyFactory factory;
+
+    /// <summary>
+    /// MovementFactory to create movement patterns.
+    /// </summary>
     private MovementFactory movementFactory;
 
+    /// <summary>
+    /// Gets the list of Enemies for this EnemyManager.
+    /// </summary>
     public List<Enemy> Enemies { get; }
 
+    /// <summary>
+    /// The list of Waves this EnemyManager will use.
+    /// </summary>
     private List<Wave> waves;
 
-    private float waveDuration;
+    /// <summary>
+    /// Global variable to track the current duration of the Wave.
+    /// </summary>
+    private float waveTimeElapsed;
+
+    /// <summary>
+    /// A count of the enemies spawned.
+    /// </summary>
     private int enemiesSpawned;
+
+    /// <summary>
+    /// An index for the current wave.
+    /// </summary>
     private int currentWaveIndex;
 
+    /// <summary>
+    /// A BulletManager to register enemies to the OnBulletFired event.
+    /// </summary>
     private BulletManager bulletManager;
 
+    /// <summary>
+    /// A CollisionManager to register spawned enemies as Collidable.
+    /// </summary>
     private CollisionManager collisionManager;
 
+    /// <summary>
+    /// A BorderManager to track and manage the border/areas of the Game.
+    /// </summary>
     private BorderManager borderManager;
 
+    /// <summary>
+    /// The PlayArea for the Game, derived from State.
+    /// </summary>
     private PlayArea playArea;
 
-    private Rectangle selectedSpawnArea; // Field to store the selected spawn area for the current wave
-    private Vector2 spawnPosition; // Field to store the spawn position for the current wave
+    /// <summary>
+    /// The spawnArea for the Enemies in a Wave.
+    /// </summary>
+    private Rectangle spawnArea;
+
+    /// <summary>
+    /// The spawnPosition for the Enemies in a Wave.
+    /// </summary>
+    private Vector2 spawnPosition;
+
+    /// <summary>
+    /// The spawnVelocity for Enemies in a Wave.
+    /// </summary>
     private Vector2 spawnVelocity;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EnemyManager"/> class.
+    /// </summary>
+    /// <param name="contentManager">The contentManager of the Game.</param>
+    /// <param name="graphicsDevice">The graphicsDevice of the Game.</param>
+    /// <param name="collisionManager">A CollisionManager reference to register Enemies.</param>
+    /// <param name="bulletManager">A BulletManager reference for Enemies to Shoot.</param>
+    /// <param name="waves">A list of Waves to interpret.</param>
+    /// <param name="playArea">The playArea of the Game.</param>
     public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
     {
         this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
         this.Enemies = new List<Enemy>();
         this.waves = waves;
-        this.waveDuration = 0f;
+        this.waveTimeElapsed = 0f;
         this.enemiesSpawned = 0;
         this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
-        this.playArea = playArea;
         this.borderManager = new BorderManager(this.playArea);
     }
 
+    /// <summary>
+    /// The Update method updates everything related to the Enemy subsystem,
+    /// such as spawning, movement, and despawning.
+    /// </summary>
+    /// <param name="gameTime">The gameTime to stay synchronized with the Game.</param>
     public void Update(GameTime gameTime)
     {
+        // Iterate through each Wave
         if (this.currentWaveIndex < this.waves.Count)
         {
+            // Get the currentWave
             Wave currentWave = this.waves[this.currentWaveIndex];
-            this.waveDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            // Increase the timeElapsed
+            this.waveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.enemiesSpawned == 0) // Select the spawn area, position, and velocity once per wave
+            // If no enemies have been spawned for this wave, select a spawn area,
+            // a position within the area, and an initial velocity based on the spawn position.
+            if (this.enemiesSpawned == 0)
             {
                 Random random = new Random();
                 List<Rectangle> spawnAreas = this.playArea.SpawnAreaRectangles;
-                this.selectedSpawnArea = spawnAreas[random.Next(spawnAreas.Count)];
+                this.spawnArea = spawnAreas[random.Next(spawnAreas.Count)];
 
                 this.spawnPosition = new Vector2(
-                    random.Next(this.selectedSpawnArea.Left + (this.selectedSpawnArea.Width / 4), this.selectedSpawnArea.Right - (this.selectedSpawnArea.Width / 4)),
-                    random.Next(this.selectedSpawnArea.Top + (this.selectedSpawnArea.Height / 4), this.selectedSpawnArea.Bottom - (this.selectedSpawnArea.Height / 4)));
+                    random.Next(this.spawnArea.Left + (this.spawnArea.Width / 4), this.spawnArea.Right - (this.spawnArea.Width / 4)),
+                    random.Next(this.spawnArea.Top + (this.spawnArea.Height / 4), this.spawnArea.Bottom - (this.spawnArea.Height / 4)));
 
-                this.spawnVelocity = this.GetInitialVelocity(this.selectedSpawnArea);
+                this.spawnVelocity = this.GetInitialVelocity(this.spawnArea);
             }
 
-            if (this.enemiesSpawned < currentWave.EnemyCount && this.waveDuration >= currentWave.SpawnInterval)
+            // If it is time to spawn an enemy:
+            if (this.enemiesSpawned < currentWave.EnemyCount && this.waveTimeElapsed >= currentWave.SpawnInterval)
             {
+                // Spawn the enemy, reset the time elapsed, and increase the amount of spawned enemies.
                 this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
-                this.waveDuration = 0f;
+                this.waveTimeElapsed = 0f;
                 this.enemiesSpawned++;
             }
 
+            // If all enemies have been spawned for the Wave, and they are all dead,
+            // move onto the next Wave.
             if (this.enemiesSpawned == currentWave.EnemyCount && this.Enemies.Count == 0)
             {
-                this.waveDuration = currentWave.Duration + 1;
+                this.waveTimeElapsed = currentWave.Duration + 1;
             }
 
-            // Move to the next wave if the current wave duration has passed
-            if (this.waveDuration >= currentWave.Duration)
+            // Move enemies offscreen if the Wave is done.
+            if (this.waveTimeElapsed >= currentWave.Duration)
             {
                 foreach (Enemy enemy in this.Enemies)
                 {
@@ -88,24 +157,35 @@ internal class EnemyManager
                     enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
                 }
 
+                // Reset the Wave specific variables
                 this.currentWaveIndex++;
                 this.enemiesSpawned = 0;
-                this.waveDuration = 0f;
+                this.waveTimeElapsed = 0f;
             }
         }
 
+        // Delete dead enemies
         this.IsDead();
 
         // Update all enemies
         foreach (var enemy in this.Enemies)
         {
             enemy.Update(gameTime);
+            // If enemies hit the border, they reverse their direction.
             this.borderManager.CheckAndReverseVelocity(enemy);
         }
     }
 
+    /// <summary>
+    /// SpawnEnemy spawns enemies based on a Wave's info, a position, and a velocity.
+    /// </summary>
+    /// <param name="wave">A Wave to get the information about what to spawn.</param>
+    /// <param name="position">The position to spawn the Enemy at.</param>
+    /// <param name="velocity">The velocity for the Enemy.</param>
+    /// <exception cref="ArgumentException">Throws an Exception if an invalid enemy type is inputted.</exception>
     private void SpawnEnemy(Wave wave, Vector2 position, Vector2 velocity)
     {
+        // Spawn Enemy
         Enemy enemy = wave.EnemyType switch
         {
             "EnemyA" => this.factory.CreateEnemyA(position, velocity, wave.Health, wave.BulletType),
@@ -115,14 +195,21 @@ internal class EnemyManager
             _ => throw new ArgumentException("Unknown enemy type inputted")
         };
 
+        // Apply movement
         IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
         enemy.MovementPattern = movementPattern;
+
+        // Add to list of enemies
         this.Enemies.Add(enemy);
 
+        // Register collisions and bullet shoot event for Enemy
         this.bulletManager.RegisterEnemy(enemy);
         this.collisionManager.Register(enemy);
     }
 
+    /// <summary>
+    /// Checks every Enemy in the list to see if it is dead, and removes it if so.
+    /// </summary>
     private void IsDead()
     {
         var enemies = this.Enemies.ToArray();
@@ -136,6 +223,10 @@ internal class EnemyManager
         }
     }
 
+    /// <summary>
+    /// Draw method for the Enemies.
+    /// </summary>
+    /// <param name="spriteBatch">spriteBatch to draw into.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
         foreach (var enemy in this.Enemies)
@@ -145,6 +236,11 @@ internal class EnemyManager
         }
     }
 
+    /// <summary>
+    /// Calculate the Initial velocity of the Enemy.
+    /// </summary>
+    /// <param name="spawnArea">spawnArea that the Enemy is spawning in.</param>
+    /// <returns>A Vector2 representing the Velocity.</returns>
     private Vector2 GetInitialVelocity(Rectangle spawnArea)
     {
         Random random = new Random();
@@ -174,6 +270,12 @@ internal class EnemyManager
         return velocity;
     }
 
+    /// <summary>
+    /// SetOffScreenVelocity sets the Enemy's velocity based on the closest
+    /// border once the Wave is over.
+    /// </summary>
+    /// <param name="enemy">The Enemy to apply the new velocity to.</param>
+    /// <param name="playArea">The playArea.</param>
     private void SetOffScreenVelocity(Enemy enemy, PlayArea playArea)
     {
         Vector2 velocity = Vector2.Zero;
@@ -185,6 +287,7 @@ internal class EnemyManager
 
         float minDistance = Math.Min(leftDistance, Math.Min(rightDistance, topDistance));
 
+        // Set the velocity based on closest border
         if (minDistance == leftDistance)
         {
             velocity.X = -2.5f;
@@ -201,6 +304,7 @@ internal class EnemyManager
             velocity.Y = -2.5f;
         }
 
+        // Update velocity
         enemy.Velocity = velocity;
     }
 }
