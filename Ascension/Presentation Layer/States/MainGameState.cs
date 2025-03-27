@@ -76,7 +76,7 @@ namespace Ascension
             // Player drawn here
             this.player.Draw(spriteBatch);
 
-            this.playArea.DrawSpawnRectangles(spriteBatch);
+            //this.playArea.DrawSpawnRectangles(spriteBatch);
 
             this.enemyManager.Draw(spriteBatch);
 
