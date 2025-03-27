@@ -280,7 +280,7 @@ namespace Ascension
 
         public void BulletWall()
         {
-            int bulletsPerRow = 20;
+            int bulletsPerRow = 15;
             int bulletRows = 4;
             float bulletSpeed = 0.75f;
             float spacing = 0.5f; // Adjust for tighter or looser grids
@@ -292,7 +292,8 @@ namespace Ascension
                 for (int i = 0; i < bulletsPerRow; i++)
                 {
                     float xPos = (i - bulletsPerRow / 2) * spacing;
-                    Vector2 bulletVelocity = new Vector2(0, bulletSpeed); // Straight downward movement
+                    float randomOffset = Random.Shared.NextSingle() * 0.2f; // Adds randomness to the position
+                    Vector2 bulletVelocity = new Vector2(randomOffset, bulletSpeed); // Straight downward movement
                     this.Shoot(new Vector2(xPos, yOffset) + bulletVelocity, false, this.BulletType);
                 }
             }
