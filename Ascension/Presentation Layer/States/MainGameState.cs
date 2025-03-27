@@ -147,7 +147,7 @@ namespace Ascension
         private void InitWaves()
         {
 
-            float durationA = 30;
+            float durationA = 10;
             string enemyTypeA = "EnemyA";
             int enemyCountA = 8;
             float spawnIntervalA = 0.5f;

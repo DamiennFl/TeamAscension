@@ -84,6 +84,7 @@ internal class EnemyManager
             {
                 foreach (Enemy enemy in this.Enemies)
                 {
+                    SetOffScreenVelocity(enemy, this.playArea);
                     enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
                 }
 
@@ -171,5 +172,35 @@ internal class EnemyManager
         }
 
         return velocity;
+    }
+
+    private void SetOffScreenVelocity(Enemy enemy, PlayArea playArea)
+    {
+        Vector2 velocity = Vector2.Zero;
+
+        // Find the nearest left, right, or top border based on the spawnArea
+        float leftDistance = Math.Abs(enemy.Position.X - playArea.BorderRectangle.Left);
+        float rightDistance = Math.Abs(enemy.Position.X - playArea.BorderRectangle.Right);
+        float topDistance = Math.Abs(enemy.Position.Y - playArea.BorderRectangle.Top);
+
+        float minDistance = Math.Min(leftDistance, Math.Min(rightDistance, topDistance));
+
+        if (minDistance == leftDistance)
+        {
+            velocity.X = -2.5f;
+            velocity.Y = (float)(-2.5f + (5 * new Random().NextDouble()));
+        }
+        else if (minDistance == rightDistance)
+        {
+            velocity.X = 2.5f;
+            velocity.Y = (float)(-2.5f + (5 * new Random().NextDouble()));
+        }
+        else if (minDistance == topDistance)
+        {
+            velocity.X = (float)(-2.5f + (5 * new Random().NextDouble()));
+            velocity.Y = -2.5f;
+        }
+
+        enemy.Velocity = velocity;
     }
 }
