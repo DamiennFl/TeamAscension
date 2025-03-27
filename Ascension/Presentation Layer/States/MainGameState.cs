@@ -160,33 +160,43 @@ namespace Ascension
 
             float durationB = 40;
             string enemyTypeB = "EnemyB";
-            int enemyCountB = 8;
+            int enemyCountB = 5;
             float spawnIntervalB = 0.3f;
             string movementPatternB = "Wave";
-            int healthB = 7;
+            int healthB = 10;
             string bulletTypeB = "B";
-            
+
             Wave waveB = new Wave(durationB, enemyTypeB, enemyCountB, spawnIntervalB, healthB, movementPatternB, bulletTypeB);
             this.waves.Add(waveB);
-
 
             float durationMid = 60;
             string enemyTypeMid = "MidBoss";
             int enemyCountMid = 1;
             float spawnIntervalMid = 0.3f;
             string movementPatternMid = "ZigZag";
-            int healthMid = 30;
+            int healthMid = 40;
             string bulletTypeMid = "B";
 
             Wave waveMid = new Wave(durationMid, enemyTypeMid, enemyCountMid, spawnIntervalMid, healthMid, movementPatternMid, bulletTypeMid);
             this.waves.Add(waveMid);
+
+            float durationC = 20;
+            string enemyTypeC = "EnemyA";
+            int enemyCountC = 10;
+            float spawnIntervalC = 0.5f;
+            string movementPatternC = "ZigZag";
+            int healthC = 10;
+            string bulletTypeC = "A";
+
+            Wave waveC = new Wave(durationC, enemyTypeC, enemyCountC, spawnIntervalC, healthC, movementPatternC, bulletTypeC);
+            this.waves.Add(waveC);
 
             float duration = 60;
             string enemyType = "FinalBoss";
             int enemyCount = 1;
             float spawnInterval = 0.3f;
             string movementPattern = "GoMiddle";
-            int health = 1000;
+            int health = 150;
             string bulletType = "A";
 
             Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
