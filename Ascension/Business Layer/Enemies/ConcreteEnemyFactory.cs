@@ -46,22 +46,22 @@ namespace Ascension
         // TODO: Add relevant enemies to a Formation object, instead of having a Factory in each Formation
         public override Enemy CreateEnemyA(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new EnemyA(velocity, position, health, this.enemyTextures["EnemyA"], this.ContentManager, bulletType);
+            return new EnemyA(velocity, position, health, this.enemyTextures["EnemyA"], this.ContentManager, bulletType, 2);
         }
 
         public override Enemy CreateEnemyB(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new EnemyB(velocity, position, health, this.enemyTextures["EnemyB"], this.ContentManager, bulletType);
+            return new EnemyB(velocity, position, health, this.enemyTextures["EnemyB"], this.ContentManager, bulletType, 2);
         }
 
         public override Enemy CreateMidBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new MidBoss(velocity, position, health, this.enemyTextures["MidBoss"], this.ContentManager, bulletType);
+            return new MidBoss(velocity, position, health, this.enemyTextures["MidBoss"], this.ContentManager, bulletType, 4);
         }
 
         public override Enemy CreateFinalBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new FinalBoss(velocity, position, health, this.enemyTextures["FinalBoss"], this.ContentManager, bulletType);
+            return new FinalBoss(velocity, position, health, this.enemyTextures["FinalBoss"], this.ContentManager, bulletType, 4);
         }
     }
 }

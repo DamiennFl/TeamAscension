@@ -51,13 +51,14 @@ namespace Ascension
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyB(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType)
-        : base(velocity, position, health, texture, bulletType)
+        public EnemyB(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
-            this.shootInterval = this.GetRandomShootInterval();
+            this.shootInterval = 1f;
+            // this.shootInterval = this.GetRandomShootInterval();
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -72,11 +73,11 @@ namespace Ascension
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval)
+            if (this.shootTimer >= this.shootInterval / this.shotsPerSecond)
             {
                 this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
-                this.shootInterval = this.GetRandomShootInterval();
+                // this.shootInterval = this.GetRandomShootInterval();
             }
         }
 

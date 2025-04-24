@@ -52,6 +52,8 @@ namespace Ascension.Business_Layer
         /// </summary>
         bool IsPlayer { get; set;  }
 
+        float ShootInterval { get; set; }
+
         /// <summary>
         /// Activates the invincibility of the entity.
         /// </summary>

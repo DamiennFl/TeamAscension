@@ -72,7 +72,9 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
-        private float shootInterval = 0.25f;
+        public float ShootInterval { get; set; }
+
+        private float shotsPerSecond;
 
         /// <summary>
         /// Gets or sets the player's shoot timer.
@@ -201,13 +203,16 @@ namespace Ascension
         /// </summary>
         /// <param name="texture">Texture of player.</param>
         /// <param name="position">Position of player.</param>
-        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager, PlayArea playArea)
+        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager, PlayArea playArea, float shotsPerSecond)
         {
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.borderManager = new BorderManager(playArea);
             this.Position = this.PlayerSpawn;
+            this.ShootInterval = 1f;
+            this.shotsPerSecond = shotsPerSecond;
+
         }
 
         /// <summary>
@@ -279,7 +284,7 @@ namespace Ascension
 
             // Checking if we can shoot a bullet
             // Change this
-            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.ShootInterval / shotsPerSecond)
             {
                 this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
@@ -385,7 +390,7 @@ namespace Ascension
 
             // Checking if we can shoot a bullet
             // Change this
-            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.ShootInterval)
             {
                 this.BulletFired?.Invoke(this.Position, this.BulletVelocity, true, "C"); // check this
                 this.shootTimer = 0;
