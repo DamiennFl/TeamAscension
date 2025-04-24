@@ -85,18 +85,10 @@ namespace Ascension
 
             if (this.shootTimer >= this.shootInterval)
             {
-                this.Shoot();
+                this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
-        }
-
-        /// <summary>
-        /// Shoots a bullet.
-        /// </summary>
-        public override void Shoot()
-        {
-            base.Shoot();
         }
 
         /// <summary>

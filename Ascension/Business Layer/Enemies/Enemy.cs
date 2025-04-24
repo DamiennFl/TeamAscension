@@ -170,7 +170,7 @@ namespace Ascension
         /// </summary>
         public virtual void Shoot()
         {
-            this.BulletFired?.Invoke(this.Position, new Vector2(0, 2), false, this.BulletType);
+            this.ShootingPattern?.Shoot(this);
         }
 
         /// <summary>

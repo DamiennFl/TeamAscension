@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Ascension;
 using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 
 internal class EnemyManager
 {   
@@ -199,6 +200,9 @@ internal class EnemyManager
         // Apply movement
         IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
         enemy.MovementPattern = movementPattern;
+
+        // Apply shooting pattern
+        enemy.ShootingPattern = new StandardShootingPattern(); // CHANGE THIS WITH THE WAVE BUILDER SOMEHOW
 
         // Add to list of enemies
         this.Enemies.Add(enemy);
