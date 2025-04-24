@@ -102,6 +102,11 @@ namespace Ascension
         public bool IsInvincible { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player has cheats.
+        /// </summary>
+        public bool Cheats { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the player's health.
         /// </summary>
         public int Health { get; set; } = 10000;
@@ -169,6 +174,11 @@ namespace Ascension
             /// Gets or sets the shoot key.
             /// </summary>
             public static Keys Shoot = Keys.Space;
+
+            /// <summary>
+            /// Gets or sets the invincibility key.
+            /// </summary>
+            public static Keys Invincibility = Keys.F;
         }
 
         /// <summary>
@@ -212,6 +222,8 @@ namespace Ascension
 
             // Draw the player's health
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
+            spriteBatch.DrawString(this.font, "Invincible: " + this.IsInvincible, new Vector2(800, 30), Color.White);
+            spriteBatch.DrawString(this.font, "God-Mode: " + this.Cheats, new Vector2(800, 50), Color.White);
             this.DrawBounds(spriteBatch);
         }
 
@@ -242,6 +254,7 @@ namespace Ascension
         public void Update(GameTime gameTime)
         {
             this.PlayerMovement();
+            this.PlayerActivatedInvincibility();
             //this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
             this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
@@ -263,6 +276,34 @@ namespace Ascension
             this.invincibleTimeRemaining = this.totalInvincibleTime;
             this.Position = this.PlayerSpawn;
             this.bulletManager.ClearScreen();
+        }
+
+        /// <summary>
+        /// The player will be able to activate invincibility.
+        /// </summary>
+        public void PlayerActivatedInvincibility()
+        {
+            var kstate = Keyboard.GetState();
+
+            // Checks if the player is pressing the invincibility key
+            if (kstate.IsKeyDown(PlayerMovementKeys.Invincibility))
+            {
+                // are we invincible or not?
+                switch (this.IsInvincible)
+                {
+                    // if so switch it to false.
+                    case true:
+                        this.IsInvincible = false;
+                        this.Cheats = false;
+                        break;
+
+                    // if so switch it to true.
+                    case false:
+                        this.IsInvincible = true;
+                        this.Cheats = true;
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -339,7 +380,7 @@ namespace Ascension
         private void InvincibleTimer(GameTime gameTime)
         {
             // Are we invincible? if so decrement the time remaining.
-            if (this.IsInvincible)
+            if (this.IsInvincible && !this.Cheats)
             {
                 this.invincibleTimeRemaining -= gameTime.ElapsedGameTime;
                 this.bulletManager.ClearScreen();
