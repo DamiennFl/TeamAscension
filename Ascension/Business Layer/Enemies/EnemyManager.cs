@@ -21,6 +21,11 @@ internal class EnemyManager
     private MovementFactory movementFactory;
 
     /// <summary>
+    /// ShootingPatternFactory to create shooting patterns.
+    /// </summary>
+    private ShootingPatternFactory shootingPatternFactory;
+
+    /// <summary>
     /// Gets the list of Enemies for this EnemyManager.
     /// </summary>
     public List<Enemy> Enemies { get; }
@@ -93,6 +98,7 @@ internal class EnemyManager
     {
         this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
+        this.shootingPatternFactory = new ShootingPatternFactory();
         this.Enemies = new List<Enemy>();
         this.waves = waves;
         this.waveTimeElapsed = 0f;
@@ -202,7 +208,8 @@ internal class EnemyManager
         enemy.MovementPattern = movementPattern;
 
         // Apply shooting pattern
-        enemy.ShootingPattern = new StandardShootingPattern(); // CHANGE THIS WITH THE WAVE BUILDER SOMEHOW
+        // IShootingPattern shootingPattern = this.shootingPatternFactory.CreateShootingPattern(wave.ShootingPattern);
+        enemy.ShootingPattern = new StandardShootingPattern(); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
 
         // Add to list of enemies
         this.Enemies.Add(enemy);

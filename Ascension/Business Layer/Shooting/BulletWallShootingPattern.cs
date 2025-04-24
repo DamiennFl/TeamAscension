@@ -14,7 +14,7 @@ namespace Ascension.Business_Layer.Shooting
     /// <summary>
     /// Shooting pattern that creates a wall of bullets.
     /// </summary>
-    public class BulletWall : IShootingPattern
+    public class BulletWallShootingPattern : IShootingPattern
     {
         /// <summary>
         /// Shooting pattern that creates a wall of bullets.

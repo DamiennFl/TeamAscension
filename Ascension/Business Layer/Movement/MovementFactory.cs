@@ -7,6 +7,9 @@ using System;
 
 namespace Ascension
 {
+    /// <summary>
+    /// Factory class for creating movement patterns.
+    /// </summary>
     internal class MovementFactory
     {
         public MovementFactory() { }
