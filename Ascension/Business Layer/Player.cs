@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,20 @@ namespace Ascension
     /// </summary>
     public class Player : ICollidable, IEntity, IMovable
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether the entity is a player.
+        /// </summary>
+        public bool IsPlayer { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the player's bullet type.
+        /// </summary>
+        public string BulletType { get; set; } = "C"; // Bullet type for the player
+
+        /// <summary>
+        /// Gets or sets a value indicating the shooting pattern.
+        /// </summary>
+        public IShootingPattern ShootingPattern { get; set; }
 
         /// <summary>
         /// Gets or sets the player's velocity.
@@ -262,7 +277,7 @@ namespace Ascension
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (this.shootTimer >= this.shootInterval)
             {
-                this.PlayerShoot(gameTime);
+                this.Shoot(gameTime);
                 this.shootTimer = 0f;
             }
         }
@@ -359,7 +374,7 @@ namespace Ascension
         /// Player shooting.
         /// </summary>
         /// <param name="gameTime">game time.</param>
-        private void PlayerShoot(GameTime gameTime)
+        public void Shoot(GameTime gameTime)
         {
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -371,6 +386,11 @@ namespace Ascension
                 this.BulletFired?.Invoke(this.Position, this.BulletVelocity, true, "C"); // check this
                 this.shootTimer = 0;
             }
+        }
+
+        public void FireBullet(Vector2 velocity)
+        {
+            this.BulletFired?.Invoke(this.Position, velocity, this.IsPlayer, this.BulletType);
         }
 
         /// <summary>Bu
