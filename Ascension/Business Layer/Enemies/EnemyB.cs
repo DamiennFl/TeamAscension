@@ -74,7 +74,7 @@ namespace Ascension
 
             if (this.shootTimer >= this.shootInterval)
             {
-                this.BurstShoot();
+                this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
                 this.shootInterval = this.GetRandomShootInterval();
             }
@@ -97,14 +97,6 @@ namespace Ascension
                 SpriteEffects.None,
                 0f);
             spriteBatch.DrawString(this.font, string.Empty + this.Health, new Vector2(this.Bounds.X, this.Bounds.Y), Color.Red);
-        }
-
-        /// <summary>
-        /// Shoots a bullet.
-        /// </summary>
-        public override void Shoot()
-        {
-            this.BurstShoot();
         }
 
         /// <summary>

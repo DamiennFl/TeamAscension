@@ -274,10 +274,14 @@ namespace Ascension
             this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
 
+            // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.shootTimer >= this.shootInterval)
+
+            // Checking if we can shoot a bullet
+            // Change this
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
             {
-                this.Shoot(gameTime);
+                this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
             }
         }

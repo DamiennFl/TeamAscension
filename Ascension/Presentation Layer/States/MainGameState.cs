@@ -50,6 +50,7 @@ namespace Ascension
         {
             this.playArea = new PlayArea(graphicsDevice, contentManager);
             this.player = new Player(graphicsDevice, contentManager, this.playArea);
+            this.player.ShootingPattern = new StandardShootingPattern();
 
             this.InitCollisions();
             this.InitWaves();

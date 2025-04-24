@@ -20,22 +20,22 @@ namespace Ascension.Business_Layer.Shooting
         {
             if (shooter.IsPlayer)
             {
-                float angle = 0.9f;
+                float angle = 0.9F;
                 for (int i = 0; i < 3; i++)
                 {
-                    var dir = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                    shooter.FireBullet(dir);
-                    angle -= 0.9f;
+                    Vector2 bulletVelocity = new Vector2(angle, -7f);
+                    shooter.FireBullet(bulletVelocity);
+                    angle -= 0.9F;
                 }
             }
             else
             {
-                float angle = -0.9f;
+                float angle = -0.9F;
                 for (int i = 0; i < 3; i++)
                 {
-                    var dir = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                    shooter.FireBullet(dir);
-                    angle += 0.9f;
+                    Vector2 bulletVelocity = new Vector2(angle, 2);
+                    shooter.FireBullet(bulletVelocity);
+                    angle += 0.9F;
                 }
             }
         }
