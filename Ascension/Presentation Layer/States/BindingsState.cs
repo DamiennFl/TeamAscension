@@ -86,43 +86,57 @@ namespace Ascension
 
             var forwardButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 150),
+                Pos = new Vector2(50, 150),
                 Text = "Forward",
                 Size = new Vector2(200, 100),
             };
 
             var backwardButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 250),
+                Pos = new Vector2(50, 250),
                 Text = "Backward",
                 Size = new Vector2(200, 100),
             };
 
             var rightButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 350),
+                Pos = new Vector2(50, 350),
                 Text = "Right",
                 Size = new Vector2(200, 100),
             };
 
             var leftButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 450),
+                Pos = new Vector2(50, 450),
                 Text = "Left",
                 Size = new Vector2(200, 100),
             };
 
             var sprintButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 550),
+                Pos = new Vector2(50, 550),
                 Text = "Sprint",
                 Size = new Vector2(200, 100),
             };
 
             var shootButton = new Button(this.buttonTexture, this.font)
             {
-                Pos = new Vector2(250, 650),
+                Pos = new Vector2(50, 650),
                 Text = "Shoot",
+                Size = new Vector2(200, 100),
+            };
+
+            var cheatButton = new Button(this.buttonTexture, this.font)
+            {
+                Pos = new Vector2(450, 150),
+                Text = "Cheats",
+                Size = new Vector2(200, 100),
+            };
+
+            var bombButton = new Button(this.buttonTexture, this.font)
+            {
+                Pos = new Vector2(450, 250),
+                Text = "Bomb",
                 Size = new Vector2(200, 100),
             };
 
@@ -133,6 +147,8 @@ namespace Ascension
             leftButton.Click += this.LeftButton_Click;
             sprintButton.Click += this.SprintButton_Click;
             shootButton.Click += this.ShootButton_Click;
+            cheatButton.Click += this.InvincibilityButton_Click;
+            bombButton.Click += this.BombButton_Click;
 
             // Adding buttons to the list of components.
             this.components = new List<Components>()
@@ -144,6 +160,8 @@ namespace Ascension
                 leftButton,
                 sprintButton,
                 shootButton,
+                cheatButton,
+                bombButton,
             };
         }
 
@@ -163,20 +181,26 @@ namespace Ascension
             string leftBind = $"Current Binding: {Player.PlayerMovementKeys.Left}";
             string sprintBind = $"Current Binding: {Player.PlayerMovementKeys.Sprint}";
             string shootBind = $"Current Binding: {Player.PlayerMovementKeys.Shoot}";
+            string cheatBind = $"Current Binding: {Player.PlayerMovementKeys.Invincibility}";
+            string bombBind = $"Current Binding: {Player.PlayerMovementKeys.Bomb}";
 
             spriteBatch.DrawString(this.font, instructions, new Vector2(255, 10), Color.White);
 
-            spriteBatch.DrawString(this.font, forwardBind, new Vector2(450, 190), Color.White);
+            spriteBatch.DrawString(this.font, forwardBind, new Vector2(250, 190), Color.White);
 
-            spriteBatch.DrawString(this.font, backBind, new Vector2(450, 290), Color.White);
+            spriteBatch.DrawString(this.font, backBind, new Vector2(250, 290), Color.White);
 
-            spriteBatch.DrawString(this.font, rightBind, new Vector2(450, 390), Color.White);
+            spriteBatch.DrawString(this.font, rightBind, new Vector2(250, 390), Color.White);
 
-            spriteBatch.DrawString(this.font, leftBind, new Vector2(450, 490), Color.White);
+            spriteBatch.DrawString(this.font, leftBind, new Vector2(250, 490), Color.White);
 
-            spriteBatch.DrawString(this.font, sprintBind, new Vector2(450, 590), Color.White);
+            spriteBatch.DrawString(this.font, sprintBind, new Vector2(250, 590), Color.White);
 
-            spriteBatch.DrawString(this.font, shootBind, new Vector2(450, 690), Color.White);
+            spriteBatch.DrawString(this.font, shootBind, new Vector2(250, 690), Color.White);
+
+            spriteBatch.DrawString(this.font, cheatBind, new Vector2(650, 190), Color.White);
+
+            spriteBatch.DrawString(this.font, bombBind, new Vector2(650, 290), Color.White);
         }
 
         /// <summary>
@@ -270,6 +294,34 @@ namespace Ascension
             if (key.GetPressedKeys().Length > 0)
             {
                 Player.PlayerMovementKeys.Shoot = key.GetPressedKeys()[0];
+            }
+        }
+
+        /// <summary>
+        /// Sets the key binding.
+        /// </summary>
+        /// <param name="sender">Button. </param>
+        /// <param name="e">Clicked. </param>
+        private void InvincibilityButton_Click(object sender, EventArgs e)
+        {
+            KeyboardState key = Keyboard.GetState();
+            if (key.GetPressedKeys().Length > 0)
+            {
+                Player.PlayerMovementKeys.Invincibility = key.GetPressedKeys()[0];
+            }
+        }
+
+        /// <summary>
+        /// Sets the key binding.
+        /// </summary>
+        /// <param name="sender">Button. </param>
+        /// <param name="e">Clicked. </param>
+        private void BombButton_Click(object sender, EventArgs e)
+        {
+            KeyboardState key = Keyboard.GetState();
+            if (key.GetPressedKeys().Length > 0)
+            {
+                Player.PlayerMovementKeys.Bomb = key.GetPressedKeys()[0];
             }
         }
     }

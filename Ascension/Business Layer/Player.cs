@@ -177,6 +177,11 @@ namespace Ascension
             /// Gets or sets the invincibility key.
             /// </summary>
             public static Keys Invincibility = Keys.F;
+
+            /// <summary>
+            /// Gets or Sets the invincibility key.
+            /// </summary>
+            public static Keys Bomb = Keys.G;
         }
 
         /// <summary>
