@@ -4,7 +4,6 @@ using Ascension;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Ascension;
 using Ascension.Business_Layer;
 using Ascension.Business_Layer.Shooting;
 
@@ -31,24 +30,9 @@ internal class EnemyManager
     public List<Enemy> Enemies { get; }
 
     /// <summary>
-    /// The list of Waves this EnemyManager will use.
-    /// </summary>
-    private List<Wave> waves;
-
-    /// <summary>
-    /// Global variable to track the current duration of the Wave.
-    /// </summary>
-    private float waveTimeElapsed;
-
-    /// <summary>
     /// A count of the enemies spawned.
     /// </summary>
     private int enemiesSpawned;
-
-    /// <summary>
-    /// An index for the current wave.
-    /// </summary>
-    private int currentWaveIndex;
 
     /// <summary>
     /// A BulletManager to register enemies to the OnBulletFired event.
@@ -94,16 +78,13 @@ internal class EnemyManager
     /// <param name="bulletManager">A BulletManager reference for Enemies to Shoot.</param>
     /// <param name="waves">A list of Waves to interpret.</param>
     /// <param name="playArea">The playArea of the Game.</param>
-    public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
+    public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, PlayArea playArea)
     {
         this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
         this.shootingPatternFactory = new ShootingPatternFactory();
         this.Enemies = new List<Enemy>();
-        this.waves = waves;
-        this.waveTimeElapsed = 0f;
         this.enemiesSpawned = 0;
-        this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
         this.playArea = playArea;
