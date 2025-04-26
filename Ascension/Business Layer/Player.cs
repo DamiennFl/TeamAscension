@@ -82,6 +82,11 @@ namespace Ascension
         private float shootTimer = 0f;
 
         /// <summary>
+        /// Play area.
+        /// </summary>
+        private PlayArea playArea;
+
+        /// <summary>
         /// Gets or sets the player's bomb timer.
         /// </summary>
         private TimeSpan bombTimer = TimeSpan.FromSeconds(30);
@@ -234,8 +239,8 @@ namespace Ascension
             this.borderManager = new BorderManager(playArea);
             this.Position = this.PlayerSpawn;
             this.ShootInterval = 1f;
+            this.playArea = playArea;
             this.shotsPerSecond = shotsPerSecond;
-
         }
 
         /// <summary>
@@ -281,10 +286,13 @@ namespace Ascension
 
             // Draw top line
             spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, bounds.Width, 1), color);
+
             // Draw bottom line
             spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Bottom, bounds.Width, 1), color);
+
             // Draw left line
             spriteBatch.Draw(texture, new Rectangle(bounds.Left, bounds.Top, 1, bounds.Height), color);
+
             // Draw right line
             spriteBatch.Draw(texture, new Rectangle(bounds.Right, bounds.Top, 1, bounds.Height), color);
         }
@@ -418,6 +426,7 @@ namespace Ascension
                 // explodes bomb then decrements
                 this.Bomb.ExplodeBomb();
                 this.ActivateInvincibility();
+                this.playArea.WhiteOutScreen();
                 this.BombCount--;
                 this.bombTimer = TimeSpan.Zero;
             }

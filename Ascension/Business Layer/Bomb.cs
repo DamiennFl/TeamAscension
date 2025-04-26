@@ -7,12 +7,19 @@ using Ascension.Business_Layer;
 
 namespace Ascension
 {
+    /// <summary>
+    /// Bomb class for the player.
+    /// </summary>
     public class Bomb
     {
-        // Our enemy manager
+        /// <summary>
+        /// Gets or sets the enemyManager.
+        /// </summary>
         private EnemyManager enemyManager;
 
-        // Our bullet manager
+        /// <summary>
+        /// Gets or sets the enemyManager.
+        /// </summary>
         private BulletManager bulletManager;
 
         /// <summary>
@@ -20,12 +27,16 @@ namespace Ascension
         /// </summary>
         private int DamageCount { get; set; } = 3;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Bomb"/> class.
+        /// </summary>
+        /// <param name="enemyManager"> our enemy manager.</param>
+        /// <param name="bulletManager">our bullet manager.</param>
         public Bomb(EnemyManager enemyManager, BulletManager bulletManager)
         {
             this.enemyManager = enemyManager;
             this.bulletManager = bulletManager;
         }
-
 
         /// <summary>
         /// Our method for exploding the bomb,

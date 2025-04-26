@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
+using System.Threading.Tasks;
 
 namespace Ascension
 {
@@ -26,12 +28,31 @@ namespace Ascension
         /// <summary>
         /// Background texture.
         /// </summary>
-        private Texture2D backGround;
+        public Texture2D backGround;
 
+        /// <summary>
+        /// sprite batch.
+        /// </summary>
         private SpriteBatch spriteBatch;
 
+        /// <summary>
+        /// border texture.
+        /// </summary>
         private Texture2D borderTexture;
 
+        /// <summary>
+        /// graphics device.
+        /// </summary>
+        private GraphicsDevice graphicsDevice;
+
+        /// <summary>
+        /// Content manager.
+        /// </summary>
+        private ContentManager contentManager;
+
+        /// <summary>
+        /// Gets the Border width.
+        /// </summary>
         public int BorderWidth
         {
             get
@@ -40,8 +61,14 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// List of rectangles.
+        /// </summary>
         private List<Rectangle> spawnAreaRectangles;
 
+        /// <summary>
+        /// Gets the list of rectangles.
+        /// </summary>
         public List<Rectangle> SpawnAreaRectangles
         {
             get
@@ -50,15 +77,21 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlayArea"/> class.
+        /// </summary>
+        /// <param name="graphicsDevice">graphics device.</param>
+        /// <param name="contentManager">content manager.</param>
         public PlayArea(GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
+            this.graphicsDevice = graphicsDevice;
+            this.contentManager = contentManager;
             this.backGround = contentManager.Load<Texture2D>("Backgrounds/Stage1");
             this.borderTexture = new Texture2D(graphicsDevice, 1, 1);
             this.borderTexture.SetData(new[] { Color.AliceBlue });
             this.spawnAreaRectangles = new List<Rectangle>();
             this.InitializeSpawnRectangles();
         }
-
 
         /// <summary>
         /// Draws the background for us.
@@ -74,6 +107,10 @@ namespace Ascension
             spriteBatch.Draw(this.backGround, rect, Color.White);
         }
 
+        /// <summary>
+        /// This draws the spawn rectangles.
+        /// </summary>
+        /// <param name="spriteBatch">sprite batch.</param>
         public void DrawSpawnRectangles(SpriteBatch spriteBatch)
         {
             foreach (Rectangle rectangle in this.spawnAreaRectangles)
@@ -101,6 +138,20 @@ namespace Ascension
             spriteBatch.Draw(this.borderTexture, new Rectangle(this.BorderRectangle.X + this.BorderRectangle.Width - this.BorderWidth, this.BorderRectangle.Y, this.BorderWidth, this.BorderRectangle.Height), Color.Red);
         }
 
+        /// <summary>
+        /// This will white out the screen given an event.
+        /// </summary>
+        public async void WhiteOutScreen()
+        {
+            this.backGround = new Texture2D(this.graphicsDevice, 1, 1);
+            this.backGround.SetData(new[] { Color.White });
+            await Task.Delay(135);
+            this.backGround = this.contentManager.Load<Texture2D>("Backgrounds/Stage1");
+        }
+
+        /// <summary>
+        /// Initializes the spawn rectangles.
+        /// </summary>
         private void InitializeSpawnRectangles()
         {
             Rectangle topRectangle = new Rectangle(this.BorderRectangle.X, this.BorderRectangle.Y - 60, this.BorderRectangle.Width, 40);
