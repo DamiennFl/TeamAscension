@@ -3,8 +3,11 @@
 // </copyright>
 
 using System;
+using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,10 +19,25 @@ namespace Ascension
     /// </summary>
     public abstract class Enemy : IMovable, ICollidable, IEntity
     {
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the enemy is a player.  
+        /// </summary>
+        public bool IsPlayer { get; set; } = false;
+
         /// <summary>
         /// The texture for the enemy.
         /// </summary>
         protected Texture2D texture;
+
+        protected float shotsPerSecond { get; private set; }
+
+        public float ShootInterval { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shooting pattern of the enemy.
+        /// </summary>
+        public IShootingPattern ShootingPattern { get; set; }
 
         protected SpriteFont font;
 
@@ -35,13 +53,15 @@ namespace Ascension
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="bulletType">The bullet type.</param>
-        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType)
+        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType, float shotsPerSecond)
         {
             this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
             this.BulletType = bulletType;
             this.Health = health;
+            this.shotsPerSecond = shotsPerSecond;
+            this.ShootInterval = 1f;
         }
 
         /// <summary>
@@ -156,7 +176,7 @@ namespace Ascension
         /// </summary>
         public virtual void Shoot()
         {
-            this.BulletFired?.Invoke(this.Position, new Vector2(0, 2), false, this.BulletType);
+            this.ShootingPattern?.Shoot(this);
         }
 
         /// <summary>
@@ -171,6 +191,11 @@ namespace Ascension
                 this.Shoot(bulletVelocity, false, this.BulletType);
                 angle += 0.9F;
             }
+        }
+
+        public void FireBullet(Vector2 velocity)
+        {
+            this.BulletFired?.Invoke(this.Position, velocity, this.IsPlayer, this.BulletType);
         }
 
         /// <summary>

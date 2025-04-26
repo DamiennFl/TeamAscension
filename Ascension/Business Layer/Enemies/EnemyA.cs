@@ -31,11 +31,6 @@ namespace Ascension
         private float shootTimer;
 
         /// <summary>
-        /// Interval between shots.
-        /// </summary>
-        private float shootInterval;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
         /// </summary>
         /// <param name="velocity">The speed of EnemyA.</param>
@@ -43,13 +38,12 @@ namespace Ascension
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType)
-        : base(velocity, position, health, texture, bulletType)
+        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
-            this.shootInterval = this.GetRandomShootInterval();
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -83,20 +77,12 @@ namespace Ascension
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval)
+            if (this.shootTimer >= this.ShootInterval / this.shotsPerSecond)
             {
-                this.Shoot();
+                this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
-                this.shootInterval = this.GetRandomShootInterval();
+                //this.ShootInterval = this.GetRandomShootInterval();
             }
-        }
-
-        /// <summary>
-        /// Shoots a bullet.
-        /// </summary>
-        public override void Shoot()
-        {
-            base.Shoot();
         }
 
         /// <summary>

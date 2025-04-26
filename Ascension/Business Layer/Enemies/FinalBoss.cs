@@ -56,14 +56,14 @@ namespace Ascension
         /// <param name="texture">The texture of FinalBoss A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public FinalBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType)
-        : base(velocity, position, health, texture, bulletType)
+        public FinalBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
-            this.shootInterval = this.GetRandomShootInterval();
+            // this.shootInterval = this.GetRandomShootInterval();
             this.CircularShootingTimer = 0f;
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
@@ -80,7 +80,7 @@ namespace Ascension
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval)
+            if (this.shootTimer >= this.shootInterval/ shotsPerSecond)
             {
                 this.Shoot();
                 this.shootTimer = 0f;

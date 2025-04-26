@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,20 @@ namespace Ascension
     /// </summary>
     public class Player : ICollidable, IEntity, IMovable
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether the entity is a player.
+        /// </summary>
+        public bool IsPlayer { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the player's bullet type.
+        /// </summary>
+        public string BulletType { get; set; } = "C"; // Bullet type for the player
+
+        /// <summary>
+        /// Gets or sets a value indicating the shooting pattern.
+        /// </summary>
+        public IShootingPattern ShootingPattern { get; set; }
 
         /// <summary>
         /// Gets or sets the player's velocity.
@@ -57,7 +72,9 @@ namespace Ascension
         /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
-        private float shootInterval = 0.25f;
+        public float ShootInterval { get; set; }
+
+        private float shotsPerSecond;
 
         /// <summary>
         /// Gets or sets the player's shoot timer.
@@ -209,13 +226,16 @@ namespace Ascension
         /// </summary>
         /// <param name="texture">Texture of player.</param>
         /// <param name="position">Position of player.</param>
-        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager, PlayArea playArea)
+        public Player(GraphicsDevice graphicsDevice, ContentManager contentManager, PlayArea playArea, float shotsPerSecond)
         {
             this.graphicsDevice = graphicsDevice;
             this.playerTexture = contentManager.Load<Texture2D>("ball");
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
             this.borderManager = new BorderManager(playArea);
             this.Position = this.PlayerSpawn;
+            this.ShootInterval = 1f;
+            this.shotsPerSecond = shotsPerSecond;
+
         }
 
         /// <summary>
@@ -281,10 +301,14 @@ namespace Ascension
             this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
 
+            // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.shootTimer >= this.shootInterval)
+
+            // Checking if we can shoot a bullet
+            // Change this
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.ShootInterval / shotsPerSecond)
             {
-                this.PlayerShoot(gameTime);
+                this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
             }
 
@@ -403,18 +427,23 @@ namespace Ascension
         /// Player shooting.
         /// </summary>
         /// <param name="gameTime">game time.</param>
-        private void PlayerShoot(GameTime gameTime)
+        public void Shoot(GameTime gameTime)
         {
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Checking if we can shoot a bullet
             // Change this
-            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.shootInterval)
+            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Shoot) && this.shootTimer >= this.ShootInterval)
             {
                 this.BulletFired?.Invoke(this.Position, this.BulletVelocity, true, "C"); // check this
                 this.shootTimer = 0;
             }
+        }
+
+        public void FireBullet(Vector2 velocity)
+        {
+            this.BulletFired?.Invoke(this.Position, velocity, this.IsPlayer, this.BulletType);
         }
 
         /// <summary>Bu

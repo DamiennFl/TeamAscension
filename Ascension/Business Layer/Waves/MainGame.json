@@ -1,0 +1,30 @@
+{
+  "Game": {
+    "Waves": {
+      "1": {
+        "Duration": 10,
+        "EnemyType": "EnemyA",
+        "EnemyCount": 8,
+        "SpawnInterval": 0.5,
+        "Health": 6,
+        "MovementPattern": "Linear",
+        "BulletType": "A",
+        "ShootingPatterns": {
+          "Linear": 2
+        }
+      },
+      "2": {
+        "Duration": 20,
+        "EnemyType": "EnemyB",
+        "EnemyCount": 6,
+        "SpawnInterval": 0.75,
+        "Health": 12,
+        "MovementPattern": "Wave",
+        "BulletType": "B",
+        "ShootingPatterns": {
+          "Cone": 3
+        }
+      }
+    }
+  }
+}

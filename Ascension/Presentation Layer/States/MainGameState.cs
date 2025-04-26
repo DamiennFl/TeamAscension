@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -48,7 +49,8 @@ namespace Ascension
             : base(game, graphicsDevice, contentManager)
         {
             this.playArea = new PlayArea(graphicsDevice, contentManager);
-            this.player = new Player(graphicsDevice, contentManager, this.playArea);
+            this.player = new Player(graphicsDevice, contentManager, this.playArea, 4);
+            this.player.ShootingPattern = new StandardShootingPattern();
 
             this.InitCollisions();
             this.InitWaves();

@@ -4,8 +4,8 @@ using Ascension;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Ascension;
 using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 
 public class EnemyManager
 {   
@@ -20,29 +20,19 @@ public class EnemyManager
     private MovementFactory movementFactory;
 
     /// <summary>
+    /// ShootingPatternFactory to create shooting patterns.
+    /// </summary>
+    private ShootingPatternFactory shootingPatternFactory;
+
+    /// <summary>
     /// Gets the list of Enemies for this EnemyManager.
     /// </summary>
     public List<Enemy> Enemies { get; }
 
     /// <summary>
-    /// The list of Waves this EnemyManager will use.
-    /// </summary>
-    public List<Wave> Waves { get;  }
-
-    /// <summary>
-    /// Global variable to track the current duration of the Wave.
-    /// </summary>
-    private float waveTimeElapsed;
-
-    /// <summary>
     /// A count of the enemies spawned.
     /// </summary>
     private int enemiesSpawned;
-
-    /// <summary>
-    /// An index for the current wave.
-    /// </summary>
-    private int currentWaveIndex;
 
     /// <summary>
     /// A BulletManager to register enemies to the OnBulletFired event.
@@ -88,15 +78,13 @@ public class EnemyManager
     /// <param name="bulletManager">A BulletManager reference for Enemies to Shoot.</param>
     /// <param name="waves">A list of Waves to interpret.</param>
     /// <param name="playArea">The playArea of the Game.</param>
-    public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, List<Wave> waves, PlayArea playArea)
+    public EnemyManager(ContentManager contentManager, GraphicsDevice graphicsDevice, CollisionManager collisionManager, BulletManager bulletManager, PlayArea playArea)
     {
         this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
+        this.shootingPatternFactory = new ShootingPatternFactory();
         this.Enemies = new List<Enemy>();
-        this.Waves = waves;
-        this.waveTimeElapsed = 0f;
         this.enemiesSpawned = 0;
-        this.currentWaveIndex = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
         this.playArea = playArea;
@@ -199,6 +187,10 @@ public class EnemyManager
         // Apply movement
         IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
         enemy.MovementPattern = movementPattern;
+
+        // Apply shooting pattern
+        // IShootingPattern shootingPattern = this.shootingPatternFactory.CreateShootingPattern(wave.ShootingPattern);
+        enemy.ShootingPattern = new StandardShootingPattern(); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
 
         // Add to list of enemies
         this.Enemies.Add(enemy);

@@ -16,7 +16,7 @@
 
         public string BulletType { get; set; }
 
-        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType)
+        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType, string shootingPattern)
         {
             this.Duration = duration;
             this.EnemyType = enemyType;
