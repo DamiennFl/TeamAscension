@@ -104,7 +104,7 @@ namespace Ascension
         /// <summary>
         /// Gets or sets a value indicating whether the player has cheats.
         /// </summary>
-        public bool Cheats { get; set; } = false;
+        private bool Cheats { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the player's health.
@@ -120,8 +120,6 @@ namespace Ascension
         /// Gets the collision layer for the player.
         /// </summary>
         public string CollisionLayer => "Player";
-
-
 
         /// <summary>
         /// Gets the bounding rectangle for collision detection.
@@ -209,17 +207,6 @@ namespace Ascension
         /// <param name="spriteBatch">Sprites.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(
-            //    this.playerTexture,
-            //    this.playerPosition,
-            //    null,
-            //    Color.White,
-            //    0f,
-            //    new Vector2((this.playerTexture.Width / 2) + 13f, this.playerTexture.Height / 2),
-            //    new Vector2(0.25F, 0.25F),
-            //    SpriteEffects.None,
-            //    0f);
-
             // Draw the player's health
             spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
             spriteBatch.DrawString(this.font, "Invincible: " + this.IsInvincible, new Vector2(800, 30), Color.White);
