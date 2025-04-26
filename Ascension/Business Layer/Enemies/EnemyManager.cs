@@ -9,7 +9,7 @@ using Ascension.Business_Layer;
 using Ascension.Business_Layer.Shooting;
 
 internal class EnemyManager
-{   
+{
     /// <summary>
     /// EnemyFactory to create enemies.
     /// </summary>
