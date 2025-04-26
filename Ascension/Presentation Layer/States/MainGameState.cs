@@ -76,7 +76,7 @@ namespace Ascension
             // Player drawn here
             this.player.Draw(spriteBatch);
 
-            //this.playArea.DrawSpawnRectangles(spriteBatch);
+            // this.playArea.DrawSpawnRectangles(spriteBatch);
 
             this.enemyManager.Draw(spriteBatch);
 
@@ -102,9 +102,8 @@ namespace Ascension
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.IsBossTime(190f))
+            if (this.enemyManager.Waves.Count == 0)
             {
-                Debug.WriteLine("I switched states");
                 this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.contentManager));
             }
 
@@ -127,10 +126,7 @@ namespace Ascension
         /// </summary>
         /// <param name="bossTime">Time the boss should spawn.</param>
         /// <returns>True if time for boss to spawn, false if not.</returns>
-        private bool IsBossTime(float bossTime)
-        {
-            return this.midBossTime >= bossTime;
-        }
+ 
 
         private void InitCollisions()
         {

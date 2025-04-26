@@ -27,7 +27,7 @@ internal class EnemyManager
     /// <summary>
     /// The list of Waves this EnemyManager will use.
     /// </summary>
-    private List<Wave> waves;
+    public List<Wave> Waves { get;  }
 
     /// <summary>
     /// Global variable to track the current duration of the Wave.
@@ -93,7 +93,7 @@ internal class EnemyManager
         this.factory = new ConcreteEnemyFactory(contentManager, graphicsDevice);
         this.movementFactory = new MovementFactory();
         this.Enemies = new List<Enemy>();
-        this.waves = waves;
+        this.Waves = waves;
         this.waveTimeElapsed = 0f;
         this.enemiesSpawned = 0;
         this.currentWaveIndex = 0;
@@ -111,10 +111,10 @@ internal class EnemyManager
     public void Update(GameTime gameTime)
     {
         // Iterate through each Wave
-        if (this.currentWaveIndex < this.waves.Count)
+        if (this.currentWaveIndex < this.Waves.Count)
         {
             // Get the currentWave
-            Wave currentWave = this.waves[this.currentWaveIndex];
+            Wave currentWave = this.Waves[this.currentWaveIndex];
             // Increase the timeElapsed
             this.waveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
