@@ -82,16 +82,6 @@ namespace Ascension
         private float shootTimer = 0f;
 
         /// <summary>
-        /// Gets or sets the player's bomb timer.
-        /// </summary>
-        private TimeSpan bombTimer = TimeSpan.FromSeconds(30);
-
-        /// <summary>
-        /// Sets the bomb interval timer, can only use once every minute.
-        /// </summary>
-        private readonly TimeSpan bombInterval = TimeSpan.FromSeconds(30);
-
-        /// <summary>
         /// Gets or sets the ICE instance for collision detection.
         /// </summary>
         private BorderManager borderManager;
@@ -119,11 +109,6 @@ namespace Ascension
         public BulletManager bulletManager;
 
         /// <summary>
-        /// Gets or sets the bomb.
-        /// </summary>
-        public Bomb Bomb;
-
-        /// <summary>
         /// Event for when a bullet is fired.
         /// </summary>
         public event Action<Vector2, Vector2, bool, string> BulletFired;
@@ -137,11 +122,6 @@ namespace Ascension
         /// Gets or sets a value indicating whether the player has cheats.
         /// </summary>
         private bool Cheats { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating the bomb count a player has.
-        /// </summary>
-        private int BombCount { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets the player's health.
@@ -253,19 +233,9 @@ namespace Ascension
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the player's health
-            spriteBatch.DrawString(this.font, $"Health: {this.Health}", new Vector2(800, 10), Color.White);
-            spriteBatch.DrawString(this.font, $"Invincible: {this.IsInvincible}", new Vector2(800, 30), Color.White);
-            spriteBatch.DrawString(this.font, $"God-Mode: {this.Cheats}", new Vector2(800, 50), Color.White);
-            spriteBatch.DrawString(this.font, $"Bombs Remaining: {this.BombCount}", new Vector2(800, 70), Color.White);
-            if (this.bombTimer >= TimeSpan.FromSeconds(30))
-            {
-                spriteBatch.DrawString(this.font, $"Bomb Available: Ready", new Vector2(800, 90), Color.White);
-            }
-            else
-            {
-                spriteBatch.DrawString(this.font, $"Bomb Available: Not Ready", new Vector2(800, 90), Color.White);
-            }
-
+            spriteBatch.DrawString(this.font, "Health: " + this.Health, new Vector2(800, 10), Color.White);
+            spriteBatch.DrawString(this.font, "Invincible: " + this.IsInvincible, new Vector2(800, 30), Color.White);
+            spriteBatch.DrawString(this.font, "God-Mode: " + this.Cheats, new Vector2(800, 50), Color.White);
             this.DrawBounds(spriteBatch);
         }
 
@@ -310,12 +280,6 @@ namespace Ascension
             {
                 this.ShootingPattern?.Shoot(this);
                 this.shootTimer = 0f;
-            }
-
-            this.bombTimer += gameTime.ElapsedGameTime;
-            if (this.bombTimer >= this.bombInterval)
-            {
-                this.PlayerBomb(gameTime);
             }
         }
 
@@ -405,22 +369,6 @@ namespace Ascension
 
             // Update position after normalizing
             this.Position += dir * this.Velocity;
-        }
-
-        /// <summary>
-        /// Player Bomb.
-        /// </summary>
-        /// <param name="gameTime">game time.</param>
-        private void PlayerBomb(GameTime gameTime)
-        {
-            if (Keyboard.GetState().IsKeyDown(PlayerMovementKeys.Bomb) && this.BombCount > 0)
-            {
-                // explodes bomb then decrements
-                this.Bomb.ExplodeBomb();
-                this.ActivateInvincibility();
-                this.BombCount--;
-                this.bombTimer = TimeSpan.Zero;
-            }
         }
 
         /// <summary>

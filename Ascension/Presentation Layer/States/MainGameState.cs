@@ -56,7 +56,6 @@ namespace Ascension
             this.InitWaves();
             this.InitBulletManager();
             this.InitEnemyManager();
-            this.player.Bomb = new Bomb(this.enemyManager, this.bulletManager);
             this.bulletManager.RegisterPlayer(this.player);
         }
 

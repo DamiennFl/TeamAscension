@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Ascension.Business_Layer;
 using Ascension.Business_Layer.Shooting;
 
-public class EnemyManager
+internal class EnemyManager
 {   
     /// <summary>
     /// EnemyFactory to create enemies.

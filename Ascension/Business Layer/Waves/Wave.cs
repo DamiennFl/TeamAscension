@@ -1,6 +1,6 @@
 ﻿namespace Ascension
 {
-    public class Wave
+    internal class Wave
     {
         public float Duration { get; set; }
 
