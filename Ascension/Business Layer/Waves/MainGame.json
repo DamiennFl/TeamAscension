@@ -10,7 +10,7 @@
         "MovementPattern": "Linear",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Burst": "2"
+          "Firework": "2"
         }
       },
       "2": {
