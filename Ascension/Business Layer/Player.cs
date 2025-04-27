@@ -149,6 +149,16 @@ namespace Ascension
         private bool Cheats { get; set; } = false;
 
         /// <summary>
+        /// Cheat timer.
+        /// </summary>
+        private TimeSpan cheatTimer = TimeSpan.FromSeconds(0.25);
+
+        /// <summary>
+        /// Interval for cheats.
+        /// </summary>
+        private TimeSpan cheatInterval = TimeSpan.FromSeconds(0.25);
+
+        /// <summary>
         /// Gets or sets a value indicating the bomb count a player has.
         /// </summary>
         private int BombCount { get; set; } = 3;
@@ -309,7 +319,14 @@ namespace Ascension
         public void Update(GameTime gameTime)
         {
             this.PlayerMovement();
-            this.PlayerActivatedInvincibility();
+
+            this.cheatTimer += gameTime.ElapsedGameTime;
+
+            if (this.cheatTimer >= this.cheatInterval)
+            {
+                this.PlayerActivatedInvincibility();
+            }
+
             //this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
             this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
@@ -368,6 +385,7 @@ namespace Ascension
                         this.Cheats = true;
                         break;
                 }
+                this.cheatTimer = TimeSpan.Zero;
             }
         }
 
