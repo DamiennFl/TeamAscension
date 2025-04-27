@@ -27,7 +27,7 @@ namespace Ascension.Business_Layer.Shooting
             }
 
             shooter.FireBullet(bulletVelocity);
-            Debug.Print($"{Player.PlayerPosition}");
+            // Debug.Print($"{Player.PlayerPosition}");
         }
     }
 }

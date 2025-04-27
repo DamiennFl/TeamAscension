@@ -2,15 +2,15 @@
   "Game": {
     "Waves": {
       "1": {
-        "Duration": 10,
+        "Duration": 60,
         "EnemyType": "EnemyA",
-        "EnemyCount": 8,
+        "EnemyCount": 4,
         "SpawnInterval": 0.5,
         "Health": 6,
         "MovementPattern": "Linear",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Targeted": "1"
+          "Firework": "1"
         }
       },
       "2": {
