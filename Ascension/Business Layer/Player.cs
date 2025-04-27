@@ -70,6 +70,11 @@ namespace Ascension
         public Vector2 Position { get; set; }
 
         /// <summary>
+        /// Gets or sets the global player position.
+        /// </summary>
+        public static Vector2 PlayerPosition { get; private set; }
+
+        /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
         public float ShootInterval { get; set; }
@@ -413,6 +418,9 @@ namespace Ascension
 
             // Update position after normalizing
             this.Position += dir * this.Velocity;
+
+            // Global Player Position.
+            PlayerPosition = this.Position;
         }
 
         /// <summary>

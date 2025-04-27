@@ -32,7 +32,9 @@ namespace Ascension.Business_Layer.Waves
         /// <returns>Returns a List of generated Waves.</returns>
         public List<Wave> GenerateWaves()
         {
-            string filePath = "C:\\Users\\damie\\source\\repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
+            //string filePath = "C:\\Users\\damie\\source\\repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
+
+            string filePath = "C:\\Users\\13606\\Desktop\\Ascension Project\\Ascension\\Business Layer\\Waves\\MainGame.json";
 
             string jsonContent = File.ReadAllText(filePath);
 
