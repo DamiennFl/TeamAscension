@@ -10,7 +10,7 @@
         "MovementPattern": "Linear",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Standard": "Random"
+          "Targeted": "1"
         }
       },
       "2": {
