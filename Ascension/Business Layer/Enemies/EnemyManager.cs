@@ -25,11 +25,6 @@ public class EnemyManager
     private ShootingPatternFactory shootingPatternFactory;
 
     /// <summary>
-    /// Gets the list of Enemies for this EnemyManager.
-    /// </summary>
-    public List<Enemy> Enemies { get; }
-
-    /// <summary>
     /// A BulletManager to register enemies to the OnBulletFired event.
     /// </summary>
     private BulletManager bulletManager;
@@ -54,7 +49,15 @@ public class EnemyManager
     /// </summary>
     private Vector2 spawnVelocity;
 
+    /// <summary>
+    /// borderManager manages the borders of the Game.
+    /// </summary>
     private BorderManager borderManager;
+
+    /// <summary>
+    /// Gets the list of Enemies for this EnemyManager.
+    /// </summary>
+    public List<Enemy> Enemies { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="EnemyManager"/> class.
@@ -120,7 +123,7 @@ public class EnemyManager
         this.Enemies.Add(enemy);
 
         // Register collisions and bullet shoot event for Enemy
-         this.bulletManager.RegisterEnemy(enemy);
+        this.bulletManager.RegisterEnemy(enemy);
         this.collisionManager.Register(enemy);
     }
 
@@ -166,9 +169,8 @@ public class EnemyManager
         // Find the nearest left, right, or top border based on the spawnArea
         float leftDistance = Math.Abs(enemy.Position.X - playArea.BorderRectangle.Left);
         float rightDistance = Math.Abs(enemy.Position.X - playArea.BorderRectangle.Right);
-        float topDistance = Math.Abs(enemy.Position.Y - playArea.BorderRectangle.Top);
 
-        float minDistance = Math.Min(leftDistance, Math.Min(rightDistance, topDistance));
+        float minDistance = Math.Min(leftDistance, rightDistance);
 
         // Set the velocity based on closest border
         if (minDistance == leftDistance)
@@ -180,11 +182,6 @@ public class EnemyManager
         {
             velocity.X = 2.5f;
             velocity.Y = (float)(-2.5f + (5 * new Random().NextDouble()));
-        }
-        else if (minDistance == topDistance)
-        {
-            velocity.X = (float)(-2.5f + (5 * new Random().NextDouble()));
-            velocity.Y = -2.5f;
         }
 
         // Update velocity

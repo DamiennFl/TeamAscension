@@ -132,6 +132,7 @@ namespace Ascension.Business_Layer.Waves
                     this.enemyManager.MoveEnemiesOffScreen(this.playArea);
                     this.currentWaveIndex++;
                     this.waveTimeElapsed = 0f;
+                    enemiesSpawned = 0;
                 }
 
                 this.enemyManager.IsDead();
@@ -157,22 +158,15 @@ namespace Ascension.Business_Layer.Waves
             Random random = new Random();
             Vector2 velocity = Vector2.Zero;
 
-            // Top Spawn area
-            if (spawnArea == this.playArea.SpawnAreaRectangles[0])
-            {
-                velocity.X = (float)(random.NextDouble() - 0.25);
-                velocity.Y = 2.5f;
-            }
-
             // Left spawn area
-            else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
+            if (spawnArea == this.playArea.SpawnAreaRectangles[0])
             {
                 velocity.X = 2.5f;
                 velocity.Y = (float)(random.NextDouble() * -0.75);
             }
 
             // Right spawn area
-            else if (spawnArea == this.playArea.SpawnAreaRectangles[2])
+            else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
             {
                 velocity.X = -2.5f;
                 velocity.Y = (float)(random.NextDouble() * -0.75);
