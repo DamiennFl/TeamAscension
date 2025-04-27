@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using Ascension.Business_Layer.Shooting;
+using Ascension.Business_Layer.Waves;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,13 +32,14 @@ namespace Ascension
         /// </summary>
         private PlayArea playArea;
 
+        private WaveManager waveManager;
+
         private EnemyManager enemyManager;
 
         private CollisionManager collisionManager;
 
         private BulletManager bulletManager;
 
-        private List<Wave> waves = new List<Wave>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainGameState"/> class.
@@ -53,9 +55,9 @@ namespace Ascension
             this.player.ShootingPattern = new StandardShootingPattern();
 
             this.InitCollisions();
-            this.InitWaves();
             this.InitBulletManager();
             this.InitEnemyManager();
+            this.InitWaveManager();
             this.player.Bomb = new Bomb(this.enemyManager, this.bulletManager);
             this.bulletManager.RegisterPlayer(this.player);
         }
@@ -105,10 +107,12 @@ namespace Ascension
         {
             this.midBossTime += (float)gameTime.ElapsedGameTime.TotalSeconds; // when to change to midboss state
 
-            if (this.enemyManager.Waves.Count == 0)
+            if (!this.waveManager.WavesLeft())
             {
                 this.game.ChangeState(new GameWinState(this.game, this.graphicsDevice, this.contentManager));
             }
+
+            this.waveManager.Update(gameTime);
 
             this.enemyManager.Update(gameTime);
 
@@ -143,70 +147,70 @@ namespace Ascension
         /// <summary>
         /// Initializes the waves for the game.
         /// </summary>
-        private void InitWaves()
-        {
-            float durationA = 10;
-            string enemyTypeA = "EnemyA";
-            int enemyCountA = 8;
-            float spawnIntervalA = 0.5f;
-            string movementPatternA = "Linear";
-            int healthA = 5;
-            string bulletTypeA = "A";
+        //private void InitWaves()
+        //{
+        //    float durationA = 10;
+        //    string enemyTypeA = "EnemyA";
+        //    int enemyCountA = 8;
+        //    float spawnIntervalA = 0.5f;
+        //    string movementPatternA = "Linear";
+        //    int healthA = 5;
+        //    string bulletTypeA = "A";
 
-            Wave waveA = new Wave(durationA, enemyTypeA, enemyCountA, spawnIntervalA, healthA, movementPatternA, bulletTypeA);
-            this.waves.Add(waveA);
+        //    Wave waveA = new Wave(durationA, enemyTypeA, enemyCountA, spawnIntervalA, healthA, movementPatternA, bulletTypeA);
+        //    this.waves.Add(waveA);
 
-            float durationB = 40;
-            string enemyTypeB = "EnemyB";
-            int enemyCountB = 5;
-            float spawnIntervalB = 0.3f;
-            string movementPatternB = "Wave";
-            int healthB = 10;
-            string bulletTypeB = "B";
+        //    float durationB = 40;
+        //    string enemyTypeB = "EnemyB";
+        //    int enemyCountB = 5;
+        //    float spawnIntervalB = 0.3f;
+        //    string movementPatternB = "Wave";
+        //    int healthB = 10;
+        //    string bulletTypeB = "B";
 
-            Wave waveB = new Wave(durationB, enemyTypeB, enemyCountB, spawnIntervalB, healthB, movementPatternB, bulletTypeB);
-            this.waves.Add(waveB);
+        //    Wave waveB = new Wave(durationB, enemyTypeB, enemyCountB, spawnIntervalB, healthB, movementPatternB, bulletTypeB);
+        //    this.waves.Add(waveB);
 
-            float durationMid = 60;
-            string enemyTypeMid = "MidBoss";
-            int enemyCountMid = 1;
-            float spawnIntervalMid = 0.3f;
-            string movementPatternMid = "ZigZag";
-            int healthMid = 40;
-            string bulletTypeMid = "B";
+        //    float durationMid = 60;
+        //    string enemyTypeMid = "MidBoss";
+        //    int enemyCountMid = 1;
+        //    float spawnIntervalMid = 0.3f;
+        //    string movementPatternMid = "ZigZag";
+        //    int healthMid = 40;
+        //    string bulletTypeMid = "B";
 
-            Wave waveMid = new Wave(durationMid, enemyTypeMid, enemyCountMid, spawnIntervalMid, healthMid, movementPatternMid, bulletTypeMid);
-            this.waves.Add(waveMid);
+        //    Wave waveMid = new Wave(durationMid, enemyTypeMid, enemyCountMid, spawnIntervalMid, healthMid, movementPatternMid, bulletTypeMid);
+        //    this.waves.Add(waveMid);
 
-            float durationC = 20;
-            string enemyTypeC = "EnemyA";
-            int enemyCountC = 10;
-            float spawnIntervalC = 0.5f;
-            string movementPatternC = "ZigZag";
-            int healthC = 10;
-            string bulletTypeC = "A";
+        //    float durationC = 20;
+        //    string enemyTypeC = "EnemyA";
+        //    int enemyCountC = 10;
+        //    float spawnIntervalC = 0.5f;
+        //    string movementPatternC = "ZigZag";
+        //    int healthC = 10;
+        //    string bulletTypeC = "A";
 
-            Wave waveC = new Wave(durationC, enemyTypeC, enemyCountC, spawnIntervalC, healthC, movementPatternC, bulletTypeC);
-            this.waves.Add(waveC);
+        //    Wave waveC = new Wave(durationC, enemyTypeC, enemyCountC, spawnIntervalC, healthC, movementPatternC, bulletTypeC);
+        //    this.waves.Add(waveC);
 
-            float duration = 90;
-            string enemyType = "FinalBoss";
-            int enemyCount = 1;
-            float spawnInterval = 0.3f;
-            string movementPattern = "GoMiddle";
-            int health = 150;
-            string bulletType = "A";
+        //    float duration = 90;
+        //    string enemyType = "FinalBoss";
+        //    int enemyCount = 1;
+        //    float spawnInterval = 0.3f;
+        //    string movementPattern = "GoMiddle";
+        //    int health = 150;
+        //    string bulletType = "A";
 
-            Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
-            this.waves.Add(testWave);
-        }
+        //    Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
+        //    this.waves.Add(testWave);
+        //}
 
         /// <summary>
         /// Initializes the enemy manager.
         /// </summary>
         private void InitEnemyManager()
         {
-            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.waves, this.playArea);
+            this.enemyManager = new EnemyManager(this.contentManager, this.graphicsDevice, this.collisionManager, this.bulletManager, this.playArea);
         }
 
         /// <summary>
@@ -216,6 +220,11 @@ namespace Ascension
         {
             this.bulletManager = new BulletManager(this.collisionManager, this.contentManager);
             this.player.bulletManager = this.bulletManager;
+        }
+
+        private void InitWaveManager()
+        {
+            this.waveManager = new WaveManager(this.enemyManager, this.playArea);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Ascension
         /// </summary>
         protected Texture2D texture;
 
-        protected float shotsPerSecond { get; private set; }
+        protected string shotsPerSecond { get; private set; }
 
         public float ShootInterval { get; set; }
 
@@ -53,7 +53,7 @@ namespace Ascension
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="bulletType">The bullet type.</param>
-        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType, float shotsPerSecond)
+        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType, string shotsPerSecond)
         {
             this.Velocity = velocity;
             this.texture = texture;

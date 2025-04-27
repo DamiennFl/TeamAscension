@@ -41,11 +41,6 @@ namespace Ascension
 
         private float CircularShootingTimer;
 
-        /// <summary>
-        /// Interval between shots.
-        /// </summary>
-        private float shootInterval;
-
         private bool shootOption = true;
 
         /// <summary>
@@ -56,14 +51,13 @@ namespace Ascension
         /// <param name="texture">The texture of FinalBoss A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public FinalBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        public FinalBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, string shotsPerSecond)
         : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.bullets = new List<Bullet>();
             this.contentManager = contentManager;
             this.random = new Random();
             this.shootTimer = 0f;
-            // this.shootInterval = this.GetRandomShootInterval();
             this.CircularShootingTimer = 0f;
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
@@ -80,11 +74,27 @@ namespace Ascension
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             this.CircularShootingTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval/ shotsPerSecond)
+            if (this.shotsPerSecond.Equals("Random"))
             {
-                this.Shoot();
-                this.shootTimer = 0f;
-                this.shootInterval = 2f;
+                if (this.shootTimer >= this.ShootInterval)
+                {
+                    this.ShootingPattern?.Shoot(this);
+                    this.shootTimer = 0f;
+                    this.ShootInterval = this.GetRandomShootInterval();
+                }
+            }
+            else
+            {
+                int shotsPerSecond = -1;
+                Int32.TryParse(this.shotsPerSecond, out shotsPerSecond);
+                if (shotsPerSecond >= 0)
+                {
+                    if (this.shootTimer >= this.ShootInterval / shotsPerSecond)
+                    {
+                        this.ShootingPattern?.Shoot(this);
+                        this.shootTimer = 0f;
+                    }
+                }
             }
         }
 

@@ -34,24 +34,20 @@ namespace Ascension
         private float shootTimer;
 
         /// <summary>
-        /// Interval between shots.
-        /// </summary>
-        private float shootInterval;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MidBoss"/> class.
         /// </summary>
         /// <param name="velocity">The speed of MidBoss.</param>
         /// <param name="position">The position of MidBoss.</param>
+        /// <param name="health">The health of MidBoss.</param>
         /// <param name="texture">The texture of MidBoss A.</param>
         /// <param name="contentManager">"The content manager for loading assets.</param>
-        /// <param name="bulletType">The type of bullet to shoot.</param>
-        public MidBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        /// <param name="bulletType">The type of bullet to shoot.</param>'
+        /// <param name="shotsPerSecond">The shots per second of MidBoss.</param>
+        public MidBoss(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, string shotsPerSecond)
         : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.random = new Random();
             this.shootTimer = 0f;
-            //this.shootInterval = this.GetRandomShootInterval();
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -66,11 +62,27 @@ namespace Ascension
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval/ this.shotsPerSecond)
+            if (this.shotsPerSecond.Equals("Random"))
             {
-                this.Shoot();
-                this.shootTimer = 0f;
-                this.shootInterval = this.GetRandomShootInterval();
+                if (this.shootTimer >= this.ShootInterval)
+                {
+                    this.ShootingPattern?.Shoot(this);
+                    this.shootTimer = 0f;
+                    this.ShootInterval = this.GetRandomShootInterval();
+                }
+            }
+            else
+            {
+                int shotsPerSecond = -1;
+                int.TryParse(this.shotsPerSecond, out shotsPerSecond);
+                if (shotsPerSecond >= 0)
+                {
+                    if (this.shootTimer >= this.ShootInterval / shotsPerSecond)
+                    {
+                        this.ShootingPattern?.Shoot(this);
+                        this.shootTimer = 0f;
+                    }
+                }
             }
         }
 
@@ -92,24 +104,6 @@ namespace Ascension
                0f);
             spriteBatch.DrawString(this.font, string.Empty + this.Health, new Vector2(this.Bounds.X, this.Bounds.Y), Color.Red);
         }
-
-        /// <summary>
-        /// Shoot method.
-        /// </summary>
-        /// <exception cref="NotImplementedException">Throws exception not implemented.</exception>
-        //public override void Shoot()
-        //{
-        //    if (this.shootCounter % 3 == 0)
-        //    {
-        //        this.FlowerBloomShoot();
-        //        this.shootCounter++;
-        //    }
-        //    else
-        //    {
-        //        this.AlternatingRingsShoot();
-        //        this.shootCounter++;
-        //    }
-        //}
 
         /// <summary>
         /// Gets a random shoot interval.

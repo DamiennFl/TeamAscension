@@ -1,22 +1,25 @@
-﻿namespace Ascension
+﻿using Microsoft.Xna.Framework.Content;
+
+namespace Ascension
 {
+    /// <summary>
+    /// Wave Class that holds the info necessary for a Wave of Enemies.
+    /// </summary>
     public class Wave
     {
-        public float Duration { get; set; }
-
-        public string EnemyType { get; set; }
-
-        public int EnemyCount { get; set; }
-
-        public float SpawnInterval { get; set; }
-
-        public int Health { get; set; }
-
-        public string MovementPattern { get; set; }
-
-        public string BulletType { get; set; }
-
-        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType, string shootingPattern)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Wave"/> class.
+        /// </summary>
+        /// <param name="duration"> The duration of this Wave.</param>
+        /// <param name="enemyType">The enemy type of this Wave.</param>
+        /// <param name="enemyCount">The enemy count of this Wave.</param>
+        /// <param name="spawnInterval">The spawn interval of Enemies of this Wave.</param>
+        /// <param name="health">The health of the Enemies of this Wave.</param>
+        /// <param name="movementPattern">The IMovementPattern of Enemies of this Wave.</param>
+        /// <param name="bulletType">The bullet typed of Enemies of this Wave.</param>
+        /// <param name="shootingPattern">The shooting pattern of Enemies of this Wave.</param>
+        /// <param name="shotsPerSecond">The shots per second shot by Enemies of this Wave.</param>
+        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType, string shootingPattern, string shotsPerSecond)
         {
             this.Duration = duration;
             this.EnemyType = enemyType;
@@ -25,6 +28,53 @@
             this.Health = health;
             this.MovementPattern = movementPattern;
             this.BulletType = bulletType;
+            this.ShootingPattern = shootingPattern;
+            this.ShotsPerSecond = shotsPerSecond;
         }
+
+        /// <summary>
+        /// Gets or sets the duration of this Wave.
+        /// </summary>
+        public float Duration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Enemy type of this Wave.
+        /// </summary>
+        public string EnemyType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Enemy count of this Wave.
+        /// </summary>
+        public int EnemyCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the spawn interval of this Wave.
+        /// </summary>
+        public float SpawnInterval { get; set; }
+
+        /// <summary>
+        /// Gets or sets the health of the Enemies in this Wave.
+        /// </summary>
+        public int Health { get; set; }
+
+        /// <summary>
+        /// Gets or sets the IMovementPattern of Enemies of this Wave.
+        /// </summary>
+        public string MovementPattern { get; set; }
+
+        /// <summary>
+        /// Gets or sets the BulletType of Enemies of this Wave.
+        /// </summary>
+        public string BulletType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ShootingPattern of Enemies of this wave.
+        /// </summary>
+        public string ShootingPattern { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shots per second shot by Enemies of this Wave.
+        /// </summary>
+        public string ShotsPerSecond { get; set; }
     }
 }

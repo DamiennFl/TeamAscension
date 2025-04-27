@@ -38,7 +38,7 @@ namespace Ascension
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, string shotsPerSecond)
         : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.contentManager = contentManager;
@@ -77,12 +77,35 @@ namespace Ascension
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.ShootInterval / this.shotsPerSecond)
+            if (this.shotsPerSecond.Equals("Random"))
             {
-                this.ShootingPattern?.Shoot(this);
-                this.shootTimer = 0f;
-                //this.ShootInterval = this.GetRandomShootInterval();
+                if (this.shootTimer >= this.ShootInterval)
+                {
+                    this.ShootingPattern?.Shoot(this);
+                    this.shootTimer = 0f;
+                    this.ShootInterval = this.GetRandomShootInterval();
+                }
             }
+            else
+            {
+                int shotsPerSecond = -1;
+                Int32.TryParse(this.shotsPerSecond, out shotsPerSecond);
+                if (shotsPerSecond >= 0)
+                {
+                    if (this.shootTimer >= this.ShootInterval / shotsPerSecond)
+                    {
+                        this.ShootingPattern?.Shoot(this);
+                        this.shootTimer = 0f;
+                    }
+                }
+            }
+
+            //if (this.shootTimer >= this.ShootInterval / this.shotsPerSecond)
+            //{
+            //    this.ShootingPattern?.Shoot(this);
+            //    this.shootTimer = 0f;
+            //    //this.ShootInterval = this.GetRandomShootInterval();
+            //}
         }
 
         /// <summary>
@@ -91,7 +114,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 2f) + 1f; // Random interval between 1 and 3 seconds
+            return ((float)this.random.NextDouble() * 2f); // Random interval between 1 and 3 seconds
         }
     }
 }

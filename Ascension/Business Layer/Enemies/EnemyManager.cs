@@ -97,7 +97,7 @@ public class EnemyManager
     /// <param name="position">The position to spawn the Enemy at.</param>
     /// <param name="velocity">The velocity for the Enemy.</param>
     /// <exception cref="ArgumentException">Throws an Exception if an invalid enemy type is inputted.</exception>
-    public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, float shotsPerSecond, string movementPattern, string shootingPattern)
+    public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond, string movementPattern, string shootingPattern)
     {
         // Spawn Enemy
         Enemy enemy = enemyType switch
@@ -114,13 +114,13 @@ public class EnemyManager
 
         // Apply shooting pattern
         // IShootingPattern shootingPattern = this.shootingPatternFactory.CreateShootingPattern(wave.ShootingPattern);
-        enemy.ShootingPattern = new StandardShootingPattern(); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
+        enemy.ShootingPattern = this.shootingPatternFactory.CreateShootingPattern(shootingPattern); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
 
         // Add to list of enemies
         this.Enemies.Add(enemy);
 
         // Register collisions and bullet shoot event for Enemy
-        this.bulletManager.RegisterEnemy(enemy);
+         this.bulletManager.RegisterEnemy(enemy);
         this.collisionManager.Register(enemy);
     }
 

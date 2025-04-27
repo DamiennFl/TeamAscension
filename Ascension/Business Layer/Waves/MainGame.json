@@ -10,7 +10,7 @@
         "MovementPattern": "Linear",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Linear": 2
+          "Linear": "2"
         }
       },
       "2": {
@@ -22,7 +22,7 @@
         "MovementPattern": "Wave",
         "BulletType": "B",
         "ShootingPatterns": {
-          "Cone": 3
+          "Burst": "Random"
         }
       }
     }

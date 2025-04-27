@@ -8,25 +8,31 @@ using System.Threading.Tasks;
 
 namespace Ascension.Business_Layer.Waves
 {
+    /// <summary>
+    /// WaveBuilder creates the Waves based on the MainGame.json file.
+    /// </summary>
     internal class WaveBuilder
     {
-
-        private List<Wave> Waves { get; set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WaveBuilder"/> class.
+        /// </summary>
         public WaveBuilder()
         {
             this.Waves = new List<Wave>();
         }
 
         /// <summary>
-        /// Reads the MainGame.json file and generates Wave objects.
+        /// Gets or sets a list of Waves.
         /// </summary>
+        private List<Wave> Waves { get; set; }
+
         /// <summary>
-        /// Reads the MainGame.json file and generates Wave objects.
+        /// Generates Waves based on the MainGame.json file.
         /// </summary>
-        public void GenerateWaves()
+        /// <returns>Returns a List of generated Waves.</returns>
+        public List<Wave> GenerateWaves()
         {
-            string filePath = "Business Layer/Waves/MainGame.json";
+            string filePath = "C:\\Users\\damie\\source\\repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
 
             string jsonContent = File.ReadAllText(filePath);
 
@@ -52,6 +58,7 @@ namespace Ascension.Business_Layer.Waves
                     // Extract the first shooting pattern
                     JsonElement shootingPatterns = waveData.GetProperty("ShootingPatterns");
                     string shootingPattern = shootingPatterns.EnumerateObject().First().Name;
+                    string shotsPerSecond = shootingPatterns.EnumerateObject().First().Value.GetString();
 
                     // Create the Wave object
                     var wave = new Wave(
@@ -62,13 +69,15 @@ namespace Ascension.Business_Layer.Waves
                         health: health,
                         movementPattern: movementPattern,
                         bulletType: bulletType,
-                        shootingPattern: shootingPattern
-                    );
+                        shootingPattern: shootingPattern,
+                        shotsPerSecond: shotsPerSecond);
 
                     this.Waves.Add(wave);
                 }
+
+                // Return waves
+                return this.Waves;
             }
         }
     }
-}
 }

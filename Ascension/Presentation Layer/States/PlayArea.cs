@@ -154,10 +154,8 @@ namespace Ascension
         /// </summary>
         private void InitializeSpawnRectangles()
         {
-            Rectangle topRectangle = new Rectangle(this.BorderRectangle.X, this.BorderRectangle.Y - 60, this.BorderRectangle.Width, 40);
             Rectangle leftRectangle = new Rectangle(this.BorderRectangle.X - 60, this.BorderRectangle.Y, 40, this.BorderRectangle.Height / 3);
             Rectangle rightRectangle = new Rectangle(this.BorderRectangle.Width + 60, this.BorderRectangle.Y, 40, this.BorderRectangle.Height / 3);
-            this.spawnAreaRectangles.Add(topRectangle);
             this.spawnAreaRectangles.Add(leftRectangle);
             this.spawnAreaRectangles.Add(rightRectangle);
         }

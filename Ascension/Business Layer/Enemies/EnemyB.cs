@@ -51,7 +51,7 @@ namespace Ascension
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyB(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, float shotsPerSecond)
+        public EnemyB(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, string shotsPerSecond)
         : base(velocity, position, health, texture, bulletType, shotsPerSecond)
         {
             this.contentManager = contentManager;
@@ -73,11 +73,27 @@ namespace Ascension
             // Timer for shooting
             this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.shootTimer >= this.shootInterval / this.shotsPerSecond)
+            if (this.shotsPerSecond.Equals("Random"))
             {
-                this.ShootingPattern?.Shoot(this);
-                this.shootTimer = 0f;
-                // this.shootInterval = this.GetRandomShootInterval();
+                if (this.shootTimer >= this.ShootInterval)
+                {
+                    this.ShootingPattern?.Shoot(this);
+                    this.shootTimer = 0f;
+                    this.ShootInterval = this.GetRandomShootInterval();
+                }
+            }
+            else
+            {
+                int shotsPerSecond = -1;
+                Int32.TryParse(this.shotsPerSecond, out shotsPerSecond);
+                if (shotsPerSecond >= 0)
+                {
+                    if (this.shootTimer >= this.ShootInterval / shotsPerSecond)
+                    {
+                        this.ShootingPattern?.Shoot(this);
+                        this.shootTimer = 0f;
+                    }
+                }
             }
         }
 
