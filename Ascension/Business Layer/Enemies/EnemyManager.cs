@@ -8,7 +8,7 @@ using Ascension.Business_Layer;
 using Ascension.Business_Layer.Shooting;
 
 public class EnemyManager
-{   
+{
     /// <summary>
     /// EnemyFactory to create enemies.
     /// </summary>
@@ -30,11 +30,6 @@ public class EnemyManager
     public List<Enemy> Enemies { get; }
 
     /// <summary>
-    /// A count of the enemies spawned.
-    /// </summary>
-    private int enemiesSpawned;
-
-    /// <summary>
     /// A BulletManager to register enemies to the OnBulletFired event.
     /// </summary>
     private BulletManager bulletManager;
@@ -43,16 +38,6 @@ public class EnemyManager
     /// A CollisionManager to register spawned enemies as Collidable.
     /// </summary>
     private CollisionManager collisionManager;
-
-    /// <summary>
-    /// A BorderManager to track and manage the border/areas of the Game.
-    /// </summary>
-    private BorderManager borderManager;
-
-    /// <summary>
-    /// The PlayArea for the Game, derived from State.
-    /// </summary>
-    private PlayArea playArea;
 
     /// <summary>
     /// The spawnArea for the Enemies in a Wave.
@@ -69,6 +54,8 @@ public class EnemyManager
     /// </summary>
     private Vector2 spawnVelocity;
 
+    private BorderManager borderManager;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="EnemyManager"/> class.
     /// </summary>
@@ -84,11 +71,9 @@ public class EnemyManager
         this.movementFactory = new MovementFactory();
         this.shootingPatternFactory = new ShootingPatternFactory();
         this.Enemies = new List<Enemy>();
-        this.enemiesSpawned = 0;
         this.bulletManager = bulletManager;
         this.collisionManager = collisionManager;
-        this.playArea = playArea;
-        this.borderManager = new BorderManager(this.playArea);
+        this.borderManager = new BorderManager(playArea);
     }
 
     /// <summary>
@@ -98,69 +83,9 @@ public class EnemyManager
     /// <param name="gameTime">The gameTime to stay synchronized with the Game.</param>
     public void Update(GameTime gameTime)
     {
-        // Iterate through each Wave
-        if (this.currentWaveIndex < this.Waves.Count)
-        {
-            // Get the currentWave
-            Wave currentWave = this.Waves[this.currentWaveIndex];
-            // Increase the timeElapsed
-            this.waveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            // If no enemies have been spawned for this wave, select a spawn area,
-            // a position within the area, and an initial velocity based on the spawn position.
-            if (this.enemiesSpawned == 0)
-            {
-                Random random = new Random();
-                List<Rectangle> spawnAreas = this.playArea.SpawnAreaRectangles;
-                this.spawnArea = spawnAreas[random.Next(spawnAreas.Count)];
-
-                this.spawnPosition = new Vector2(
-                    random.Next(this.spawnArea.Left + (this.spawnArea.Width / 4), this.spawnArea.Right - (this.spawnArea.Width / 4)),
-                    random.Next(this.spawnArea.Top + (this.spawnArea.Height / 4), this.spawnArea.Bottom - (this.spawnArea.Height / 4)));
-
-                this.spawnVelocity = this.GetInitialVelocity(this.spawnArea);
-            }
-
-            // If it is time to spawn an enemy:
-            if (this.enemiesSpawned < currentWave.EnemyCount && this.waveTimeElapsed >= currentWave.SpawnInterval)
-            {
-                // Spawn the enemy, reset the time elapsed, and increase the amount of spawned enemies.
-                this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
-                this.waveTimeElapsed = 0f;
-                this.enemiesSpawned++;
-            }
-
-            // If all enemies have been spawned for the Wave, and they are all dead,
-            // move onto the next Wave.
-            if (this.enemiesSpawned == currentWave.EnemyCount && this.Enemies.Count == 0)
-            {
-                this.waveTimeElapsed = currentWave.Duration + 1;
-            }
-
-            // Move enemies offscreen if the Wave is done.
-            if (this.waveTimeElapsed >= currentWave.Duration)
-            {
-                foreach (Enemy enemy in this.Enemies)
-                {
-                    SetOffScreenVelocity(enemy, this.playArea);
-                    enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
-                }
-
-                // Reset the Wave specific variables
-                this.currentWaveIndex++;
-                this.enemiesSpawned = 0;
-                this.waveTimeElapsed = 0f;
-            }
-        }
-
-        // Delete dead enemies
-        this.IsDead();
-
-        // Update all enemies
-        foreach (var enemy in this.Enemies)
+        foreach (Enemy enemy in this.Enemies)
         {
             enemy.Update(gameTime);
-            // If enemies hit the border, they reverse their direction.
             this.borderManager.CheckAndReverseVelocity(enemy);
         }
     }
@@ -172,21 +97,20 @@ public class EnemyManager
     /// <param name="position">The position to spawn the Enemy at.</param>
     /// <param name="velocity">The velocity for the Enemy.</param>
     /// <exception cref="ArgumentException">Throws an Exception if an invalid enemy type is inputted.</exception>
-    private void SpawnEnemy(Wave wave, Vector2 position, Vector2 velocity)
+    public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, float shotsPerSecond, string movementPattern, string shootingPattern)
     {
         // Spawn Enemy
-        Enemy enemy = wave.EnemyType switch
+        Enemy enemy = enemyType switch
         {
-            "EnemyA" => this.factory.CreateEnemyA(position, velocity, wave.Health, wave.BulletType),
-            "EnemyB" => this.factory.CreateEnemyB(position, velocity, wave.Health, wave.BulletType),
-            "MidBoss" => this.factory.CreateMidBoss(position, velocity, wave.Health, wave.BulletType),
-            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, wave.Health, wave.BulletType),
+            "EnemyA" => this.factory.CreateEnemyA(position, velocity, health, bulletType, shotsPerSecond),
+            "EnemyB" => this.factory.CreateEnemyB(position, velocity, health, bulletType, shotsPerSecond),
+            "MidBoss" => this.factory.CreateMidBoss(position, velocity, health, bulletType, shotsPerSecond),
+            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, health, bulletType, shotsPerSecond),
             _ => throw new ArgumentException("Unknown enemy type inputted")
         };
 
         // Apply movement
-        IMovementPattern movementPattern = this.movementFactory.CreateMovementPattern(wave.MovementPattern);
-        enemy.MovementPattern = movementPattern;
+        enemy.MovementPattern = this.movementFactory.CreateMovementPattern(movementPattern);
 
         // Apply shooting pattern
         // IShootingPattern shootingPattern = this.shootingPatternFactory.CreateShootingPattern(wave.ShootingPattern);
@@ -203,7 +127,7 @@ public class EnemyManager
     /// <summary>
     /// Checks every Enemy in the list to see if it is dead, and removes it if so.
     /// </summary>
-    private void IsDead()
+    public void IsDead()
     {
         var enemies = this.Enemies.ToArray();
         foreach (var enemy in enemies)
@@ -227,40 +151,6 @@ public class EnemyManager
             enemy.Draw(spriteBatch);
             enemy.DrawBounds(spriteBatch);
         }
-    }
-
-    /// <summary>
-    /// Calculate the Initial velocity of the Enemy.
-    /// </summary>
-    /// <param name="spawnArea">spawnArea that the Enemy is spawning in.</param>
-    /// <returns>A Vector2 representing the Velocity.</returns>
-    private Vector2 GetInitialVelocity(Rectangle spawnArea)
-    {
-        Random random = new Random();
-        Vector2 velocity = Vector2.Zero;
-
-        // Top Spawn area
-        if (spawnArea == this.playArea.SpawnAreaRectangles[0])
-        {
-            velocity.X = (float)(random.NextDouble() - 0.25);
-            velocity.Y = 2.5f;
-        }
-
-        // Left spawn area
-        else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
-        {
-            velocity.X = 2.5f;
-            velocity.Y = (float)(random.NextDouble() * -0.75);
-        }
-
-        // Right spawn area
-        else if (spawnArea == this.playArea.SpawnAreaRectangles[2])
-        {
-            velocity.X = -2.5f;
-            velocity.Y = (float)(random.NextDouble() * -0.75);
-        }
-
-        return velocity;
     }
 
     /// <summary>
@@ -299,5 +189,14 @@ public class EnemyManager
 
         // Update velocity
         enemy.Velocity = velocity;
+    }
+
+    public void MoveEnemiesOffScreen(PlayArea playArea)
+    {
+        foreach (Enemy enemy in this.Enemies)
+        {
+            this.SetOffScreenVelocity(enemy, playArea);
+            enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
+        }
     }
 }

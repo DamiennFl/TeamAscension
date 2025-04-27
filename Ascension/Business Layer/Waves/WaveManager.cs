@@ -25,92 +25,102 @@ namespace Ascension.Business_Layer.Waves
         private int currentWaveIndex;
 
         /// <summary>
-        /// enemyManager 
+        /// enemyManager
         /// </summary>
         private EnemyManager enemyManager;
 
-        public WaveManager(List<Wave> waves, EnemyManager enemyManager)
+        private PlayArea playArea;
+
+        private BorderManager borderManager;
+
+        private Rectangle spawnArea;
+
+        private Vector2 spawnPosition;
+
+        private Vector2 spawnVelocity;
+
+        public WaveManager(List<Wave> waves, EnemyManager enemyManager, PlayArea playArea)
         {
             this.waves = waves;
             this.waveTimeElapsed = 0f;
             this.currentWaveIndex = 0;
             this.enemyManager = enemyManager;
+            this.playArea = playArea;
+            this.borderManager = new BorderManager(this.playArea);
         }
 
         public void Update(GameTime gameTime)
+
         {
-            if (this.currentWaveIndex < this.waves.Count) {
-                Wave currentWave = this.waves[currentWaveIndex];
+            if (this.currentWaveIndex < this.waves.Count)
+            {
+                Wave currentWave = this.waves[this.currentWaveIndex];
                 this.waveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                
+                Random random = new Random();
+                List<Rectangle> spawnAreas = this.playArea.SpawnAreaRectangles;
+                this.spawnArea = spawnAreas[random.Next(spawnAreas.Count)];
+
+                this.spawnPosition = new Vector2(
+                    random.Next(this.spawnArea.Left + (this.spawnArea.Width / 4), this.spawnArea.Right - (this.spawnArea.Width / 4)),
+                    random.Next(this.spawnArea.Top + (this.spawnArea.Height / 4), this.spawnArea.Bottom - (this.spawnArea.Height / 4)));
+
+                this.spawnVelocity = this.GetInitialVelocity(this.spawnArea);
+
+                for (int i = 0; i < currentWave.EnemyCount; i++)
+                {
+                    if (this.waveTimeElapsed >= currentWave.SpawnInterval)
+                    {
+                        // Spawn the enemy, reset the time elapsed, and increase the amount of spawned enemies.
+                        this.enemyManager.SpawnEnemy();
+                        this.waveTimeElapsed = 0f;
+                    }
+                }
+
+                if (this.enemyManager.Enemies.Count == 0)
+                {
+                    this.waveTimeElapsed = currentWave.Duration + 1;
+                }
+
+                if (this.waveTimeElapsed >= currentWave.Duration)
+                {
+                    this.enemyManager.MoveEnemiesOffScreen(this.playArea);
+
+                    this.currentWaveIndex++;
+                    this.waveTimeElapsed = 0f;
+                }
+
+                this.enemyManager.IsDead();
             }
-            //    Iterate through each Wave
-            //    if (this.currentWaveIndex < this.waves.Count)
-            //    {
-            //        Get the currentWave
-            //       Wave currentWave = this.waves[this.currentWaveIndex];
-            //        Increase the timeElapsed
-            //        this.waveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
 
-            //        If no enemies have been spawned for this wave, select a spawn area,
-            //        a position within the area, and an initial velocity based on the spawn position.
-            //        if (this.enemiesSpawned == 0)
-            //            {
-            //                Random random = new Random();
-            //                List<Rectangle> spawnAreas = this.playArea.SpawnAreaRectangles;
-            //                this.spawnArea = spawnAreas[random.Next(spawnAreas.Count)];
+        private Vector2 GetInitialVelocity(Rectangle spawnArea)
+        {
+            Random random = new Random();
+            Vector2 velocity = Vector2.Zero;
 
-            //                this.spawnPosition = new Vector2(
-            //                    random.Next(this.spawnArea.Left + (this.spawnArea.Width / 4), this.spawnArea.Right - (this.spawnArea.Width / 4)),
-            //                    random.Next(this.spawnArea.Top + (this.spawnArea.Height / 4), this.spawnArea.Bottom - (this.spawnArea.Height / 4)));
+            // Top Spawn area
+            if (spawnArea == this.playArea.SpawnAreaRectangles[0])
+            {
+                velocity.X = (float)(random.NextDouble() - 0.25);
+                velocity.Y = 2.5f;
+            }
 
-            //                this.spawnVelocity = this.GetInitialVelocity(this.spawnArea);
-            //            }
+            // Left spawn area
+            else if (spawnArea == this.playArea.SpawnAreaRectangles[1])
+            {
+                velocity.X = 2.5f;
+                velocity.Y = (float)(random.NextDouble() * -0.75);
+            }
 
-            //        If it is time to spawn an enemy:
-            //        if (this.enemiesSpawned < currentWave.EnemyCount && this.waveTimeElapsed >= currentWave.SpawnInterval)
-            //        {
-            //            Spawn the enemy, reset the time elapsed, and increase the amount of spawned enemies.
-            //            this.SpawnEnemy(currentWave, this.spawnPosition, this.spawnVelocity);
-            //            this.waveTimeElapsed = 0f;
-            //            this.enemiesSpawned++;
-            //        }
+            // Right spawn area
+            else if (spawnArea == this.playArea.SpawnAreaRectangles[2])
+            {
+                velocity.X = -2.5f;
+                velocity.Y = (float)(random.NextDouble() * -0.75);
+            }
 
-            //        If all enemies have been spawned for the Wave, and they are all dead,
-            //        move onto the next Wave.
-            //        if (this.enemiesSpawned == currentWave.EnemyCount && this.Enemies.Count == 0)
-            //            {
-            //                this.waveTimeElapsed = currentWave.Duration + 1;
-            //            }
-
-            //        Move enemies offscreen if the Wave is done.
-            //        if (this.waveTimeElapsed >= currentWave.Duration)
-            //        {
-            //            foreach (Enemy enemy in this.Enemies)
-            //            {
-            //                SetOffScreenVelocity(enemy, this.playArea);
-            //                enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
-            //            }
-
-            //            Reset the Wave specific variables
-            //            this.currentWaveIndex++;
-            //            this.enemiesSpawned = 0;
-            //            this.waveTimeElapsed = 0f;
-            //        }
-            //    }
-
-            //    Delete dead enemies
-            //    this.IsDead();
-
-            //    Update all enemies
-            //    foreach (var enemy in this.Enemies)
-            //    {
-            //        enemy.Update(gameTime);
-            //        If enemies hit the border, they reverse their direction.
-            //        this.borderManager.CheckAndReverseVelocity(enemy);
-            //    }
-            //}
+            return velocity;
         }
     }
 }
