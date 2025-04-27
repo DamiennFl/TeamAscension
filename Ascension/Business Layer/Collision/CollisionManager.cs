@@ -85,11 +85,18 @@ namespace Ascension
                 {
                     var a = this.collidables[i];
                     var b = this.collidables[j];
-
+                    // Debug.Print($"This is b: {b} This is a: {a}");
                     // Skip if these layers shouldn't or don't collide
-                    if (!this.ShouldCollide(a.CollisionLayer, b.CollisionLayer) || !this.CheckCollision(a, b))
+
+                    // Ensuring no a or b can be collided with each other
+                    // if either one id null
+                    // Still room to test this.
+                    if (a != null & b != null)
                     {
-                        continue;
+                        if (!this.ShouldCollide(a.CollisionLayer, b.CollisionLayer) || !this.CheckCollision(a, b))
+                        {
+                            continue;
+                        }
                     }
 
                     this.GenerateCommands(a, b);
