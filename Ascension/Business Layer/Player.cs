@@ -458,9 +458,23 @@ namespace Ascension
             }
         }
 
+        /// <summary>
+        /// Fires a bullet with a given velocity.
+        /// </summary>
+        /// <param name="velocity">velocity.</param>
         public void FireBullet(Vector2 velocity)
         {
             this.BulletFired?.Invoke(this.Position, velocity, this.IsPlayer, this.BulletType);
+        }
+
+        /// <summary>
+        /// Fires a bullet from a specific position with a given velocity.
+        /// </summary>
+        /// <param name="spawnPosition">Spawn position.</param>
+        /// <param name="velocity">Velocity.</param>
+        public void FireBulletFromPosition(Vector2 spawnPosition, Vector2 velocity)
+        {
+            this.BulletFired?.Invoke(spawnPosition, velocity, this.IsPlayer, this.BulletType);
         }
 
         /// <summary>Bu

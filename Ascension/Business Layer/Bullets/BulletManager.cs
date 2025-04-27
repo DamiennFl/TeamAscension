@@ -98,7 +98,7 @@ namespace Ascension
         /// <param name="spriteBatch">Sprite.</param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (var item in this.bullets)
+            foreach (var item in this.bullets.ToArray())
             {
                 item.BulletDraw(spriteBatch);
             }

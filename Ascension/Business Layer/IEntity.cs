@@ -59,6 +59,17 @@ namespace Ascension.Business_Layer
         /// </summary>
         void ActivateInvincibility();
 
+        /// <summary>
+        /// Fires a bullet with a given velocity.
+        /// </summary>s
+        /// <param name="velocity">Velocity.</param>
         void FireBullet(Vector2 velocity);
+
+        /// <summary>
+        /// Fires a bullet from a specific position with a given velocity.
+        /// </summary>
+        /// <param name="spawnPosition">Position bullet is spawned from.</param>
+        /// <param name="velocity">Velocity bullet has.</param>
+        void FireBulletFromPosition(Vector2 spawnPosition, Vector2 velocity);
     }
 }

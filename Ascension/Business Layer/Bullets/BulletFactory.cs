@@ -50,7 +50,7 @@ namespace Ascension.Business_Layer.Bullets
         /// </summary>
         /// <param name="velocity">Direction and speed.</param>
         /// <param name="bulletPosition">Start position.</param>
-        /// <param name="bulletTexture">Color and texture.</param>
+        /// <param name="bulletType">Color and texture.</param>
         /// <returns>New bullet.</returns>
         public Bullet CreateBullet(Vector2 velocity, Vector2 bulletPosition, string bulletType)
         {

@@ -3,14 +3,14 @@
     "Waves": {
       "1": {
         "Duration": 10,
-        "EnemyType": "EnemyA",
-        "EnemyCount": 8,
+        "EnemyType": "FinalBoss",
+        "EnemyCount": 1,
         "SpawnInterval": 0.5,
         "Health": 6,
-        "MovementPattern": "Linear",
+        "MovementPattern": "GoMiddle",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Standard": "Random"
+          "TowardsPlayer": "Random"
         }
       },
       "2": {
