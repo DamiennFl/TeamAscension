@@ -47,8 +47,8 @@ namespace Ascension.Business_Layer.Shooting
                     return new WaveShootingPattern();
                 case "XCross":
                     return new XCrossShootingPattern();
-                case "Targeted":
-                    return new TargetedShootingPattern();
+                case "TowardsPlayer":
+                    return new TowardsPlayerShootingPattern();
                 default:
                     return new StandardShootingPattern();
             }

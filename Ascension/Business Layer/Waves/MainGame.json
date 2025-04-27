@@ -7,7 +7,7 @@
         "EnemyCount": 4,
         "SpawnInterval": 0.5,
         "Health": 6,
-        "MovementPattern": "Linear",
+        "MovementPattern": "GoMiddle",
         "BulletType": "A",
         "ShootingPatterns": {
           "Firework": "1"

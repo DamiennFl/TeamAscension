@@ -26,19 +26,18 @@ namespace Ascension.Business_Layer.Waves
         /// </summary>
         private List<Wave> Waves { get; set; }
 
-        /// <summary>
-        /// Generates Waves based on the MainGame.json file.
-        /// </summary>
-        /// <returns>Returns a List of generated Waves.</returns>
+        /// <summary>  
+        /// Generates Waves based on the MainGame.json file.  
+        /// </summary>  
+        /// <returns>Returns a List of generated Waves.</returns>  
         public List<Wave> GenerateWaves()
         {
-            //string filePath = "C:\\Users\\damie\\source\\repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
-
-            string filePath = "C:\\Users\\13606\\Desktop\\Ascension Project\\Ascension\\Business Layer\\Waves\\MainGame.json";
+            // Define the absolute file path to MainGame.json
+            string filePath = "C:\\Users\\Dillon\\Source\\Repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
 
             string jsonContent = File.ReadAllText(filePath);
 
-            // Parse the JSON manually
+            // Parse the JSON manually  
             using (JsonDocument document = JsonDocument.Parse(jsonContent))
             {
                 JsonElement root = document.RootElement;
@@ -48,7 +47,7 @@ namespace Ascension.Business_Layer.Waves
                 {
                     JsonElement waveData = waveProperty.Value;
 
-                    // Extract wave properties
+                    // Extract wave properties  
                     float duration = waveData.GetProperty("Duration").GetSingle();
                     string enemyType = waveData.GetProperty("EnemyType").GetString();
                     int enemyCount = waveData.GetProperty("EnemyCount").GetInt32();
@@ -57,12 +56,12 @@ namespace Ascension.Business_Layer.Waves
                     string movementPattern = waveData.GetProperty("MovementPattern").GetString();
                     string bulletType = waveData.GetProperty("BulletType").GetString();
 
-                    // Extract the first shooting pattern
+                    // Extract the first shooting pattern  
                     JsonElement shootingPatterns = waveData.GetProperty("ShootingPatterns");
                     string shootingPattern = shootingPatterns.EnumerateObject().First().Name;
                     string shotsPerSecond = shootingPatterns.EnumerateObject().First().Value.GetString();
 
-                    // Create the Wave object
+                    // Create the Wave object  
                     var wave = new Wave(
                         duration: duration,
                         enemyType: enemyType,
@@ -77,7 +76,7 @@ namespace Ascension.Business_Layer.Waves
                     this.Waves.Add(wave);
                 }
 
-                // Return waves
+                // Return waves  
                 return this.Waves;
             }
         }
