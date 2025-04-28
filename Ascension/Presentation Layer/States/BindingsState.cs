@@ -2,7 +2,6 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
-
 using System;
 using System.Collections.Generic;
 using Ascension.Content.Controls;
@@ -13,23 +12,32 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ascension
 {
-    /* Currently, this class is empty. It will be used to handle the bindings of the game.
-     * Thinking of possibly a different way then a state to handle this.
-     * Thinking user will change current binding via combo box
-     * or the user presses a key to set the binding.
-     */
+    /// <summary>
+    /// BindingsState is the state that allows the user to set their key bindings.
+    /// </summary>
     internal class BindingsState : State
     {
-
         /// <summary>
         /// The components.
         /// </summary>
         private List<Components> components;
 
+        /// <summary>
+        /// The font used for the buttons.
+        /// </summary>
         private SpriteFont font;
 
+        /// <summary>
+        /// The texture used for the buttons.
+        /// </summary>
         private Texture2D buttonTexture;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindingsState"/> class.
+        /// </summary>
+        /// <param name="game">Game.</param>
+        /// <param name="graphicsDevice">Graphics.</param>
+        /// <param name="contentManager">Content manager.</param>
         public BindingsState(Game1 game, GraphicsDevice graphicsDevice, ContentManager contentManager)
             : base(game, graphicsDevice, contentManager)
         {
@@ -40,6 +48,11 @@ namespace Ascension
             this.InitButtons();
         }
 
+        /// <summary>
+        /// Draw the scene.
+        /// </summary>
+        /// <param name="gameTime">Game time.</param>
+        /// <param name="spriteBatch">Sprite batch.</param>
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.GraphicsDevice.Clear(Color.Black);
@@ -55,9 +68,12 @@ namespace Ascension
             spriteBatch.End();
         }
 
+        /// <summary>
+        /// Updates our components every tick.
+        /// </summary>
+        /// <param name="gameTime">Gametime.</param>
         public override void PostUpdate(GameTime gameTime)
         {
-            
         }
 
         /// <summary>
