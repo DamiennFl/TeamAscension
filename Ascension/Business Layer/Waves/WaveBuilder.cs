@@ -31,10 +31,10 @@ namespace Ascension.Business_Layer.Waves
         /// </summary>
         private List<Wave> Waves { get; set; }
 
-        /// <summary>  
-        /// Generates Waves based on the MainGame.json file.  
-        /// </summary>  
-        /// <returns>Returns a List of generated Waves.</returns>  
+        /// <summary>
+        /// Generates Waves based on the MainGame.json file.
+        /// </summary>
+        /// <returns>Returns a List of generated Waves.</returns>
         public List<Wave> GenerateWaves()
         {
             string filePath = "C:\\Users\\Dillon\\Source\\Repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";

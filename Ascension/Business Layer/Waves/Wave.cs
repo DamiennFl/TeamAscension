@@ -1,6 +1,10 @@
-﻿using Ascension.Business_Layer.Shooting;
-using Microsoft.Xna.Framework.Content;
+﻿// <copyright file="Wave.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
+using Ascension.Business_Layer.Shooting;
+using Microsoft.Xna.Framework.Content;
 
 namespace Ascension
 {
@@ -69,7 +73,7 @@ namespace Ascension
         public string BulletType { get; set; }
 
         /// <summary>
-        /// Dictionary of ShootingPatterns, with the key being the pattern and the value
+        /// Gets or sets dictionary of ShootingPatterns, with the key being the pattern and the value
         /// being the shots per second, either a float number or "Random".
         /// </summary>
         public Dictionary<string, string> ShootingPatterns { get; set; }

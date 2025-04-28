@@ -132,7 +132,7 @@ namespace Ascension.Business_Layer.Waves
                     this.enemyManager.MoveEnemiesOffScreen(this.playArea);
                     this.currentWaveIndex++;
                     this.waveTimeElapsed = 0f;
-                    enemiesSpawned = 0;
+                    this.enemiesSpawned = 0;
                 }
 
                 this.enemyManager.IsDead();

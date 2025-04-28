@@ -2,10 +2,10 @@
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
+using System.Security.Cryptography;
 using Ascension.Business_Layer.Movement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Security.Cryptography;
 
 namespace Ascension.Business_Layer
 {

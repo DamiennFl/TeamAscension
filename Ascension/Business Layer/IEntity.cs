@@ -16,7 +16,6 @@ namespace Ascension.Business_Layer
     /// </summary>
     public interface IEntity
     {
-
         /// <summary>
         /// When the entity fires a bullet.
         /// </summary>
@@ -52,6 +51,9 @@ namespace Ascension.Business_Layer
         /// </summary>
         bool IsPlayer { get; set;  }
 
+        /// <summary>
+        /// Gets or sets the entity's shooting interval.
+        /// </summary>
         float ShootInterval { get; set; }
 
         /// <summary>

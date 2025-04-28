@@ -1,4 +1,4 @@
-﻿// <copyright file="WavePatternShoot.cs" company="Team Ascension">
+﻿// <copyright file="WaveShootingPattern.cs" company="Team Ascension">
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
@@ -32,7 +32,7 @@ namespace Ascension.Business_Layer.Shooting
                 for (int i = -bulletsPerWave / 2; i < bulletsPerWave / 2; i++)
                 {
                     float x = i * 0.2f;
-                    float y = amplitude * MathF.Sin(frequency * x + wave);
+                    float y = amplitude * MathF.Sin((frequency * x) + wave);
                     Vector2 bulletVelocity = new Vector2(x, y + 2f);
 
                     // Reverse direction if the shooter is a player

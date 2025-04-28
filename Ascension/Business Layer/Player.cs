@@ -20,24 +20,9 @@ namespace Ascension
     public class Player : ICollidable, IEntity, IMovable
     {
         /// <summary>
-        /// Gets or sets a value indicating whether the entity is a player.
+        /// Gets or sets the total time for invincibility.
         /// </summary>
-        public bool IsPlayer { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets the player's bullet type.
-        /// </summary>
-        public string BulletType { get; set; } = "C"; // Bullet type for the player
-
-        /// <summary>
-        /// Gets or sets a value indicating the shooting pattern.
-        /// </summary>
-        public IShootingPattern ShootingPattern { get; set; }
-
-        /// <summary>
-        /// Gets or sets the player's velocity.
-        /// </summary>
-        public Vector2 Velocity { get; set; }
+        private readonly TimeSpan totalInvincibleTime = TimeSpan.FromSeconds(3);
 
         /// <summary>
         /// Gets or sets the player's texture.
@@ -60,9 +45,29 @@ namespace Ascension
         private TimeSpan invincibleTimeRemaining = TimeSpan.Zero;
 
         /// <summary>
-        /// Gets or sets the total time for invincibility.
+        /// Gets the global player position.
         /// </summary>
-        private readonly TimeSpan totalInvincibleTime = TimeSpan.FromSeconds(3);
+        public static Vector2 PlayerPosition { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the entity is a player.
+        /// </summary>
+        public bool IsPlayer { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the player's bullet type.
+        /// </summary>
+        public string BulletType { get; set; } = "C"; // Bullet type for the player
+
+        /// <summary>
+        /// Gets or sets a value indicating the shooting pattern.
+        /// </summary>
+        public IShootingPattern ShootingPattern { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player's velocity.
+        /// </summary>
+        public Vector2 Velocity { get; set; }
 
         /// <summary>
         /// Gets or sets the player's position.
@@ -70,15 +75,13 @@ namespace Ascension
         public Vector2 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets the global player position.
-        /// </summary>
-        public static Vector2 PlayerPosition { get; private set; }
-
-        /// <summary>
         /// Gets or sets the player's shoot interval.
         /// </summary>
         public float ShootInterval { get; set; }
 
+        /// <summary>
+        /// Shots per second.
+        /// </summary>
         private float shotsPerSecond;
 
         /// <summary>
@@ -327,7 +330,6 @@ namespace Ascension
                 this.PlayerActivatedInvincibility();
             }
 
-            //this.StayInBorder(this.playArea.BorderRectangle, this.playArea.BorderWidth);
             this.borderManager.StayInBorder(this, this.playerTexture);
             this.InvincibleTimer(gameTime);
 
@@ -385,6 +387,7 @@ namespace Ascension
                         this.Cheats = true;
                         break;
                 }
+
                 this.cheatTimer = TimeSpan.Zero;
             }
         }
@@ -513,7 +516,6 @@ namespace Ascension
                 {
                     this.IsInvincible = false;
                     this.invincibleTimeRemaining = TimeSpan.Zero;
-                    // Debug.WriteLine("Invincibility off.");
                 }
             }
         }

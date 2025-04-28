@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="Bomb.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +27,6 @@ namespace Ascension
         private BulletManager bulletManager;
 
         /// <summary>
-        /// Gets or sets the amount of damage a bomb can do.
-        /// </summary>
-        private int DamageCount { get; set; } = 3;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Bomb"/> class.
         /// </summary>
         /// <param name="enemyManager"> our enemy manager.</param>
@@ -37,6 +36,11 @@ namespace Ascension
             this.enemyManager = enemyManager;
             this.bulletManager = bulletManager;
         }
+
+        /// <summary>
+        /// Gets or sets the amount of damage a bomb can do.
+        /// </summary>
+        private int DamageCount { get; set; } = 3;
 
         /// <summary>
         /// Our method for exploding the bomb,
@@ -52,6 +56,5 @@ namespace Ascension
                 enemy.Health -= this.DamageCount;
             }
         }
-
     }
 }
