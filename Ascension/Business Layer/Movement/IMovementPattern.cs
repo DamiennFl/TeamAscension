@@ -10,6 +10,11 @@ namespace Ascension
     /// </summary>
     public interface IMovementPattern
     {
+        /// <summary>
+        /// Moves the enemy according to the movement pattern.
+        /// </summary>
+        /// <param name="gameTime">Game time.</param>
+        /// <param name="movable">IMovable.</param>
         public void Move(GameTime gameTime, IMovable movable);
     }
 }

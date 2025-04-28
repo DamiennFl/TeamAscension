@@ -1,6 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿// <copyright file="WaveMovementPattern.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
 using System.Reflection.Metadata;
+using Microsoft.Xna.Framework;
 
 namespace Ascension
 {
@@ -9,10 +13,26 @@ namespace Ascension
     /// </summary>
     public class WaveMovementPattern : IMovementPattern
     {
-        private float time; // Track elapsed time for the sine wave calculation
-        private readonly float amplitude = 100f;
+        /// <summary>
+        /// Frequency of the sine wave.
+        /// </summary>
         private readonly float frequency = 5f;
 
+        /// <summary>
+        /// Amplitude and frequency of the sine wave.
+        /// </summary>
+        private readonly float amplitude = 100f;
+
+        /// <summary>
+        /// The time variable is used to track the elapsed time for the sine wave calculation.
+        /// </summary>
+        private float time; // Track elapsed time for the sine wave calculation
+
+        /// <summary>
+        /// Moves the enemy in a wave pattern.
+        /// </summary>
+        /// <param name="gameTime">Game time.</param>
+        /// <param name="movable">Movable.</param>
         public void Move(GameTime gameTime, IMovable movable)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
