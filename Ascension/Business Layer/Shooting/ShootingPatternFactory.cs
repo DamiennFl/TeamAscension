@@ -49,6 +49,8 @@ namespace Ascension.Business_Layer.Shooting
                     return new XCrossShootingPattern();
                 case "TowardsPlayer":
                     return new TowardsPlayerShootingPattern();
+                case "TripleSpiral":
+                    return new TripleSpiralShootingPattern();
                 default:
                     return new StandardShootingPattern();
             }

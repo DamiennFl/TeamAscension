@@ -3,28 +3,27 @@
     "Waves": {
       "1": {
         "Duration": 60,
-        "EnemyType": "EnemyA",
-        "EnemyCount": 4,
+        "EnemyType": "FinalBoss",
+        "EnemyCount": 1,
         "SpawnInterval": 0.5,
         "Health": 6,
         "MovementPattern": "GoMiddle",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Circular": "1",
-          "Burst": "0.5"
+          "TripleSpiral": "2"
         }
       },
       "2": {
         "Duration": 20,
-        "EnemyType": "EnemyB",
-        "EnemyCount": 6,
+        "EnemyType": "FinalBoss",
+        "EnemyCount": 1,
         "SpawnInterval": 0.75,
         "Health": 12,
-        "MovementPattern": "Wave",
-        "BulletType": "B",
+        "MovementPattern": "GoMiddle",
+        "BulletType": "A",
         "ShootingPatterns": {
-          "Burst": "3",
-          "Standard": "4"
+          "TripleSpiral": "2.5",
+          "Circular": "1.5"
         }
       }
     }
