@@ -20,7 +20,7 @@ namespace Ascension.Business_Layer.Shooting
         /// <param name="shooter">Shooter.</param>
         public void Shoot(IEntity shooter)
         {
-            Vector2 bulletVelocity = new Vector2(0, 2); // downward shooting for enemy
+            Vector2 bulletVelocity = new Vector2(0, 3); // downward shooting for enemy
             if (shooter.IsPlayer)
             {
                 bulletVelocity = new Vector2(0, -7f); // upward shooting for player

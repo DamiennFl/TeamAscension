@@ -2,28 +2,67 @@
   "Game": {
     "Waves": {
       "1": {
-        "Duration": 60,
-        "EnemyType": "FinalBoss",
-        "EnemyCount": 1,
+        "Duration": 30,
+        "EnemyType": "EnemyA",
+        "EnemyCount": 5,
         "SpawnInterval": 0.5,
         "Health": 6,
-        "MovementPattern": "GoMiddle",
+        "MovementPattern": "ZigZag",
         "BulletType": "A",
         "ShootingPatterns": {
-          "TripleSpiral": "2"
+          "Standard": "3"
         }
       },
       "2": {
-        "Duration": 20,
+        "Duration": 35,
+        "EnemyType": "EnemyB",
+        "EnemyCount": 3,
+        "SpawnInterval": 0.75,
+        "Health": 8,
+        "MovementPattern": "Wave",
+        "BulletType": "B",
+        "ShootingPatterns": {
+          "Burst": "2.5",
+          "XCross": "4.25"
+        }
+      },
+      "3": {
+        "Duration": 45,
+        "EnemyType": "MidBoss",
+        "EnemyCount": 1,
+        "SpawnInterval": 0.75,
+        "Health": 30,
+        "MovementPattern": "ZigZag",
+        "BulletType": "A",
+        "ShootingPatterns": {
+          "Flower": "7",
+          "Wall": "4"
+        }
+      },
+      "4": {
+        "Duration": 25,
+        "EnemyType": "EnemyA",
+        "EnemyCount": 2,
+        "SpawnInterval": 0.75,
+        "Health": 10,
+        "MovementPattern": "Wave",
+        "BulletType": "B",
+        "ShootingPatterns": {
+          "Circular": "2"
+        }
+      },
+      "5": {
+        "Duration": 90,
         "EnemyType": "FinalBoss",
         "EnemyCount": 1,
         "SpawnInterval": 0.75,
-        "Health": 12,
+        "Health": 50,
         "MovementPattern": "GoMiddle",
         "BulletType": "A",
         "ShootingPatterns": {
-          "TripleSpiral": "2.5",
-          "Circular": "1.5"
+          "TowardsPlayer": "5",
+          "Circular": "1.5",
+          "TripleSpiral" : "12.5"
         }
       }
     }

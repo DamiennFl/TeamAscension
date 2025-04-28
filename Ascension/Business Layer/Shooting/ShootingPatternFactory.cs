@@ -51,6 +51,8 @@ namespace Ascension.Business_Layer.Shooting
                     return new TowardsPlayerShootingPattern();
                 case "TripleSpiral":
                     return new TripleSpiralShootingPattern();
+                case "Cone":
+                    return new BulletConeShootingPattern();
                 default:
                     return new StandardShootingPattern();
             }

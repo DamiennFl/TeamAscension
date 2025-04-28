@@ -1,4 +1,7 @@
-﻿using Ascension.Business_Layer.Shooting;
+﻿// <copyright file="WaveBuilder.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Ascension.Business_Layer.Shooting;
 
 namespace Ascension.Business_Layer.Waves
 {
@@ -33,7 +37,7 @@ namespace Ascension.Business_Layer.Waves
         /// <returns>Returns a List of generated Waves.</returns>  
         public List<Wave> GenerateWaves()
         {
-            string filePath = "C:\\Users\\damie\\source\\repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
+            string filePath = "C:\\Users\\Dillon\\Source\\Repos\\TeamAscension\\Ascension\\Business Layer\\Waves\\MainGame.json";
             string jsonContent = File.ReadAllText(filePath);
 
             using (JsonDocument document = JsonDocument.Parse(jsonContent))
