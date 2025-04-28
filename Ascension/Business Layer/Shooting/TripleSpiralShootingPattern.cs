@@ -36,7 +36,10 @@ namespace Ascension.Business_Layer.Shooting
                 // --- First bullet: Towards player ---
                 Vector2 directionToPlayer = playerPosition - spawnPos;
                 if (directionToPlayer != Vector2.Zero)
+                {
                     directionToPlayer.Normalize();
+                }
+
                 Vector2 velocityToPlayer = directionToPlayer * bulletSpeed;
                 shooter.FireBulletFromPosition(spawnPos, velocityToPlayer);
 
