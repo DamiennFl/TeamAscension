@@ -1,4 +1,4 @@
-﻿// <copyright file="FirstState.cs" company="Team Ascension">
+﻿// <copyright file="MainGameState.cs" company="Team Ascension">
 // Copyright (c) Team Ascension. All rights reserved.
 // </copyright>
 
@@ -32,14 +32,25 @@ namespace Ascension
         /// </summary>
         private PlayArea playArea;
 
+        /// <summary>
+        /// Wave manager for the game.
+        /// </summary>
         private WaveManager waveManager;
 
+        /// <summary>
+        /// Enemy manager for the game.
+        /// </summary>
         private EnemyManager enemyManager;
 
+        /// <summary>
+        /// Collision manager for the game.
+        /// </summary>
         private CollisionManager collisionManager;
 
+        /// <summary>
+        /// Bullet manager for the game.
+        /// </summary>
         private BulletManager bulletManager;
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainGameState"/> class.
@@ -80,8 +91,6 @@ namespace Ascension
 
             // Player drawn here
             this.player.Draw(spriteBatch);
-
-            // this.playArea.DrawSpawnRectangles(spriteBatch);
 
             this.enemyManager.Draw(spriteBatch);
 
@@ -129,12 +138,8 @@ namespace Ascension
         }
 
         /// <summary>
-        /// Check if it is time for the boss.
+        /// Initializes the collision system.
         /// </summary>
-        /// <param name="bossTime">Time the boss should spawn.</param>
-        /// <returns>True if time for boss to spawn, false if not.</returns>
- 
-
         private void InitCollisions()
         {
             // Initialize collision system
@@ -143,67 +148,6 @@ namespace Ascension
             this.collisionManager.AddCollisionLayer("Enemy", "PlayerBullet");
             this.collisionManager.Register(this.player);
         }
-
-        /// <summary>
-        /// Initializes the waves for the game.
-        /// </summary>
-        //private void InitWaves()
-        //{
-        //    float durationA = 10;
-        //    string enemyTypeA = "EnemyA";
-        //    int enemyCountA = 8;
-        //    float spawnIntervalA = 0.5f;
-        //    string movementPatternA = "Linear";
-        //    int healthA = 5;
-        //    string bulletTypeA = "A";
-
-        //    Wave waveA = new Wave(durationA, enemyTypeA, enemyCountA, spawnIntervalA, healthA, movementPatternA, bulletTypeA);
-        //    this.waves.Add(waveA);
-
-        //    float durationB = 40;
-        //    string enemyTypeB = "EnemyB";
-        //    int enemyCountB = 5;
-        //    float spawnIntervalB = 0.3f;
-        //    string movementPatternB = "Wave";
-        //    int healthB = 10;
-        //    string bulletTypeB = "B";
-
-        //    Wave waveB = new Wave(durationB, enemyTypeB, enemyCountB, spawnIntervalB, healthB, movementPatternB, bulletTypeB);
-        //    this.waves.Add(waveB);
-
-        //    float durationMid = 60;
-        //    string enemyTypeMid = "MidBoss";
-        //    int enemyCountMid = 1;
-        //    float spawnIntervalMid = 0.3f;
-        //    string movementPatternMid = "ZigZag";
-        //    int healthMid = 40;
-        //    string bulletTypeMid = "B";
-
-        //    Wave waveMid = new Wave(durationMid, enemyTypeMid, enemyCountMid, spawnIntervalMid, healthMid, movementPatternMid, bulletTypeMid);
-        //    this.waves.Add(waveMid);
-
-        //    float durationC = 20;
-        //    string enemyTypeC = "EnemyA";
-        //    int enemyCountC = 10;
-        //    float spawnIntervalC = 0.5f;
-        //    string movementPatternC = "ZigZag";
-        //    int healthC = 10;
-        //    string bulletTypeC = "A";
-
-        //    Wave waveC = new Wave(durationC, enemyTypeC, enemyCountC, spawnIntervalC, healthC, movementPatternC, bulletTypeC);
-        //    this.waves.Add(waveC);
-
-        //    float duration = 90;
-        //    string enemyType = "FinalBoss";
-        //    int enemyCount = 1;
-        //    float spawnInterval = 0.3f;
-        //    string movementPattern = "GoMiddle";
-        //    int health = 150;
-        //    string bulletType = "A";
-
-        //    Wave testWave = new Wave(duration, enemyType, enemyCount, spawnInterval, health, movementPattern, bulletType);
-        //    this.waves.Add(testWave);
-        //}
 
         /// <summary>
         /// Initializes the enemy manager.
@@ -222,6 +166,9 @@ namespace Ascension
             this.player.bulletManager = this.bulletManager;
         }
 
+        /// <summary>
+        /// Initializes the wave manager.
+        /// </summary>
         private void InitWaveManager()
         {
             this.waveManager = new WaveManager(this.enemyManager, this.playArea);

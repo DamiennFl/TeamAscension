@@ -1,11 +1,15 @@
-﻿using Ascension.Business_Layer.Bullets;
-using Microsoft.Xna.Framework;
+﻿// <copyright file="StandardShootingPattern.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ascension.Business_Layer.Bullets;
+using Microsoft.Xna.Framework;
 
 namespace Ascension.Business_Layer.Shooting
 {
@@ -27,7 +31,6 @@ namespace Ascension.Business_Layer.Shooting
             }
 
             shooter.FireBullet(bulletVelocity);
-            // Debug.Print($"{Player.PlayerPosition}");
         }
     }
 }

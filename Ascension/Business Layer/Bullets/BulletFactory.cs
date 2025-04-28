@@ -13,6 +13,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension.Business_Layer.Bullets
 {
+    /// <summary>
+    /// Factory class for creating bullets.
+    /// </summary>
     internal class BulletFactory
     {
         /// <summary>
@@ -25,6 +28,9 @@ namespace Ascension.Business_Layer.Bullets
         /// </summary>
         private ContentManager contentManager;
 
+        /// <summary>
+        /// Movement factory for creating movement patterns.
+        /// </summary>
         private MovementFactory movementFactory = new MovementFactory();
 
         /// <summary>

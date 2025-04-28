@@ -43,22 +43,53 @@ namespace Ascension
             };
         }
 
-        // TODO: Add relevant enemies to a Formation object, instead of having a Factory in each Formation
+        /// <summary>
+        /// Creates an enemy of type A.
+        /// </summary>
+        /// <param name="position">Spawn position.</param>
+        /// <param name="velocity">Velocity of enemy.</param>
+        /// <param name="health">Health of enemy.</param>
+        /// <param name="bulletType">Bullet type of enemy.</param>
+        /// <returns>EnemyA type.</returns>
         public override Enemy CreateEnemyA(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
             return new EnemyA(velocity, position, health, this.enemyTextures["EnemyA"], this.ContentManager, bulletType);
         }
 
+        /// <summary>
+        /// Creates an enemy of type B.
+        /// </summary>
+        /// <param name="position">Position of enemy.</param>
+        /// <param name="velocity">Velocity of enemy.</param>
+        /// <param name="health">Health of enemy.</param>
+        /// <param name="bulletType">Bullet type of enemy.</param>
+        /// <returns>Enemy B.</returns>
         public override Enemy CreateEnemyB(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
             return new EnemyB(velocity, position, health, this.enemyTextures["EnemyB"], this.ContentManager, bulletType);
         }
 
+        /// <summary>
+        /// Creates a mid-boss enemy.
+        /// </summary>
+        /// <param name="position">Position of mid boss.</param>
+        /// <param name="velocity">Velocity of boss.</param>
+        /// <param name="health">Health of boss.</param>
+        /// <param name="bulletType">Bullet type of boss.</param>
+        /// <returns>Mid Boss.</returns>
         public override Enemy CreateMidBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
             return new MidBoss(velocity, position, health, this.enemyTextures["MidBoss"], this.ContentManager, bulletType);
         }
 
+        /// <summary>
+        /// Creates a final boss enemy.
+        /// </summary>
+        /// <param name="position">Position of boss.</param>
+        /// <param name="velocity">Velocity of boss.</param>
+        /// <param name="health">Health of boss.</param>
+        /// <param name="bulletType">Bullet type of boss.</param>
+        /// <returns>Final boss.</returns>
         public override Enemy CreateFinalBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
             return new FinalBoss(velocity, position, health, this.enemyTextures["FinalBoss"], this.ContentManager, bulletType);
