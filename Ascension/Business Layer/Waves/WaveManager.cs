@@ -137,6 +137,10 @@ namespace Ascension.Business_Layer.Waves
 
                 this.enemyManager.IsDead();
             }
+            else
+            {
+                this.waves.Clear();
+            }
         }
 
         /// <summary>

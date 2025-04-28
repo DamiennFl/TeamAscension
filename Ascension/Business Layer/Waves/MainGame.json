@@ -3,12 +3,12 @@
     "Waves": {
       "1": {
         "Duration": 30,
-        "EnemyType": "EnemyA",
+        "EnemyType": "FinalBoss",
         "EnemyCount": 5,
         "SpawnInterval": 0.5,
         "Health": 6,
         "MovementPattern": "ZigZag",
-        "BulletType": "A",
+        "BulletType": "C",
         "ShootingPatterns": {
           "Standard": "3"
         }

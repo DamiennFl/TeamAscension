@@ -72,7 +72,7 @@ namespace Ascension.Business_Layer.Bullets
                     return bulletB;
                 case "C":
                     Bullet playerBullet = new BulletA(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletBlue"));
-                    playerBullet.MovementPattern = this.movementFactory.CreateMovementPattern("Linear");
+                    playerBullet.MovementPattern = this.movementFactory.CreateMovementPattern("ZigZag");
                     return playerBullet;
                 default:
                     Bullet bullet = new BulletA(velocity, bulletPosition, this.contentManager.Load<Texture2D>("Bullets/BulletGreen"));
