@@ -39,13 +39,44 @@ namespace Ascension
         /// </summary>
         protected ContentManager ContentManager => this.contentManager;
 
-        // Abstract Factory Methods to create Enemies. FACTORY METHOD PATTERN
+        /// <summary>
+        /// Creates an instance of EnemyA.
+        /// </summary>
+        /// <param name="position">Position.</param>
+        /// <param name="velocity">Velocity.</param>
+        /// <param name="health">Health.</param>
+        /// <param name="bulletType">Bullet type.</param>
+        /// <returns>EnemyA instance.</returns>
         public abstract Enemy CreateEnemyA(Vector2 position, Vector2 velocity, int health, string bulletType);
 
+        /// <summary>
+        /// Creates an instance of EnemyB.
+        /// </summary>
+        /// <param name="position">Position.</param>
+        /// <param name="velocity">Velocity.</param>
+        /// <param name="health">Health.</param>
+        /// <param name="bulletType">Bullet type.</param>
+        /// <returns>Instance of EnemyB</returns>
         public abstract Enemy CreateEnemyB(Vector2 position, Vector2 velocity, int health, string bulletType);
 
+        /// <summary>
+        /// Creates an instance of MidBoss.
+        /// </summary>
+        /// <param name="position">Position.</param>
+        /// <param name="velocity">Velocity.</param>
+        /// <param name="health">Health.</param>
+        /// <param name="bulletType">Bullet type.</param>
+        /// <returns>Instance of the mid boss.</returns>
         public abstract Enemy CreateMidBoss(Vector2 position, Vector2 velocity, int health, string bulletType);
 
+        /// <summary>
+        /// Creates an instance of FinalBoss.
+        /// </summary>
+        /// <param name="position">Position.</param>
+        /// <param name="velocity">Velocity.</param>
+        /// <param name="health">Health.</param>
+        /// <param name="bulletType">Bullet type.</param>
+        /// <returns>Instance of final boss.</returns>
         public abstract Enemy CreateFinalBoss(Vector2 position, Vector2 velocity, int health, string bulletType);
     }
 }

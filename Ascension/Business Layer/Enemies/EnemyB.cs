@@ -39,6 +39,7 @@ namespace Ascension
         /// </summary>
         /// <param name="velocity">The speed of EnemyB.</param>
         /// <param name="position">The position of EnemyB.</param>
+        /// <param name="health">The health of EnemyB.</param>
         /// <param name="texture">The texture of EnemyB.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>"
         /// <param name="bulletType">The type of bullet to shoot.</param>

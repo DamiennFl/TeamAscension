@@ -20,6 +20,10 @@ namespace Ascension
     /// </summary>
     public abstract class Enemy : IMovable, ICollidable, IEntity
     {
+        /// <summary>
+        /// The texture for the enemy.
+        /// </summary>
+        protected Texture2D texture;
 
         /// <summary>
         /// Gets or sets a value indicating whether the enemy is a player.  
@@ -27,21 +31,23 @@ namespace Ascension
         public bool IsPlayer { get; set; } = false;
 
         /// <summary>
-        /// The texture for the enemy.
+        /// Gets or sets the time interval between shots.
         /// </summary>
-        protected Texture2D texture;
-
-        protected string shotsPerSecond { get; private set; }
-
         public float ShootInterval { get; set; }
 
-        ///// <summary>
-        ///// Gets or sets the shooting pattern of the enemy.
-        ///// </summary>
-        //public IShootingPattern ShootingPattern { get; set; }
+        /// <summary>
+        /// Gets the number of shots per second.
+        /// </summary>
+        protected string ShotsPerSecond { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the shooting patterns of the enemy.
+        /// </summary>
         public Dictionary<IShootingPattern, string> ShootingPatterns { get; set; }
 
+        /// <summary>
+        /// The font used for rendering text.
+        /// </summary>
         protected SpriteFont font;
 
         /// <summary>

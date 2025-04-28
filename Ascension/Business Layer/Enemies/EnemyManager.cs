@@ -1,12 +1,19 @@
-﻿using System;
+﻿// <copyright file="EnemyManager.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using Ascension;
+using Ascension.Business_Layer;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Ascension.Business_Layer;
-using Ascension.Business_Layer.Shooting;
 
+/// <summary>
+/// EnemyManager is responsible for managing the enemy subsystem.
+/// </summary>
 public class EnemyManager
 {
     /// <summary>
@@ -55,11 +62,6 @@ public class EnemyManager
     private BorderManager borderManager;
 
     /// <summary>
-    /// Gets the list of Enemies for this EnemyManager.
-    /// </summary>
-    public List<Enemy> Enemies { get; }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="EnemyManager"/> class.
     /// </summary>
     /// <param name="contentManager">The contentManager of the Game.</param>
@@ -80,6 +82,11 @@ public class EnemyManager
     }
 
     /// <summary>
+    /// Gets the list of Enemies for this EnemyManager.
+    /// </summary>
+    public List<Enemy> Enemies { get; }
+
+    /// <summary>
     /// The Update method updates everything related to the Enemy subsystem,
     /// such as spawning, movement, and despawning.
     /// </summary>
@@ -96,9 +103,13 @@ public class EnemyManager
     /// <summary>
     /// SpawnEnemy spawns enemies based on a Wave's info, a position, and a velocity.
     /// </summary>
-    /// <param name="wave">A Wave to get the information about what to spawn.</param>
+    /// <param name="enemyType">Type of enemy being spawned.</param>
     /// <param name="position">The position to spawn the Enemy at.</param>
     /// <param name="velocity">The velocity for the Enemy.</param>
+    /// <param name="health">The health of the Enemy.</param>"
+    /// <param name="bulletType">The type of bullet the Enemy will shoot.</param>
+    /// <param name="movementPattern">The movement pattern of the Enemy.</param>
+    /// <param name="shootingPatterns">The shooting patterns of the Enemy.</param>
     /// <exception cref="ArgumentException">Throws an Exception if an invalid enemy type is inputted.</exception>
     public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, string movementPattern, Dictionary<string, string> shootingPatterns)
     {
@@ -160,6 +171,19 @@ public class EnemyManager
     }
 
     /// <summary>
+    /// MoveEnemiesOffScreen sets the velocity of all enemies to go offscreen
+    /// </summary>
+    /// <param name="playArea">Play area for game.</param>
+    public void MoveEnemiesOffScreen(PlayArea playArea)
+    {
+        foreach (Enemy enemy in this.Enemies)
+        {
+            this.SetOffScreenVelocity(enemy, playArea);
+            enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
+        }
+    }
+
+    /// <summary>
     /// SetOffScreenVelocity sets the Enemy's velocity based on the closest
     /// border once the Wave is over.
     /// </summary>
@@ -189,14 +213,5 @@ public class EnemyManager
 
         // Update velocity
         enemy.Velocity = velocity;
-    }
-
-    public void MoveEnemiesOffScreen(PlayArea playArea)
-    {
-        foreach (Enemy enemy in this.Enemies)
-        {
-            this.SetOffScreenVelocity(enemy, playArea);
-            enemy.MovementPattern = this.movementFactory.CreateMovementPattern("GoOffScreen");
-        }
     }
 }

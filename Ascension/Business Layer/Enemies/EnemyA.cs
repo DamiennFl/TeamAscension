@@ -37,6 +37,7 @@ namespace Ascension
         /// </summary>
         /// <param name="velocity">The speed of EnemyA.</param>
         /// <param name="position">The position of EnemyA.</param>
+        /// <param name="health">The health of EnemyA.</param>
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
@@ -124,7 +125,7 @@ namespace Ascension
         /// <returns>the random time generated for our next shot.</returns>
         private float GetRandomShootInterval()
         {
-            return ((float)this.random.NextDouble() * 2f); // Random interval between 1 and 3 seconds
+            return (float)this.random.NextDouble() * 2f; // Random interval between 1 and 3 seconds
         }
     }
 }

@@ -39,6 +39,7 @@ namespace Ascension
         /// </summary>
         /// <param name="velocity">The speed of FinalBoss.</param>
         /// <param name="position">The position of FinalBoss.</param>
+        /// <param name="health">The health of FinalBoss.</param>
         /// <param name="texture">The texture of FinalBoss A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
