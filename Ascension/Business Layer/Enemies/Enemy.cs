@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,10 +35,12 @@ namespace Ascension
 
         public float ShootInterval { get; set; }
 
-        /// <summary>
-        /// Gets or sets the shooting pattern of the enemy.
-        /// </summary>
-        public IShootingPattern ShootingPattern { get; set; }
+        ///// <summary>
+        ///// Gets or sets the shooting pattern of the enemy.
+        ///// </summary>
+        //public IShootingPattern ShootingPattern { get; set; }
+
+        public Dictionary<IShootingPattern, string> ShootingPatterns { get; set; }
 
         protected SpriteFont font;
 
@@ -53,15 +56,15 @@ namespace Ascension
         /// <param name="position">Postion of the enemy.</param>
         /// <param name="texture">Texture of the enemy.</param>
         /// <param name="bulletType">The bullet type.</param>
-        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType, string shotsPerSecond)
+        public Enemy(Vector2 velocity, Vector2 position, int health, Texture2D texture, string bulletType)
         {
             this.Velocity = velocity;
             this.texture = texture;
             this.Position = position;
             this.BulletType = bulletType;
             this.Health = health;
-            this.shotsPerSecond = shotsPerSecond;
             this.ShootInterval = 1f;
+            this.ShootingPatterns = new Dictionary<IShootingPattern, string>();
         }
 
         /// <summary>
@@ -176,20 +179,9 @@ namespace Ascension
         /// </summary>
         public virtual void Shoot()
         {
-            this.ShootingPattern?.Shoot(this);
-        }
-
-        /// <summary>
-        /// Shoots bullets in a star pattern.
-        /// </summary>
-        public virtual void BurstShoot()
-        {
-            float angle = -0.9F;
-            for (int i = 0; i < 3; i++)
+            foreach (IShootingPattern shootingPattern in this.ShootingPatterns.Keys)
             {
-                Vector2 bulletVelocity = new Vector2(angle, 2);
-                this.Shoot(bulletVelocity, false, this.BulletType);
-                angle += 0.9F;
+                shootingPattern.Shoot(this);
             }
         }
 
@@ -210,286 +202,6 @@ namespace Ascension
         public void FireBulletFromPosition(Vector2 spawnPosition, Vector2 velocity)
         {
             this.BulletFired?.Invoke(spawnPosition, velocity, this.IsPlayer, this.BulletType);
-        }
-
-        /// <summary>
-        /// Shoots bullets in a circular pattern.
-        /// </summary>
-        public void CircularShoot()
-        {
-            int numberOfBullets = 12; // Total bullets in the circles
-            float bulletSpeed = 2f; // Adjust the speed as needed
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-
-            for (int i = 0; i < numberOfBullets; i++)
-            {
-                float angle = i * angleIncrement;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                this.Shoot(bulletVelocity, false, this.BulletType);
-            }
-        }
-
-        public void BulletWaveWithGaps()
-        {
-            int numberOfBullets = 40;
-            float bulletSpeed = 3f;
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-            int gapIndex = Random.Shared.Next(0, numberOfBullets / 2); // Creates two gaps
-
-            for (int i = 0; i < numberOfBullets; i++)
-            {
-                if (i == gapIndex || i == gapIndex + (numberOfBullets / 2))
-                    continue; // Creates two symmetrical gaps
-
-                float angle = i * angleIncrement;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                this.Shoot(bulletVelocity, false, this.BulletType);
-            }
-        }
-
-        public void AlternatingRingsShoot()
-        {
-            int numberOfBullets = 30;
-            int numberOfRings = 3;
-            float baseSpeed = 2f;
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-
-            for (int ring = 0; ring < numberOfRings; ring++)
-            {
-                float speedMultiplier = 1f + (ring * 0.5f); // Each ring gets faster
-
-                for (int i = 0; i < numberOfBullets; i++)
-                {
-                    float angle = i * angleIncrement + (Random.Shared.NextSingle() - 3f) * 0.2f; // Add randomness to the angle
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * (baseSpeed * speedMultiplier);
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void ExpandingSpiralShoot()
-        {
-            int numberOfBullets = 24;
-            float bulletSpeed = 2f;
-            float angleOffset = 0f;
-            float angleIncrement = MathF.PI * 2 / numberOfBullets;
-
-            for (int i = 0; i < numberOfBullets; i++)
-            {
-                float angle = i * angleIncrement + angleOffset;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * bulletSpeed;
-                this.Shoot(bulletVelocity, false, this.BulletType);
-            }
-
-            angleOffset += 0.1f; // Slowly shifts the starting angle, making a spiral
-        }
-
-        public void RealityCollapse()
-        {
-            this.BulletCone();
-            this.BulletWall();
-            this.XCrossfire();
-            this.GalaxySpiralShoot();
-            this.WavePatternShoot();
-        }
-
-        public void BulletCone()
-        {
-            int bulletRows = 5; // Number of rows in the cone
-            int bulletsPerRow = 3; // Bullets per row, increasing each time
-            float baseSpeed = 3f;
-            float spreadAngle = MathF.PI / 6; // 30-degree spread
-
-            for (int row = 0; row < bulletRows; row++)
-            {
-                float rowSpeed = baseSpeed + row * 0.5f; // Increasing speed per row
-                float angleStep = spreadAngle / (bulletsPerRow - 1);
-                float startAngle = MathF.PI / 2 - spreadAngle / 2; // Centered spread downwards
-
-                for (int i = 0; i < bulletsPerRow; i++)
-                {
-                    float angle = startAngle + (i * angleStep);
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * rowSpeed;
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-
-                bulletsPerRow += 2; // Increase bullets per row for a wider cone
-            }
-        }
-
-        public void BulletWall()
-        {
-            int bulletsPerRow = 15;
-            int bulletRows = 4;
-            float bulletSpeed = 0.75f;
-            float spacing = 0.5f; // Adjust for tighter or looser grids
-
-            for (int row = 0; row < bulletRows; row++)
-            {
-                float yOffset = row * spacing; // Staggers rows slightly for an interwoven effect
-
-                for (int i = 0; i < bulletsPerRow; i++)
-                {
-                    float xPos = (i - bulletsPerRow / 2) * spacing;
-                    float randomOffset = Random.Shared.NextSingle() * 0.2f; // Adds randomness to the position
-                    Vector2 bulletVelocity = new Vector2(randomOffset, bulletSpeed); // Straight downward movement
-                    this.Shoot(new Vector2(xPos, yOffset) + bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void XCrossfire()
-        {
-            int arms = 4; // Four diagonal directions
-            int bulletsPerArm = 6; // Each arm has three bullets
-            float baseSpeed = 3f;
-            float angleOffset = MathF.PI / 4; // 45-degree diagonal arms
-
-            for (int arm = 0; arm < arms; arm++)
-            {
-                float angle = arm * MathF.PI / 2 + angleOffset; // 90-degree separations
-
-                for (int j = 0; j < bulletsPerArm; j++)
-                {
-                    float speedMultiplier = 1f + j * 0.3f; // Vary speed for staggered effect
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * (baseSpeed * speedMultiplier);
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void GalaxySpiralShoot()
-        {
-            int totalBullets = 100;
-            float angleIncrement = MathF.PI * 10 / totalBullets; // Multiple rotations
-            float radiusIncrement = 0.5f;
-            float currentRadius = 0f;
-
-            for (int i = 0; i < totalBullets; i++)
-            {
-                float angle = i * angleIncrement;
-                currentRadius += radiusIncrement;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * currentRadius * 0.05f;
-                this.Shoot(bulletVelocity, false, this.BulletType);
-            }
-        }
-
-        public void FireworkExplosionShoot()
-        {
-            int bursts = 5;
-            int bulletsPerBurst = 15;
-            float baseSpeed = 2f;
-
-            for (int burst = 0; burst < bursts; burst++)
-            {
-                float angleOffset = Random.Shared.NextSingle() * MathF.PI * 2;
-
-                for (int i = 0; i < bulletsPerBurst; i++)
-                {
-                    float angle = i * (MathF.PI * 2 / bulletsPerBurst) + angleOffset;
-                    float speed = baseSpeed + Random.Shared.NextSingle();
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * speed;
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void WavePatternShoot()
-        {
-            int bulletsPerWave = 15;
-            float waveCount = 3;
-            float amplitude = 1.5f;
-            float frequency = 0.3f;
-
-            for (int wave = 0; wave < waveCount; wave++)
-            {
-                for (int i = -bulletsPerWave / 2; i < bulletsPerWave / 2; i++)
-                {
-                    float x = i * 0.2f;
-                    float y = amplitude * MathF.Sin(frequency * x + wave);
-                    Vector2 bulletVelocity = new Vector2(x, y + 2f);
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Shoots bullets in a flower bloom pattern.
-        /// </summary>
-        public void FlowerBloomShoot()
-        {
-            int petals = 8;
-            int bulletsPerPetal = 10;
-            float growthSpeed = 1f;
-
-            for (int petal = 0; petal < petals; petal++)
-            {
-                float angleOffset = petal * (MathF.PI * 2 / petals);
-
-                for (int i = 0; i < bulletsPerPetal; i++)
-                {
-                    float progress = (float)(i + 1) / bulletsPerPetal; // Start from 1 to avoid bullet staying next to the enemy
-                    float angle = angleOffset + progress * MathF.PI / petals;
-                    float radius = progress * 5f;
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * radius * growthSpeed;
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void ChaoticRandomShoot()
-        {
-            int totalBullets = 50;
-
-            for (int i = 0; i < totalBullets; i++)
-            {
-                float angle = Random.Shared.NextSingle() * MathF.PI * 2;
-                float speed = 1f + Random.Shared.NextSingle() * 3f;
-                Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * speed;
-                this.Shoot(bulletVelocity, false, this.BulletType);
-            }
-        }
-
-        public void TornadoShoot()
-        {
-            int spirals = 3;
-            int bulletsPerSpiral = 30;
-            float spiralSpacing = 0.5f;
-            float baseSpeed = 2f; // Base speed for the innermost bullets
-
-            for (int s = 0; s < spirals; s++)
-            {
-                for (int i = 0; i < bulletsPerSpiral; i++)
-                {
-                    float progress = (float)i / bulletsPerSpiral;
-                    float angle = progress * MathF.PI * 4 + s * MathF.PI * 2 / spirals;
-                    float radius = progress * 5f;
-                    float speedMultiplier = 1f + (1 - progress); // Decrease speed as bullets move outward
-                    Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * radius * 0.5f * speedMultiplier;
-                    this.Shoot(bulletVelocity, false, this.BulletType);
-                }
-            }
-        }
-
-        public void RadialBurstShoot()
-        {
-            int bursts = 3;
-            int bulletsPerBurst = 20;
-            float baseSpeed = 2f;
-            float delayBetweenBursts = 0.5f; // Time between bursts in seconds
-
-            for (int burst = 0; burst < bursts; burst++)
-            {
-                Task.Delay(TimeSpan.FromSeconds(burst * delayBetweenBursts)).ContinueWith(_ =>
-                {
-                    for (int i = 0; i < bulletsPerBurst; i++)
-                    {
-                        float angle = i * (MathF.PI * 2 / bulletsPerBurst);
-                        Vector2 bulletVelocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * baseSpeed;
-                        this.Shoot(bulletVelocity, false, this.BulletType);
-                    }
-                });
-            }
         }
 
         /// <summary>

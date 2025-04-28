@@ -10,7 +10,8 @@
         "MovementPattern": "GoMiddle",
         "BulletType": "A",
         "ShootingPatterns": {
-          "Firework": "1"
+          "Circular": "1",
+          "Burst": "0.5"
         }
       },
       "2": {
@@ -22,7 +23,8 @@
         "MovementPattern": "Wave",
         "BulletType": "B",
         "ShootingPatterns": {
-          "Burst": "2"
+          "Burst": "3",
+          "Standard": "4"
         }
       }
     }

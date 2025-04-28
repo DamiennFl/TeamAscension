@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Ascension.Business_Layer.Shooting;
+using Microsoft.Xna.Framework.Content;
+using System.Collections.Generic;
 
 namespace Ascension
 {
@@ -19,7 +21,7 @@ namespace Ascension
         /// <param name="bulletType">The bullet typed of Enemies of this Wave.</param>
         /// <param name="shootingPattern">The shooting pattern of Enemies of this Wave.</param>
         /// <param name="shotsPerSecond">The shots per second shot by Enemies of this Wave.</param>
-        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType, string shootingPattern, string shotsPerSecond)
+        public Wave(float duration, string enemyType, int enemyCount, float spawnInterval, int health, string movementPattern, string bulletType, Dictionary<string, string> shootingPatterns)
         {
             this.Duration = duration;
             this.EnemyType = enemyType;
@@ -28,8 +30,7 @@ namespace Ascension
             this.Health = health;
             this.MovementPattern = movementPattern;
             this.BulletType = bulletType;
-            this.ShootingPattern = shootingPattern;
-            this.ShotsPerSecond = shotsPerSecond;
+            this.ShootingPatterns = shootingPatterns;
         }
 
         /// <summary>
@@ -68,13 +69,9 @@ namespace Ascension
         public string BulletType { get; set; }
 
         /// <summary>
-        /// Gets or sets the ShootingPattern of Enemies of this wave.
+        /// Dictionary of ShootingPatterns, with the key being the pattern and the value
+        /// being the shots per second, either a float number or "Random".
         /// </summary>
-        public string ShootingPattern { get; set; }
-
-        /// <summary>
-        /// Gets or sets the shots per second shot by Enemies of this Wave.
-        /// </summary>
-        public string ShotsPerSecond { get; set; }
+        public Dictionary<string, string> ShootingPatterns { get; set; }
     }
 }

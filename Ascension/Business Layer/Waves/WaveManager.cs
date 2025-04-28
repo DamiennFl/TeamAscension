@@ -115,7 +115,7 @@ namespace Ascension.Business_Layer.Waves
                 // Spawn Enemies
                 if (this.enemiesSpawned < currentWave.EnemyCount && this.waveTimeElapsed >= currentWave.SpawnInterval)
                 {
-                    this.enemyManager.SpawnEnemy(currentWave.EnemyType, this.spawnPosition, this.spawnVelocity, currentWave.Health, currentWave.BulletType, currentWave.ShotsPerSecond, currentWave.MovementPattern, currentWave.ShootingPattern);
+                    this.enemyManager.SpawnEnemy(currentWave.EnemyType, this.spawnPosition, this.spawnVelocity, currentWave.Health, currentWave.BulletType, currentWave.MovementPattern, currentWave.ShootingPatterns);
                     this.waveTimeElapsed = 0f;
                     this.enemiesSpawned++;
                 }

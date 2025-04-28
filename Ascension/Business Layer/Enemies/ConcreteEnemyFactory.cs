@@ -44,24 +44,24 @@ namespace Ascension
         }
 
         // TODO: Add relevant enemies to a Formation object, instead of having a Factory in each Formation
-        public override Enemy CreateEnemyA(Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond)
+        public override Enemy CreateEnemyA(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new EnemyA(velocity, position, health, this.enemyTextures["EnemyA"], this.ContentManager, bulletType, shotsPerSecond);
+            return new EnemyA(velocity, position, health, this.enemyTextures["EnemyA"], this.ContentManager, bulletType);
         }
 
-        public override Enemy CreateEnemyB(Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond)
+        public override Enemy CreateEnemyB(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new EnemyB(velocity, position, health, this.enemyTextures["EnemyB"], this.ContentManager, bulletType, shotsPerSecond);
+            return new EnemyB(velocity, position, health, this.enemyTextures["EnemyB"], this.ContentManager, bulletType);
         }
 
-        public override Enemy CreateMidBoss(Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond)
+        public override Enemy CreateMidBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new MidBoss(velocity, position, health, this.enemyTextures["MidBoss"], this.ContentManager, bulletType, shotsPerSecond);
+            return new MidBoss(velocity, position, health, this.enemyTextures["MidBoss"], this.ContentManager, bulletType);
         }
 
-        public override Enemy CreateFinalBoss(Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond)
+        public override Enemy CreateFinalBoss(Vector2 position, Vector2 velocity, int health, string bulletType)
         {
-            return new FinalBoss(velocity, position, health, this.enemyTextures["FinalBoss"], this.ContentManager, bulletType, shotsPerSecond);
+            return new FinalBoss(velocity, position, health, this.enemyTextures["FinalBoss"], this.ContentManager, bulletType);
         }
     }
 }

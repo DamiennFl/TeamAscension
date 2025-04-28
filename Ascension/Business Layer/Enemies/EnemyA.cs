@@ -4,6 +4,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Ascension.Business_Layer.Shooting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,9 +28,9 @@ namespace Ascension
         private Random random;
 
         /// <summary>
-        /// When the enemy will shoot.
+        /// Tracks individual timers for each shooting pattern.
         /// </summary>
-        private float shootTimer;
+        private Dictionary<IShootingPattern, float> shootingTimers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EnemyA"/> class.
@@ -38,12 +40,12 @@ namespace Ascension
         /// <param name="texture">The texture of Enemy A.</param>
         /// <param name="contentManager">The content manager for loading assets.</param>
         /// <param name="bulletType">The type of bullet to shoot.</param>
-        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType, string shotsPerSecond)
-        : base(velocity, position, health, texture, bulletType, shotsPerSecond)
+        public EnemyA(Vector2 velocity, Vector2 position, int health, Texture2D texture, ContentManager contentManager, string bulletType)
+        : base(velocity, position, health, texture, bulletType)
         {
             this.contentManager = contentManager;
             this.random = new Random();
-            this.shootTimer = 0f;
+            this.shootingTimers = new Dictionary<IShootingPattern, float>();
             this.font = contentManager.Load<SpriteFont>("Fonts/Font");
         }
 
@@ -74,38 +76,46 @@ namespace Ascension
         {
             this.MovementPattern.Move(gameTime, this);
 
-            // Timer for shooting
-            this.shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.shotsPerSecond.Equals("Random"))
+            // Initialize timers for each shooting pattern if not already done
+            foreach (var pattern in this.ShootingPatterns.Keys)
             {
-                if (this.shootTimer >= this.ShootInterval)
+                if (!this.shootingTimers.ContainsKey(pattern))
                 {
-                    this.ShootingPattern?.Shoot(this);
-                    this.shootTimer = 0f;
-                    this.ShootInterval = this.GetRandomShootInterval();
-                }
-            }
-            else
-            {
-                int shotsPerSecond = -1;
-                Int32.TryParse(this.shotsPerSecond, out shotsPerSecond);
-                if (shotsPerSecond >= 0)
-                {
-                    if (this.shootTimer >= this.ShootInterval / shotsPerSecond)
-                    {
-                        this.ShootingPattern?.Shoot(this);
-                        this.shootTimer = 0f;
-                    }
+                    this.shootingTimers[pattern] = 0f; // Initialize timer for this pattern
                 }
             }
 
-            //if (this.shootTimer >= this.ShootInterval / this.shotsPerSecond)
-            //{
-            //    this.ShootingPattern?.Shoot(this);
-            //    this.shootTimer = 0f;
-            //    //this.ShootInterval = this.GetRandomShootInterval();
-            //}
+            // Update timers and check if it's time to shoot
+            foreach (var pattern in this.ShootingPatterns)
+            {
+                IShootingPattern shootingPattern = pattern.Key;
+                string intervalString = pattern.Value;
+
+                // Update the timer for this pattern
+                this.shootingTimers[shootingPattern] += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                // Determine the shoot interval
+                float shootInterval;
+                if (intervalString.Equals("Random", StringComparison.OrdinalIgnoreCase))
+                {
+                    shootInterval = this.GetRandomShootInterval();
+                }
+                else if (float.TryParse(intervalString, out float parsedInterval))
+                {
+                    shootInterval = parsedInterval;
+                }
+                else
+                {
+                    continue; // Skip invalid intervals
+                }
+
+                // Check if it's time to shoot
+                if (this.shootingTimers[shootingPattern] >= shootInterval)
+                {
+                    shootingPattern.Shoot(this); // Perform the shooting action
+                    this.shootingTimers[shootingPattern] = 0f; // Reset the timer for this pattern
+                }
+            }
         }
 
         /// <summary>

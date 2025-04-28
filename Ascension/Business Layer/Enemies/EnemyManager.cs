@@ -100,15 +100,15 @@ public class EnemyManager
     /// <param name="position">The position to spawn the Enemy at.</param>
     /// <param name="velocity">The velocity for the Enemy.</param>
     /// <exception cref="ArgumentException">Throws an Exception if an invalid enemy type is inputted.</exception>
-    public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, string shotsPerSecond, string movementPattern, string shootingPattern)
+    public void SpawnEnemy(string enemyType, Vector2 position, Vector2 velocity, int health, string bulletType, string movementPattern, Dictionary<string, string> shootingPatterns)
     {
         // Spawn Enemy
         Enemy enemy = enemyType switch
         {
-            "EnemyA" => this.factory.CreateEnemyA(position, velocity, health, bulletType, shotsPerSecond),
-            "EnemyB" => this.factory.CreateEnemyB(position, velocity, health, bulletType, shotsPerSecond),
-            "MidBoss" => this.factory.CreateMidBoss(position, velocity, health, bulletType, shotsPerSecond),
-            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, health, bulletType, shotsPerSecond),
+            "EnemyA" => this.factory.CreateEnemyA(position, velocity, health, bulletType),
+            "EnemyB" => this.factory.CreateEnemyB(position, velocity, health, bulletType),
+            "MidBoss" => this.factory.CreateMidBoss(position, velocity, health, bulletType),
+            "FinalBoss" => this.factory.CreateFinalBoss(position, velocity, health, bulletType),
             _ => throw new ArgumentException("Unknown enemy type inputted")
         };
 
@@ -117,7 +117,10 @@ public class EnemyManager
 
         // Apply shooting pattern
         // IShootingPattern shootingPattern = this.shootingPatternFactory.CreateShootingPattern(wave.ShootingPattern);
-        enemy.ShootingPattern = this.shootingPatternFactory.CreateShootingPattern(shootingPattern); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
+        foreach (var shootingPattern in shootingPatterns)
+        {
+            enemy.ShootingPatterns.Add(this.shootingPatternFactory.CreateShootingPattern(shootingPattern.Key), shootingPattern.Value); // CHANGE THIS WITH THE WAVE BUILDER SEEN ABOVE ^^
+        }
 
         // Add to list of enemies
         this.Enemies.Add(enemy);
