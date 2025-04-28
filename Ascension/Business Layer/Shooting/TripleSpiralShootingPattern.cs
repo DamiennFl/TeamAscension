@@ -12,6 +12,10 @@ namespace Ascension.Business_Layer.Shooting
     /// </summary>
     public class TripleSpiralShootingPattern : IShootingPattern
     {
+        /// <summary>
+        /// Shooting pattern that fires bullets in a spiral pattern towards the player and two diagonal directions.
+        /// </summary>
+        /// <param name="shooter">Entity shooting.</param>
         public async void Shoot(IEntity shooter)
         {
             int numberOfBullets = 25; // Controls spacing smoothness

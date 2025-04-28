@@ -1,5 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿// <copyright file="TargetedShootingPattern.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Ascension.Business_Layer.Shooting
 {
@@ -22,7 +26,8 @@ namespace Ascension.Business_Layer.Shooting
             {
                 direction.Normalize();
                 float bulletSpeed = 6f;
-                //Vector2 bulletVelocity = direction * bulletSpeed;
+
+                // Vector2 bulletVelocity = direction * bulletSpeed;
                 for (int i = 0; i < count; i++)
                 {
                     Vector2 direction1 = playerPosition - shooter.Position;

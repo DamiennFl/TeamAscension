@@ -39,7 +39,9 @@ namespace Ascension.Business_Layer.Shooting
                 // Direction toward the player
                 Vector2 direction = playerPosition - spawnPos;
                 if (direction != Vector2.Zero)
+                {
                     direction.Normalize();
+                }
 
                 Vector2 bulletVelocity = direction * bulletSpeed;
 
