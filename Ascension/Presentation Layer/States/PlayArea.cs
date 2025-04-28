@@ -1,12 +1,19 @@
-﻿using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿// <copyright file="PlayArea.cs" company="Team Ascension">
+// Copyright (c) Team Ascension. All rights reserved.
+// </copyright>
+
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ascension
 {
+    /// <summary>
+    /// This class is used to create the play area for the game.
+    /// </summary>
     public class PlayArea
     {
         /// <summary>
